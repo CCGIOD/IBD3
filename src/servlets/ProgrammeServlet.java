@@ -33,7 +33,7 @@ public class ProgrammeServlet extends HttpServlet {
 
 		try {
 			BDConnexion.getConnexion();
-			out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison</h1>");		
+			out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
 
 			out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getProgramme())+"</i></p>");
 		} catch (BDException e) {
