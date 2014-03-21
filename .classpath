@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/pierre/Bureau/ProjetIBD/apache-tomcat-6.0.14/webapps/ROOT/WEB-INF/lib/jus.util.jar"/>
-	<classpathentry kind="lib" path="/home/pierre/Bureau/ProjetIBD/apache-tomcat-6.0.14/webapps/ROOT/WEB-INF/lib/ojdbc14.jar"/>
-	<classpathentry kind="lib" path="/home/pierre/Bureau/ProjetIBD/apache-tomcat-6.0.14/lib/servlet-api.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/jus.util.jar"/>
+	<classpathentry kind="lib" path="WEB-INF/lib/ojdbc14.jar"/>
+	<classpathentry kind="lib" path="../../lib/servlet-api.jar"/>
+	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
