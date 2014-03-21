@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path=""/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/pierre/git/IBD/Projet/apache-tomcat-6.0.14/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/home/pierre/git/IBD/Projet/apache-tomcat-6.0.14/webapps/ROOT/WEB-INF/lib/jus.util.jar"/>
-	<classpathentry kind="lib" path="/home/pierre/git/IBD/Projet/apache-tomcat-6.0.14/webapps/ROOT/WEB-INF/lib/ojdbc14.jar"/>
-	<classpathentry kind="output" path=""/>
-</classpath>
