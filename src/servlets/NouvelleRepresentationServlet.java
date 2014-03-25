@@ -8,7 +8,6 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import bdd.accessBD.BDConnexion;
 import bdd.accessBD.BDException;
 import bdd.accessBD.BDRequetes;
 import bdd.modeles.Spectacle;
