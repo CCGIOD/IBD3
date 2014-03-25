@@ -28,6 +28,11 @@
 <servlet-class>servlets.RepParProgrammeServlet</servlet-class> 
 </servlet>
 
+- <servlet> 
+<servlet-name>PlacesRepresentationServlet</servlet-name> 
+<servlet-class>servlets.PlacesRepresentationServlet</servlet-class> 
+</servlet>
+
 
 - <servlet-mapping> 
 <servlet-name>ProgrammeServlet</servlet-name> 
@@ -47,6 +52,11 @@
 - <servlet-mapping> 
 <servlet-name>RepParProgrammeServlet</servlet-name> 
 <url-pattern>/servlet/RepParProgrammeServlet</url-pattern> 
+</servlet-mapping>
+
+- <servlet-mapping> 
+<servlet-name>PlacesRepresentationServlet</servlet-name> 
+<url-pattern>/servlet/PlacesRepresentationServlet</url-pattern> 
 </servlet-mapping>
 
 

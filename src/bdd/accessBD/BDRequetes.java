@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
+import bdd.modeles.Place;
 import bdd.modeles.Representation;
 import bdd.modeles.Spectacle;
 
@@ -19,16 +20,16 @@ public class BDRequetes {
 		Connection conn = BDConnexion.getConnexion();
 
 		if (numS == null)
-			requete = "select nomS, DATEREP from LesRepresentations, LesSpectacles where LesRepresentations.numS = LesSpectacles.numS";
+			requete = "select nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, LesRepresentations.numS from LesRepresentations, LesSpectacles where LesRepresentations.numS = LesSpectacles.numS";
 		else{
-			BDRequetesTest.testNumSpectable(numS);
-			requete = "select nomS, DATEREP from LesRepresentations, LesSpectacles where LesRepresentations.numS = LesSpectacles.numS and LesSpectacles.numS="+numS;
+			BDRequetesTest.testNumSpectable(conn, numS);
+			requete = "select nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, LesRepresentations.numS from LesRepresentations, LesSpectacles where LesRepresentations.numS = LesSpectacles.numS and LesSpectacles.numS="+numS;
 		}
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
-				res.addElement(new Representation (rs.getString(1), rs.getString(2)));
+				res.addElement(new Representation (rs.getString(1), rs.getString(2), rs.getInt(3)));
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des représentations (Code Oracle : "+e.getErrorCode()+")");
@@ -61,5 +62,28 @@ public class BDRequetes {
 		BDConnexion.FermerTout(conn, stmt, rs);
 		return res;
 	}
+	
+	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
+		Vector<Place> res = new Vector<Place>();
+		String requete;
+		Statement stmt;
+		ResultSet rs;
+		Connection conn = BDConnexion.getConnexion();
 
+		BDRequetesTest.testRepresentation(conn, numS, date);
+		
+		requete = "select norang,noplace from lesplaces MINUS select norang, noplace from LesTickets where numS = "+numS+"  and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
+				
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				res.addElement(new Place(rs.getInt(1), rs.getInt(2)));
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des places (Code Oracle : "+e.getErrorCode()+")");
+		}
+		BDConnexion.FermerTout(conn, stmt, rs);
+		return res;
+	}
 }
