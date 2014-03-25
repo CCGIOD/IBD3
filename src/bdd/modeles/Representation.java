@@ -1,11 +1,11 @@
 package bdd.modeles;
 
-public class Programme {
+public class Representation {
 
 	private String nom;
 	private String date;
 	
-	public Programme (String n, String d) {
+	public Representation (String n, String d) {
 		this.nom = n;
 		this.date = d;
 	}
@@ -22,7 +22,7 @@ public class Programme {
 		this.nom = n;
 	}
 	
-	public void setPrix (String d) {
+	public void setDate (String d) {
 		this.date = d;
 	}
 }

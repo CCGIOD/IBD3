@@ -6,12 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Vector;
 
-import bdd.modeles.Programme;
+import bdd.modeles.Representation;
+import bdd.modeles.Spectacle;
 
 public class BDRequetes {
 
-	public static Vector<Programme> getProgramme () throws BDException {
-		Vector<Programme> res = new Vector<Programme>();
+	public static Vector<Representation> getRepresentations () throws BDException {
+		Vector<Representation> res = new Vector<Representation>();
 		String requete;
 		Statement stmt;
 		ResultSet rs;
@@ -22,7 +23,7 @@ public class BDRequetes {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
-				res.addElement(new Programme (rs.getString(1), rs.getString(2)));
+				res.addElement(new Representation (rs.getString(1), rs.getString(2)));
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des programmes (Code Oracle : "+e.getErrorCode()+")");
@@ -30,4 +31,26 @@ public class BDRequetes {
 		BDConnexion.FermerTout(conn, stmt, rs);
 		return res;
 	}
+	
+	public static Vector<Spectacle> getSpectables () throws BDException {
+		Vector<Spectacle> res = new Vector<Spectacle>();
+		String requete;
+		Statement stmt;
+		ResultSet rs;
+		Connection conn = BDConnexion.getConnexion();
+
+		requete = "select DISTINCT numS, nomS from LesSpectacles";
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				res.addElement(new Spectacle(rs.getInt(1), rs.getString(2)));
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
+		}
+		BDConnexion.FermerTout(conn, stmt, rs);
+		return res;
+	}
+	
 }
