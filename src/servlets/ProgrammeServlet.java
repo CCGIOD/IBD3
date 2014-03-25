@@ -30,12 +30,10 @@ public class ProgrammeServlet extends HttpServlet {
 
 		out.println("<HEAD><TITLE> Programme de la saison </TITLE></HEAD>");
 		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
-
+		out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
+		
 		try {
-			BDConnexion.getConnexion();
-			out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
-
-			out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations())+"</i></p>");
+			out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null))+"</i></p>");
 		} catch (BDException e) {
 			out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
 		}

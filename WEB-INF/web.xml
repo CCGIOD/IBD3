@@ -23,7 +23,10 @@
 <servlet-class>servlets.NouvelleRepresentationServlet</servlet-class> 
 </servlet>
 
-
+- <servlet> 
+<servlet-name>RepParProgrammeServlet</servlet-name> 
+<servlet-class>servlets.RepParProgrammeServlet</servlet-class> 
+</servlet>
 
 
 - <servlet-mapping> 
@@ -34,6 +37,16 @@
 - <servlet-mapping> 
 <servlet-name>NouvelleRepresentationServlet</servlet-name> 
 <url-pattern>/servlet/NouvelleRepresentationServlet</url-pattern> 
+</servlet-mapping>
+
+- <servlet-mapping> 
+<servlet-name>ProgrammeServlet</servlet-name> 
+<url-pattern>/servlet/ProgrammeServlet</url-pattern> 
+</servlet-mapping>
+
+- <servlet-mapping> 
+<servlet-name>RepParProgrammeServlet</servlet-name> 
+<url-pattern>/servlet/RepParProgrammeServlet</url-pattern> 
 </servlet-mapping>
 
 
