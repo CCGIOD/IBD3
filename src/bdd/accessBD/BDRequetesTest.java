@@ -9,16 +9,16 @@ import java.text.SimpleDateFormat;
 
 public class BDRequetesTest {
 
-	public static void testNumSpectable (Connection conn, String numS) throws BDException {
+	public static String testNumSpectable (Connection conn, String numS) throws BDException, IllegalArgumentException {
 		String requete;
 		Statement stmt;
 		ResultSet rs;
+		String res = null ;
 
 		try{ Integer.parseInt(numS); }  
 		catch(NumberFormatException nfe){ 
-			throw new BDException("Problème de numéro de représentation (pas un entier)");
+			throw new IllegalArgumentException("Problème de numéro de représentation (pas un entier)");
 		}
-
 		requete = "select numS from LesSpectacles where numS="+numS;
 
 		try {
@@ -26,8 +26,29 @@ public class BDRequetesTest {
 			rs = stmt.executeQuery(requete);
 			if (!rs.next())
 				throw new BDException("Le spectacle n°"+numS+" n'existe pas");
+			else
+				res = rs.getString(1);
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
+		}
+		return res ;
+	}
+
+	public static void testDateValide(String date) throws IllegalArgumentException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+		try {
+			dateFormat.parse(date);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Problème la date n'est pas valide");
+		}
+	}
+
+	public static void testHeureValide(String heure) throws IllegalArgumentException {
+		SimpleDateFormat heureFormat = new SimpleDateFormat("HH:MM");
+		try {
+			heureFormat.parse(heure);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Problème l'heure n'est pas valide");
 		}
 	}
 
@@ -58,9 +79,9 @@ public class BDRequetesTest {
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
 		}
-		
+
 		requete = "select * from LesRepresentations where numS="+numS+" and dateRep = to_date('"+myDate+"','dd/mm/yyyy hh24:mi')";
-		
+
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);

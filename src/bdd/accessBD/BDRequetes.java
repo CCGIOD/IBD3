@@ -86,4 +86,36 @@ public class BDRequetes {
 		BDConnexion.FermerTout(conn, stmt, rs);
 		return res;
 	}
+	
+	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException, BDExceptionParamError {
+		
+		Connection conn = BDConnexion.getConnexion();
+
+		BDExceptionParamError errors = new BDExceptionParamError() ;
+		String nomSpectacle = null ;
+
+		try {
+			nomSpectacle = BDRequetesTest.testNumSpectable(conn,numS);
+		} catch (IllegalArgumentException e) {
+			errors.addError(1, e.getMessage());
+		}
+
+		try {
+			BDRequetesTest.testDateValide(dateRep);
+		} catch (IllegalArgumentException e) {
+			errors.addError(2, e.getMessage());
+		}
+
+		try {
+			BDRequetesTest.testHeureValide(heureRep);
+		} catch (IllegalArgumentException e) {
+			errors.addError(3, e.getMessage());
+		}
+
+		if(errors.getParamsError().size() != 0){
+			throw errors ;
+		}
+
+		return null ;
+	}
 }

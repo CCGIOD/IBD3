@@ -9,6 +9,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import bdd.accessBD.BDException;
+import bdd.accessBD.BDExceptionParamError;
 import bdd.accessBD.BDRequetes;
 import servlets.utils.ConvertHTML;
 
@@ -61,13 +62,27 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		if ((numS != null && dateS != null && heureS != null) 
 				&& (numS != "" && dateS != "" && heureS != ""))
 		{
-			try {
-				BDRequetes.insertRepresentation(numS, dateS, heureS);
-			} catch (BDException e) {
-				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
-				error = true ;
-				numS = "";
-			}
+
+					try {
+						BDRequetes.insertRepresentation(numS, dateS, heureS);
+					} catch(BDExceptionParamError e1){
+						out.println("<font color=\"#FFFFFF\"><h1>"+e1.getMessageError()+"</h1>");
+						if(e1.getParamsError().contains(1)){
+							numS="";
+							error = true ;
+						}
+						if(e1.getParamsError().contains(2)){
+							dateS="";
+							error = true ;
+						}
+						if(e1.getParamsError().contains(3)){
+							heureS="";
+							error = true ;
+						}
+					} catch (BDException e2) {
+						out.println("<font color=\"#FFFFFF\"><h1>"+e2.getMessage()+"</h1>");
+					}
+
 
 			if(!error){
 				out.println("<p><i><font color=\"#FFFFFF\">A compléter</i></p>");
