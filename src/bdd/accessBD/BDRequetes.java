@@ -61,5 +61,13 @@ public class BDRequetes {
 		BDConnexion.FermerTout(conn, stmt, rs);
 		return res;
 	}
+	
+	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException{
+		
+		String nomSpectacle = BDRequetesTest.testNumSpectable(numS);
+		
+		
+		return null ;
+	}
 
 }
