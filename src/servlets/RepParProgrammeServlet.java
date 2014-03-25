@@ -8,7 +8,6 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import bdd.accessBD.BDConnexion;
 import bdd.accessBD.BDException;
 import bdd.accessBD.BDRequetes;
 
@@ -65,7 +64,6 @@ public class RepParProgrammeServlet extends HttpServlet {
 			}
 		} 
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
 		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
 		out.close();
