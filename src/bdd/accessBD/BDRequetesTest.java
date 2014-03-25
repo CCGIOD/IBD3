@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 
 public class BDRequetesTest {
 
-	public static String testNumSpectable (Connection conn, String numS) throws BDException, IllegalArgumentException {
+	public static String testNumSpectable (Connection conn, String numS) throws BDException {
 		String requete;
 		Statement stmt;
 		ResultSet rs;
@@ -17,7 +17,7 @@ public class BDRequetesTest {
 
 		try{ Integer.parseInt(numS); }  
 		catch(NumberFormatException nfe){ 
-			throw new IllegalArgumentException("Problème de numéro de représentation (pas un entier)");
+			throw new BDExceptionIllegal("Problème de numéro de représentation (pas un entier)");
 		}
 		requete = "select numS from LesSpectacles where numS="+numS;
 
@@ -34,21 +34,21 @@ public class BDRequetesTest {
 		return res ;
 	}
 
-	public static void testDateValide(String date) throws IllegalArgumentException {
+	public static void testDateValide(String date) throws BDException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
 		try {
 			dateFormat.parse(date);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Problème la date n'est pas valide");
+			throw new BDExceptionIllegal("Problème la date n'est pas valide");
 		}
 	}
 
-	public static void testHeureValide(String heure) throws IllegalArgumentException {
+	public static void testHeureValide(String heure) throws BDException {
 		SimpleDateFormat heureFormat = new SimpleDateFormat("HH:MM");
 		try {
 			heureFormat.parse(heure);
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Problème l'heure n'est pas valide");
+			throw new BDExceptionIllegal("Problème l'heure n'est pas valide");
 		}
 	}
 

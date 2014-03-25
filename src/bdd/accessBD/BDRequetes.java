@@ -96,19 +96,19 @@ public class BDRequetes {
 
 		try {
 			nomSpectacle = BDRequetesTest.testNumSpectable(conn,numS);
-		} catch (IllegalArgumentException e) {
+		} catch (BDExceptionIllegal e) {
 			errors.addError(1, e.getMessage());
 		}
 
 		try {
 			BDRequetesTest.testDateValide(dateRep);
-		} catch (IllegalArgumentException e) {
+		} catch (BDExceptionIllegal e) {
 			errors.addError(2, e.getMessage());
 		}
 
 		try {
 			BDRequetesTest.testHeureValide(heureRep);
-		} catch (IllegalArgumentException e) {
+		} catch (BDExceptionIllegal e) {
 			errors.addError(3, e.getMessage());
 		}
 

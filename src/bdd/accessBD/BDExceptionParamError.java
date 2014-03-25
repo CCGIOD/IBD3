@@ -7,7 +7,7 @@ import java.util.Collection;
 public class BDExceptionParamError extends Exception {
 
 	ArrayList<Integer> params = new ArrayList<Integer>();
-	String errors = "Erreur : ";
+	String errors = "";
 	
 	public BDExceptionParamError(){
 		super();
@@ -19,7 +19,7 @@ public class BDExceptionParamError extends Exception {
 	
 	public void addError(int indiceParam, String error){
 		params.add(indiceParam);
-		errors+=error+". ";
+		errors+=error+"<br>";
 	}
 	
 	public Collection<Integer> getParamsError(){
