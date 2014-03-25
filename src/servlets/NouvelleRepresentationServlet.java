@@ -10,11 +10,9 @@ import javax.servlet.http.*;
 
 import bdd.accessBD.BDException;
 import bdd.accessBD.BDRequetes;
-import bdd.modeles.Spectacle;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
-import java.util.Vector;
 
 /**
  * NouvelleRepresentation Servlet.
@@ -41,8 +39,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 	 *				 when the servlet handles the GET request
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException
-			{
+			throws ServletException, IOException{
 		String numS, dateS, heureS;
 		ServletOutputStream out = res.getOutputStream();   
 
@@ -55,62 +52,77 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		numS		= req.getParameter("numS");
 		dateS		= req.getParameter("date");
 		heureS	= req.getParameter("heure");
-		if ((numS == null || dateS == null || heureS == null) 
-		   || (numS == "" && dateS == "" && heureS == ""))
-				{
+
+		out.println("numS : *"+numS+"* dateS : *"+dateS+"* heureS : *"+heureS+"*<br >");
+
+		boolean error = false ;
+
+		// Cas de l'insertion dans la base de données
+		if ((numS != null && dateS != null && heureS != null) 
+				&& (numS != "" && dateS != "" && heureS != ""))
+		{
+			try {
+				BDRequetes.insertRepresentation(numS, dateS, heureS);
+			} catch (BDException e) {
+				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+				error = true ;
+				numS = "";
+			}
+
+			if(!error){
+				out.println("<p><i><font color=\"#FFFFFF\">A compléter</i></p>");
+				out.println("<p><i><font color=\"#FFFFFF\">...</i></p>");
+			}
+		}
+
+		// Cas affichage du formule (première fois ou error).
+		if (((numS == null || dateS == null || heureS == null) 
+				|| (numS == "" || dateS == "" || heureS == "")) || error )
+		{
+
 			out.println("<font color=\"#FFFFFF\">Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
 			out.println("<P>");
 			out.print("<form action=\"");
 			out.print("NouvelleRepresentationServlet\" ");
 			out.println("method=POST>");
-			
+
 			// Numero de spectacle.
 			out.println("Numéro de spectacle :");
-			if(numS != "" )
+			if(numS != "" &&  numS != null )
 				out.println("<input type=text value=\"" + numS + "\" size=20 name=numS>");
 			else
 				out.println("<input type=text size=20 name=numS>");
 			out.println("<br>");
-			
+
 			// Date de la représentation
 			out.println("Date de la représentation :");
-			if(dateS != "")
+			if(dateS != "" &&  dateS != null)
 				out.println("<input type=text value=\"" + dateS + "\" size=20 name=date>");
 			else
 				out.println("<input type=text size=20 name=date>");
 			out.println("<br>");
-			
+
 			// Heure de début de la représentation
 			out.println("Heure de début de la représentation :");
-			if(heureS != "")
+			if(heureS != "" &&  heureS != null)
 				out.println("<input type=text value=\"" + heureS + "\" size=20 name=heure>");
 			else
 				out.println("<input type=text size=20 name=heure>");
 			out.println("<br>");
 			out.println("<input type=submit>");
 			out.println("<br>");
-			
-			// Test s'il y avait une erreur.
-			
-			
-			out.println("</form>");
-		} else {
-			// TO DO
-			// Transformation des paramètres vers les types adéquats.
-			// Ajout de la nouvelle représentation.
-			// Puis construction dynamique d'une page web de réponse.
-			try {
-				Vector<Spectacle> spectacles = BDRequetes.getSpectables() ;
-				out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleToHTML(spectacles)  + "</i></p>");
-				
-				// Test si le spectacle existe.
 
+			// Test s'il y avait une erreur.
+			if(numS == "" || dateS == "" || heureS == ""){
+				out.println("<font color=\"#FF0000\">Les informations que vous avez fourni sont incorrect");
+			}
+			// FOR DEBUG
+			try {
+				out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
 			} catch (BDException e) {
 				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
 			}
-
-			out.println("<p><i><font color=\"#FFFFFF\">A compléter</i></p>");
-			out.println("<p><i><font color=\"#FFFFFF\">...</i></p>");
+			out.println("</form>");	
 		}
 
 		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
@@ -118,7 +130,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		out.println("</BODY>");
 		out.close();
 
-			}
+	}
 
 	/**
 	 * HTTP POST request entry point.
