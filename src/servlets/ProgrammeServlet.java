@@ -28,7 +28,7 @@ public class ProgrammeServlet extends HttpServlet {
 		res.setContentType("text/html");
 
 		out.println("<HEAD><TITLE> Programme de la saison </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
+		out.println("<BODY style=\"color:white;\">");
 		out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
 		
 		try {

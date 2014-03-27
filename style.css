@@ -1,6 +1,6 @@
 body {
 	color : white;
-  background-image:url("/images/rideau.JPG");
+	background:url("/images/background_rideau_2.jpg") repeat;
 }
 
 body a {
