@@ -19,7 +19,7 @@ public class BDRequetesTest {
 		catch(NumberFormatException nfe){ 
 			throw new BDExceptionIllegal("Problème de numéro de représentation (pas un entier)");
 		}
-		requete = "select numS from LesSpectacles where numS="+numS;
+		requete = "select numS, nomS from LesSpectacles where numS="+numS;
 
 		try {
 			stmt = conn.createStatement();
@@ -27,7 +27,7 @@ public class BDRequetesTest {
 			if (!rs.next())
 				throw new BDException("Le spectacle n°"+numS+" n'existe pas");
 			else
-				res = rs.getString(1);
+				res = rs.getString(2);
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
 		}

@@ -54,17 +54,16 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		dateS		= req.getParameter("date");
 		heureS	= req.getParameter("heure");
 
-		out.println("numS : *"+numS+"* dateS : *"+dateS+"* heureS : *"+heureS+"*<br >");
-
 		boolean error = false ;
 
 		// Cas de l'insertion dans la base de données
 		if ((numS != null && dateS != null && heureS != null) 
 				&& (numS != "" && dateS != "" && heureS != ""))
 		{
-
+			
+			String nomSpectacle = null ;
 					try {
-						BDRequetes.insertRepresentation(numS, dateS, heureS);
+						nomSpectacle = BDRequetes.insertRepresentation(numS, dateS, heureS);
 					} catch(BDExceptionParamError e1){
 						out.println("<font color=\"#FFFFFF\"><h1>"+e1.getMessageError()+"</h1>");
 						if(e1.getParamsError().contains(1)){
@@ -85,8 +84,8 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 
 
 			if(!error){
-				out.println("<p><i><font color=\"#FFFFFF\">A compléter</i></p>");
-				out.println("<p><i><font color=\"#FFFFFF\">...</i></p>");
+				out.println("<p><i><font color=\"#FFFFFF\">Vous venez d'ajouter la représentation suivante :</i></p>");
+				out.println("<p><i><font color=\"#FFFFFF\">Pour le spectacle "+nomSpectacle + "(" + numS + ")" +" à l'horaire " + dateS + " " + heureS +"</i></p>");
 			}
 		}
 

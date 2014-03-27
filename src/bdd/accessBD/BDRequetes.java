@@ -90,7 +90,9 @@ public class BDRequetes {
 	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException, BDExceptionParamError {
 		
 		Connection conn = BDConnexion.getConnexion();
-
+		Statement stmt = null;
+		String requete;
+		
 		BDExceptionParamError errors = new BDExceptionParamError() ;
 		String nomSpectacle = null ;
 
@@ -111,11 +113,31 @@ public class BDRequetes {
 		} catch (BDExceptionIllegal e) {
 			errors.addError(3, e.getMessage());
 		}
+		
+		int nb_insert = 0 ;
 
 		if(errors.getParamsError().size() != 0){
 			throw errors ;
 		}
+		else
+		{
+			requete = "insert into LESREPRESENTATIONS values ('"+numS+"',to_date('"+dateRep+" "+heureRep+"','dd/mm/yyyy hh24:mi'))";
+			try {
+				stmt = conn.createStatement();
+			} catch (SQLException e) {
+				// TODO 
+				e.printStackTrace();
+			}
+			try {
+				nb_insert = stmt.executeUpdate(requete);
+				if(nb_insert != 1)
+					throw new BDException("Problème, impossible d'insérer une nouvelle représentation.");
+			} catch (SQLException e) {
+				// TODO 
+				e.printStackTrace();
+			}		
+		}
 
-		return null ;
+		return " .... " + nomSpectacle + " .... " + requete;
 	}
 }
