@@ -25,20 +25,26 @@ public class ConvertHTML {
 		if (rs.isEmpty())
 			return "Il n'y a plus de places disponibles.";
 		
-		String toReturn = "<TABLE BORDER='1' width=\"300\">";
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Les places disponibles (#) sont :</CAPTION>";
 		
-		int i;
-		for (i = 0; i < rs.size(); i++) {
-			toReturn+="<font color=\"#FFFFFF\"><TR><TH>"+rs.elementAt(i).getRang()+" </TH><TH> "+rs.elementAt(i).getNum()+"</TR>";
+		int i=0;
+		for (int j=1;j<=10;j++){
+			toReturn+="<TR><TH> Rang n°"+j+" </TH>";
+			for (int k=1;k<=30;k++){
+				if (i < rs.size() && rs.elementAt(i).getRang() == j && rs.elementAt(i).getNum() == k){
+						toReturn+="<TH>"+rs.elementAt(i).getNum()+"</TH>";
+					i++;
+				}
+				else
+					toReturn+="<TH></TH>";
+			}
+			toReturn+="</TR>";
 		}
 		toReturn=toReturn.replaceAll("#", i+"");
-		
+				
 		return toReturn+"</TABLE>";
 	}
-	
-	//select * from LesPlaces WHERE LesPlaces.NOPLACE NOT IN (select NOPLACE from LesTickets where numS = 101);
-	//insert into LESREPRESENTATIONS values ('104', to_date('25/01/2009 20:30','dd/mm/yyyy hh24:mi'));
 	
 	public static String vectorSpectacleConsultationToHTML(Vector<Spectacle> rs){
 		String toReturn = "<TABLE BORDER='1' width=\"600\">";

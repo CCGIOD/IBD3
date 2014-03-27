@@ -7,6 +7,9 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import bdd.exceptions.BDException;
+import bdd.exceptions.BDExceptionIllegal;
+
 public class BDRequetesTest {
 
 	public static String testNumSpectable (Connection conn, String numS) throws BDException {

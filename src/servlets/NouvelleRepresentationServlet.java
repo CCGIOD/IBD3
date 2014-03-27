@@ -8,9 +8,9 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import bdd.accessBD.BDException;
-import bdd.accessBD.BDExceptionParamError;
 import bdd.accessBD.BDRequetes;
+import bdd.exceptions.BDException;
+import bdd.exceptions.BDExceptionParamError;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
@@ -46,13 +46,19 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 
 		res.setContentType("text/html");
 
-		out.println("<HEAD><TITLE> Ajouter une nouvelle représentation </TITLE></HEAD>");
-		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\">");
+		out.println("<HEAD><TITLE> Ajouter une nouvelle représentation </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
+		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
 		out.println("<font color=\"#FFFFFF\"><h1> Ajouter une nouvelle représentation </h1>");
+		
+		try {
+			out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
+		} catch (BDException e) {
+			out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+		}
 
-		numS		= req.getParameter("numS");
-		dateS		= req.getParameter("date");
-		heureS	= req.getParameter("heure");
+		numS = req.getParameter("numS");
+		dateS = req.getParameter("date");
+		heureS = req.getParameter("heure");
 
 		boolean error = false ;
 
@@ -129,12 +135,6 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 			// Test s'il y avait une erreur.
 			if(numS == "" || dateS == "" || heureS == ""){
 				out.println("<font color=\"#FF0000\">Les informations que vous avez fourni sont incorrect");
-			}
-			// FOR DEBUG
-			try {
-				out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
-			} catch (BDException e) {
-				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
 			}
 			out.println("</form>");	
 		}

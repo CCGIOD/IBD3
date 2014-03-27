@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+
+import bdd.exceptions.BDException;
 
 public class BDConnexion {
 
@@ -41,26 +44,42 @@ public class BDConnexion {
 		if (rs != null) {
 			try {
 				rs.close();
-			} catch (SQLException e) {
-				;
-			}
+			} catch (SQLException e) {}
 			rs = null;
 		}
 		if (stmt != null) {
 			try {
 				stmt.close();
 			}
-			catch (SQLException e) {
-				;
-			}
+			catch (SQLException e) {}
 			stmt = null;
 		}
 		if (conn != null) {
 			try {
 				conn.close();
-			} catch (SQLException e) {
-				;
+			} catch (SQLException e) {}
+			conn = null;
+		}
+	}
+	
+	public static void FermerTout (Connection conn, PreparedStatement stmt, ResultSet rs){
+		if (rs != null) {
+			try {
+				rs.close();
+			} catch (SQLException e) {}
+			rs = null;
+		}
+		if (stmt != null) {
+			try {
+				stmt.close();
 			}
+			catch (SQLException e) {}
+			stmt = null;
+		}
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {}
 			conn = null;
 		}
 	}

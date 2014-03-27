@@ -1,4 +1,4 @@
-package bdd.accessBD;
+package bdd.exceptions;
 
 @SuppressWarnings("serial")
 public class BDException extends Exception {

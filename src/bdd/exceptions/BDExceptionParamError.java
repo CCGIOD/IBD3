@@ -1,4 +1,4 @@
-package bdd.accessBD;
+package bdd.exceptions;
 
 import java.util.ArrayList;
 import java.util.Collection;

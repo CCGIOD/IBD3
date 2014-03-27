@@ -3,8 +3,8 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import bdd.accessBD.BDException;
 import bdd.accessBD.BDRequetes;
+import bdd.exceptions.BDException;
 
 import servlets.utils.ConvertHTML;
 
@@ -27,7 +27,7 @@ public class PlacesRepresentationServlet extends HttpServlet {
 
 		res.setContentType("text/html");
 
-		out.println("<HEAD><TITLE> Programme de la saison </TITLE></HEAD>");
+		out.println("<HEAD><TITLE> Programme de la saison </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
 		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
 		out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
 		

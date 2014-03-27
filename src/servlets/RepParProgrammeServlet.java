@@ -8,8 +8,8 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import bdd.accessBD.BDException;
 import bdd.accessBD.BDRequetes;
+import bdd.exceptions.BDException;
 
 import servlets.utils.ConvertHTML;
 
@@ -46,7 +46,7 @@ public class RepParProgrammeServlet extends HttpServlet {
 
 		res.setContentType("text/html");
 
-		out.println("<HEAD><TITLE> Liste des représentations d'un spectacle </TITLE></HEAD>");
+		out.println("<HEAD><TITLE> Liste des représentations d'un spectacle </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
 		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
 		out.println("<font color=\"#FFFFFF\"><h1> Liste des représentations d'un spectacle </h1>");
 		try {
