@@ -97,8 +97,11 @@ public class ConvertHTML {
 			toReturn+="<TR>";
 			toReturn+="<TH> "+(i+1)+"</TH>";			
 			toReturn+="<TH>"+rs.elementAt(i).getNom()+" </TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
-			toReturn+="<TH> "+rs.elementAt(i).getZone()+"</TH>";			
-			toReturn+="<TH> "+rs.elementAt(i).getQt()+"</TH>";			
+			toReturn+="<TH> "+rs.elementAt(i).getZone()+" ("+rs.elementAt(i).getNomZ()+")</TH>";			
+			if (rs.elementAt(i).getQt() > 1)
+				toReturn+="<TH> <a href=\"/servlet/ConsultationCaddieServlet?idm="+rs.elementAt(i).getId()+"\" >(-)</a> "+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
+			else
+				toReturn+="<TH> <a href=\"/servlet/ConsultationCaddieServlet?idd="+rs.elementAt(i).getId()+"\" >(-)</a> "+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
 			toReturn+="</TR>";
 		}
 

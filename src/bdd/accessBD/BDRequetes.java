@@ -65,7 +65,7 @@ public class BDRequetes {
 
 		try {
 			conn = BDConnexion.getConnexion();
-			
+
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
@@ -79,21 +79,21 @@ public class BDRequetes {
 		}
 		return res;
 	}
-	
+
 	public static Vector<Caddie> getContenuCaddie () throws BDException {
 		Vector<Caddie> res = new Vector<Caddie>();
-		String requete = "select nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, numZ, qt from lesspectacles, lecaddie where lesspectacles.numS=lecaddie.nums";
+		String requete = "select idr, nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, lecaddie.numZ, nomC, qt from lesspectacles, lecaddie, leszones where lesspectacles.numS=lecaddie.nums and lecaddie.numz = leszones.numz";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
 
 		try {
 			conn = BDConnexion.getConnexion();
-			
+
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
-				res.addElement(new Caddie(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
+				res.addElement(new Caddie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getString(6) , rs.getInt(7)));
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation du caddie (Code Oracle : "+e.getErrorCode()+")");
@@ -103,7 +103,33 @@ public class BDRequetes {
 		}
 		return res;
 	}
-	
+
+	public static Vector<Caddie> setQtCaddie (String idr, char signe) throws BDException {
+		Vector<Caddie> res = new Vector<Caddie>();
+		
+		String requete = null;
+		if (signe != 'd')
+			requete = "update lecaddie set qt = (select qt from lecaddie where idr="+idr+")"+signe+"1 where idr="+idr;
+		else
+			requete = "delete from lecaddie where idr="+idr;
+		
+		Statement stmt = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			stmt.executeUpdate(requete);
+		} catch (SQLException e) {
+			throw new BDException("Problème dans la mise à jour d'une quantité du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, null);
+		}
+		return res;
+	}
+
 	public static Vector<Zone> getZones () throws BDException {
 		Vector<Zone> res = new Vector<Zone>();
 		String requete = "select * from LesZones";
@@ -113,7 +139,7 @@ public class BDRequetes {
 
 		try {
 			conn = BDConnexion.getConnexion();
-			
+
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
@@ -137,7 +163,7 @@ public class BDRequetes {
 
 		try {
 			conn = BDConnexion.getConnexion();
-			
+
 			BDRequetesTest.testRepresentation(conn, numS, date);
 
 			stmt = conn.createStatement();
@@ -188,7 +214,7 @@ public class BDRequetes {
 			stmt.setTimestamp(2, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep+" "+heureRep).getTime()));
 			int nb_insert = stmt.executeUpdate();
 			conn.commit();
-			
+
 			if(nb_insert != 1)
 				throw new BDException("Problème, impossible d'insérer une nouvelle représentation.");
 

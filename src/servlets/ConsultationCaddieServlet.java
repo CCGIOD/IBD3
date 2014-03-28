@@ -49,6 +49,35 @@ public class ConsultationCaddieServlet extends HttpServlet {
 		out.println("<BODY>");
 		out.println("<h1> Consultation du caddie : </h1>");
 		
+		String idp = req.getParameter("idp");
+		String idm = req.getParameter("idm");
+		String idd = req.getParameter("idd");
+		
+		if (idp != null && idm == null && idd == null){
+			try {
+				BDRequetes.setQtCaddie(idp, '+');
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+			res.sendRedirect("ConsultationCaddieServlet");
+		}
+		else if (idp == null && idm != null && idd == null){
+			try {
+				BDRequetes.setQtCaddie(idm, '-');
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+			res.sendRedirect("ConsultationCaddieServlet");
+		}
+		else if (idp == null && idm == null && idd != null){
+			try {
+				BDRequetes.setQtCaddie(idd, 'd');
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+			res.sendRedirect("ConsultationCaddieServlet");
+		}
+		
 		try {
 			out.println("<p><i>" + ConvertHTML.vectorCaddieToHTML(BDRequetes.getContenuCaddie())  + "</i></p>");
 		} catch (BDException e) {

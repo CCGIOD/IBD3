@@ -2,18 +2,38 @@ package bdd.modeles;
 
 public class Caddie {
 
+	private int id;
 	private String nom;
 	private String date;
 	private int numS;
 	private int zone;
+	private String nomZ;
 	private int qt;
 	
-	public Caddie (String n, String d, int nS, int zone, int qt) {
+	public Caddie (int id, String n, String d, int nS, int zone, String nomZ, int qt) {
+		this.id=id;
 		this.nom = n;
 		this.date = d;
 		this.numS = nS;
 		this.zone=zone;
 		this.qt=qt;
+		this.nomZ=nomZ;
+	}
+
+	public String getNomZ() {
+		return nomZ;
+	}
+
+	public void setNomZ(String nomZ) {
+		this.nomZ = nomZ;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getZone() {
