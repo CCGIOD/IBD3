@@ -86,12 +86,15 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 						}
 					} catch (BDException e2) {
 						out.println("<font color=\"#FFFFFF\"><h1>"+e2.getMessage()+"</h1>");
+						error = true ;
 					}
 
 
 			if(!error){
 				out.println("<p><i><font color=\"#FFFFFF\">Vous venez d'ajouter la représentation suivante :</i></p>");
-				out.println("<p><i><font color=\"#FFFFFF\">Pour le spectacle "+nomSpectacle + "(" + numS + ")" +" à l'horaire " + dateS + " " + heureS +"</i></p>");
+				out.println("<p><i><font color=\"#FFFFFF\">Pour le spectacle "+nomSpectacle + " (" + numS + ")" +" à l'horaire " + dateS + " " + heureS +"</i></p>");
+				out.println("<p>Ajouter une autre représentation <a href=\"/servlet/NouvelleRepresentationServlet?numS="+numS+"\">à ce spectacle</a> ou <a href=\"/servlet/NouvelleRepresentationServlet\">à un autre spectacle</a></p>");
+
 			}
 		}
 

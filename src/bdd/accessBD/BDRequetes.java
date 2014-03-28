@@ -149,6 +149,6 @@ public class BDRequetes {
 			BDConnexion.FermerTout(conn, stmt, null);
 		}
 
-		return " .... " + nomSpectacle + " .... " + requete;
+		return nomSpectacle;
 	}
 }
