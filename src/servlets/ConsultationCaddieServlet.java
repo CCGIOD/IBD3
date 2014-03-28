@@ -3,6 +3,7 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import servlets.base.BaseServlet;
 import servlets.utils.ConvertHTML;
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
@@ -10,9 +11,9 @@ import bdd.exceptions.BDException;
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class ConsultationCaddieServlet extends _BaseServlet {
+public class ConsultationCaddieServlet extends BaseServlet {
 
-	private static boolean config_checked = false;
+	public static boolean config_checked = false;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);

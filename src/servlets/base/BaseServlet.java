@@ -1,4 +1,4 @@
-package servlets;
+package servlets.base;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import bdd.accessBD.BDConnexion;
 import bdd.exceptions.BDException;
 
 @SuppressWarnings("serial")
-public abstract class _BaseServlet extends HttpServlet {
+public abstract class BaseServlet extends HttpServlet {
 
 	protected ServletOutputStream out;
 	

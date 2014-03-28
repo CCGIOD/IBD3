@@ -8,12 +8,13 @@ import bdd.accessBD.BDRequetesTest;
 import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
 
+import servlets.base.BaseServlet;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class ReservationZoneServlet extends _BaseServlet {
+public class ReservationZoneServlet extends BaseServlet {
 
 	private static String cad_ok = null;
 

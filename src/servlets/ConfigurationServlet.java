@@ -3,13 +3,15 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import servlets.base.BaseServlet;
+
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
 
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class ConfigurationServlet extends _BaseServlet {
+public class ConfigurationServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
@@ -37,6 +39,7 @@ public class ConfigurationServlet extends _BaseServlet {
 			if (valide)
 				try {
 					BDRequetes.majCaddieLifetime(val);
+					ConsultationCaddieServlet.config_checked=true;
 					redirect(res, "ConfigurationServlet"); return;
 				} catch (BDException e) {
 					out.println("<h1>"+e.getMessage()+"</h1>");

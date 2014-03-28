@@ -6,12 +6,13 @@ import javax.servlet.http.*;
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
 
+import servlets.base.BaseServlet;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
 @SuppressWarnings("serial")
-public class PlacesRepresentationServlet extends _BaseServlet {
+public class PlacesRepresentationServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
