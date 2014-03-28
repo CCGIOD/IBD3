@@ -94,4 +94,26 @@ public class BDRequetesTest {
 			throw new BDException("Problème dans l'interrogation des représentations (Code Oracle : "+e.getErrorCode()+")");
 		}
 	}
+	
+	public static void testParametreReservation (String nomS, String dateS, String numS) throws BDException {
+		String requete = "select * from lesspectacles, lesrepresentations where lesspectacles.numS=lesrepresentations.numS and lesspectacles.numS="+numS+" and dateRep = to_date('"+dateS+"','dd/mm/yyyy hh24:mi') and nomS='"+nomS+"'";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			if (!rs.next()) {
+				throw new BDExceptionIllegal("");
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des spectacles et représentations (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+	}
 }

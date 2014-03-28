@@ -57,6 +57,7 @@ public class ConsultationCaddieServlet extends HttpServlet {
 			try {
 				BDRequetes.setQtCaddie(idp, '+');
 				res.sendRedirect("ConsultationCaddieServlet");
+				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
@@ -65,6 +66,7 @@ public class ConsultationCaddieServlet extends HttpServlet {
 			try {
 				BDRequetes.setQtCaddie(idm, '-');
 				res.sendRedirect("ConsultationCaddieServlet");
+				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
@@ -73,6 +75,7 @@ public class ConsultationCaddieServlet extends HttpServlet {
 			try {
 				BDRequetes.setQtCaddie(idd, 'd');
 				res.sendRedirect("ConsultationCaddieServlet");
+				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}

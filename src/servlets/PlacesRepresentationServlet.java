@@ -35,8 +35,10 @@ public class PlacesRepresentationServlet extends HttpServlet {
 		numS		= req.getParameter("numS");
 		date		= req.getParameter("date");
 		
-		if (numS == null || date == null)
+		if (numS == null || date == null){
 			res.sendRedirect("ProgrammeServlet");
+			return;
+		}
 		else
 			date=date.replaceAll("%20", " ");
 		

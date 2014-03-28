@@ -9,7 +9,9 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import bdd.accessBD.BDRequetes;
+import bdd.accessBD.BDRequetesTest;
 import bdd.exceptions.BDException;
+import bdd.exceptions.BDExceptionIllegal;
 
 import servlets.utils.ConvertHTML;
 
@@ -27,6 +29,8 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class ReservationZoneServlet extends HttpServlet {
 
+	private static String cad_ok = null;
+
 	/**
 	 * HTTP GET request entry point.
 	 *
@@ -38,7 +42,7 @@ public class ReservationZoneServlet extends HttpServlet {
 	 * @throws ServletException   if the request for the GET could not be handled
 	 * @throws IOException	 if an input or output error is detected 
 	 *				 when the servlet handles the GET request
-	 */
+	 */	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException
 			{
@@ -50,42 +54,59 @@ public class ReservationZoneServlet extends HttpServlet {
 		out.println("<BODY>");
 		out.println("<h1> Reservation de places : </h1>");
 
-		String nomS, numS, date, zone, c, cad_ok;
+		String nomS, numS, date, zone, c;
 		nomS		= req.getParameter("nomS");
 		numS		= req.getParameter("numS");
 		date		= req.getParameter("date");
 		zone		= req.getParameter("zone");
 		c		= req.getParameter("c");
-		cad_ok		= req.getParameter("cad_ok");
 
-		if (numS != null && date != null && c != null && nomS != null){
-			try {
-				BDRequetes.addRepresentationCaddie(numS, date, c);
-				res.sendRedirect("ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS+"&cad_ok="+c);
-			} catch (BDException e) {
-				out.println("<h1>"+e.getMessage()+"</h1>");
-			}
-		}
-
-		if (numS == null || date == null || nomS == null)
+		if (numS == null || date == null || nomS == null){
 			res.sendRedirect("ProgrammeServlet");
+			return;
+		}
 		else
 			date=date.replaceAll("%20", " ");
 
-		out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
-
+		boolean erreur_check_param = false;
 		if (zone == null || zone == ""){		
-
 			try {
-				out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
+				BDRequetesTest.testParametreReservation(nomS, date, numS);
+			} catch (BDExceptionIllegal e) {
+				res.sendRedirect("ProgrammeServlet");
+				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
+				erreur_check_param=true;
 			}
 
+			if (!erreur_check_param){
+				try {
+					out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
+					out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
+				} catch (BDException e) {
+					out.println("<h1>"+e.getMessage()+"</h1>");
+				}
+			}
 		}
 
-		if (cad_ok != null)
-			out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
+		if (!erreur_check_param){
+			if (numS != null && date != null && c != null && nomS != null){
+				try {
+					BDRequetes.addRepresentationCaddie(numS, date, c);
+					cad_ok=c;
+					res.sendRedirect("ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS/*+"&cad_ok="+c*/);
+					return;
+				} catch (BDException e) {
+					out.println("<h1>"+e.getMessage()+"</h1>");
+				}
+			}
+
+			if (cad_ok != null){
+				out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
+				cad_ok=null;
+			}		
+		}
 
 		out.println("<p>A compléter ... <i>(réservation direct sans passer par le caddie)</i></p>");
 
