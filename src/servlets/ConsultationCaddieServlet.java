@@ -56,26 +56,26 @@ public class ConsultationCaddieServlet extends HttpServlet {
 		if (idp != null && idm == null && idd == null){
 			try {
 				BDRequetes.setQtCaddie(idp, '+');
+				res.sendRedirect("ConsultationCaddieServlet");
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
-			res.sendRedirect("ConsultationCaddieServlet");
 		}
 		else if (idp == null && idm != null && idd == null){
 			try {
 				BDRequetes.setQtCaddie(idm, '-');
+				res.sendRedirect("ConsultationCaddieServlet");
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
-			res.sendRedirect("ConsultationCaddieServlet");
 		}
 		else if (idp == null && idm == null && idd != null){
 			try {
 				BDRequetes.setQtCaddie(idd, 'd');
+				res.sendRedirect("ConsultationCaddieServlet");
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
-			res.sendRedirect("ConsultationCaddieServlet");
 		}
 		
 		try {

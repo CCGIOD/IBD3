@@ -120,7 +120,11 @@ public class BDRequetes {
 			conn = BDConnexion.getConnexion();
 
 			stmt = conn.createStatement();
-			stmt.executeUpdate(requete);
+			int nb_insert = stmt.executeUpdate(requete);
+			conn.commit();
+			if(nb_insert != 1)
+				throw new BDException("Problème dans la mise à jour d'une quantité du caddie");
+
 		} catch (SQLException e) {
 			throw new BDException("Problème dans la mise à jour d'une quantité du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}

@@ -83,14 +83,15 @@ public class ConvertHTML {
 		if (rs.isEmpty())
 			return "Le caddie est vide.";
 		
-		String toReturn = "<TABLE BORDER='1' width=\"800\">";
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Le caddie :</CAPTION>";
 
 		toReturn+="<TR>";
 		toReturn+="<TH> <i>Reservation n°</i></TH>";			
 		toReturn+="<TH> <i>Spectacle</i> </TH><TH> <i>Date représentation</i></TH>";
 		toReturn+="<TH> <i> Zone </i></TH>";			
-		toReturn+="<TH> <i>Nombre de places </i></TH>";			
+		toReturn+="<TH> <i>Nombre de places (Ajouter/Retirer)</i></TH>";		
+		toReturn+="<TH> <i>Supprimer la réservation</i></TH>";			
 		toReturn+="</TR>";
 		
 		for (int i = 0; i < rs.size(); i++) {
@@ -101,7 +102,8 @@ public class ConvertHTML {
 			if (rs.elementAt(i).getQt() > 1)
 				toReturn+="<TH> <a href=\"/servlet/ConsultationCaddieServlet?idm="+rs.elementAt(i).getId()+"\" >(-)</a> "+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
 			else
-				toReturn+="<TH> <a href=\"/servlet/ConsultationCaddieServlet?idd="+rs.elementAt(i).getId()+"\" >(-)</a> "+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
+				toReturn+="<TH>"+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
+			toReturn+="<TH> <a href=\"/servlet/ConsultationCaddieServlet?idd="+rs.elementAt(i).getId()+"\" >(X)</a> </TH>";			
 			toReturn+="</TR>";
 		}
 

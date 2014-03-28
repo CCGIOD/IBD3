@@ -47,6 +47,7 @@ create table LesTickets (noSerie number (4), numS number (4),
 create table LeCaddie (idr number (4), numS number (4), dateRep date, numZ number (4), qt number (4),
 	constraint cad_c1 primary key (idr),
 	constraint cad_c2 foreign key (numS,dateRep) references LesRepresentations (numS,dateRep),
-	constraint cad_c3 foreign key (numZ) references LesZones (numZ));
+	constraint cad_c3 foreign key (numZ) references LesZones (numZ),
+	constraint cad_c4 check (qt > 0));
 
 insert into LeCaddie values (1,104,'22-FEB-09',1,2);
