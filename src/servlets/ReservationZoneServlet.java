@@ -1,10 +1,5 @@
 package servlets;
 
-/*
- * @(#)NouvelleRepresentationServlet.java	1.0 2007/10/31
- * 
- * Copyright (c) 2007 Sara Bouchenak.
- */
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -17,133 +12,78 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
-/**
- * NouvelleRepresentation Servlet.
- *
- * This servlet dynamically adds a new date a show.
- *
- * @author <a href="mailto:Sara.Bouchenak@imag.fr">Sara Bouchenak</a>
- * @version 1.0, 31/10/2007
- */
-
 @SuppressWarnings("serial")
-public class ReservationZoneServlet extends HttpServlet {
+public class ReservationZoneServlet extends _BaseServlet {
 
 	private static String cad_ok = null;
 
-	/**
-	 * HTTP GET request entry point.
-	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
-	 *
-	 * @throws ServletException   if the request for the GET could not be handled
-	 * @throws IOException	 if an input or output error is detected 
-	 *				 when the servlet handles the GET request
-	 */	
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException
-			{
-		ServletOutputStream out = res.getOutputStream();   
-
-		res.setContentType("text/html");
-
-		out.println("<HEAD><TITLE> Reservation de places </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY>");
-		out.println("<h1> Reservation de places : </h1>");
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		super.doGet(req, res);
+		header("Réservation de places de spectacle");
+		if (!testConnection()){ footer(); return; }	
 
 		String nomS, numS, date, zone, c;
-		nomS		= req.getParameter("nomS");
-		numS		= req.getParameter("numS");
-		date		= req.getParameter("date");
-		zone		= req.getParameter("zone");
-		c		= req.getParameter("c");
+		nomS = req.getParameter("nomS");
+		numS = req.getParameter("numS");
+		date = req.getParameter("date");
+		zone = req.getParameter("zone");
+		c = req.getParameter("c");
 
 		if (numS == null || date == null || nomS == null){
-			res.sendRedirect("ProgrammeServlet");
+			redirect(res, "ProgrammeServlet");
 			return;
 		}
 		else
 			date=date.replaceAll("%20", " ");
 
-		boolean erreur_check_param = false;
 		if (zone == null || zone == ""){		
 			try {
 				BDRequetesTest.testParametreReservation(nomS, date, numS);
 			} catch (BDExceptionIllegal e) {
-				res.sendRedirect("ProgrammeServlet");
+				redirect(res, "ProgrammeServlet");
 				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
-				erreur_check_param=true;
 			}
 
-			if (!erreur_check_param){
-				try {
-					out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
-					out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
-				} catch (BDException e) {
-					out.println("<h1>"+e.getMessage()+"</h1>");
-				}
+			try {
+				out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
+				out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+
+		}
+
+		if (numS != null && date != null && c != null && nomS != null){
+			try {
+				BDRequetes.addRepresentationCaddie(numS, date, c);
+				cad_ok=c;
+				redirect(res, "ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS);
+				return;
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
 		}
 
-		if (!erreur_check_param){
-			if (numS != null && date != null && c != null && nomS != null){
-				try {
-					BDRequetes.addRepresentationCaddie(numS, date, c);
-					cad_ok=c;
-					res.sendRedirect("ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS/*+"&cad_ok="+c*/);
-					return;
-				} catch (BDException e) {
-					out.println("<h1>"+e.getMessage()+"</h1>");
-				}
-			}
+		if (cad_ok != null){
+			out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
+			cad_ok=null;
+		}	
 
-			if (cad_ok != null){
-				out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
-				cad_ok=null;
-			}		
-		}
-
-		out.println("<p>A compléter ... <i>(réservation direct sans passer par le caddie)</i></p>");
-
-		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
-		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
-		out.println("</BODY>");
-		out.close();
-
-			}
-
-	/**
-	 * HTTP POST request entry point.
-	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
-	 *
-	 * @throws ServletException   if the request for the POST could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the POST request
-	 */
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException
-			{
-		doGet(req, res);
-			}
-
-
-	/**
-	 * Returns information about this servlet.
-	 *
-	 * @return String information about this servlet
-	 */
-
-	public String getServletInfo() {
-		return "Ajoute une représentation à une date donnée pour un spectacle existant";
+		footer();
 	}
 
+	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
+		doGet(req, res);
+	}
+
+	public String getServletInfo() {
+		return "Permet de réserver des places dans une zone pour une représentation d'un spectacle donné";
+	}
+
+	public void footer() throws IOException {		
+		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
+		super.footer();
+	}
 }

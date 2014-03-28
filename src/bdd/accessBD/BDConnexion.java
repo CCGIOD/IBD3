@@ -39,7 +39,7 @@ public class BDConnexion {
 		}
 		return conn;
 	}
-	
+		
 	public static void FermerTout (Connection conn, Statement stmt, ResultSet rs){
 		if (rs != null) {
 			try {

@@ -343,4 +343,33 @@ public class BDRequetes {
 		}
 		return toReturn;
 	}
+	
+	public static int majCaddieLifetime (String val) throws BDException {
+		String requete = "update config set duree_vie_cad =";
+		if (val.compareTo("SESSION") == 0)
+			requete+="-1";
+		else if (val.compareTo("NOLIMIT") == 0)
+			requete+="-2";
+		else
+			requete+=val;
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		int toReturn = 0;
+		
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			stmt.executeUpdate(requete);			
+			
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la mise à jour de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return toReturn;
+	}
 }

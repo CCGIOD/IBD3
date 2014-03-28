@@ -1,10 +1,5 @@
 package servlets;
 
-/*
- * @(#)NouvelleRepresentationServlet.java	1.0 2007/10/31
- * 
- * Copyright (c) 2007 Sara Bouchenak.
- */
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -15,80 +10,50 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
-/**
- * NouvelleRepresentation Servlet.
- *
- * This servlet dynamically adds a new date a show.
- *
- * @author <a href="mailto:Sara.Bouchenak@imag.fr">Sara Bouchenak</a>
- * @version 1.0, 31/10/2007
- */
-
 @SuppressWarnings("serial")
-public class NouvelleRepresentationServlet extends HttpServlet {
+public class NouvelleRepresentationServlet extends _BaseServlet {
 
-	/**
-	 * HTTP GET request entry point.
-	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
-	 *
-	 * @throws ServletException   if the request for the GET could not be handled
-	 * @throws IOException	 if an input or output error is detected 
-	 *				 when the servlet handles the GET request
-	 */
-	public void doGet(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException{
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
+		super.doGet(req, res);
+		header("Ajouter une nouvelle représentation");
+		if (!testConnection()){ footer(); return; }		
+
 		String numS, dateS, heureS;
-		ServletOutputStream out = res.getOutputStream();   
+		numS = req.getParameter("numS");
+		dateS = req.getParameter("date");
+		heureS = req.getParameter("heure");
 
-		res.setContentType("text/html");
-
-		out.println("<HEAD><TITLE> Ajouter une nouvelle représentation </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY>");
-		out.println("<h1> Ajouter une nouvelle représentation </h1>");
-		
 		try {
 			out.println("<p><i>" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 
-		numS = req.getParameter("numS");
-		dateS = req.getParameter("date");
-		heureS = req.getParameter("heure");
-
 		boolean error = false ;
 
 		// Cas de l'insertion dans la base de données
-		if ((numS != null && dateS != null && heureS != null) 
-				&& (numS != "" && dateS != "" && heureS != ""))
-		{
-			
+		if ((numS != null && dateS != null && heureS != null) && (numS != "" && dateS != "" && heureS != "")){
 			String nomSpectacle = null ;
-					try {
-						nomSpectacle = BDRequetes.insertRepresentation(numS, dateS, heureS);
-					} catch(BDExceptionParamError e1){
-						out.println("<h1>"+e1.getMessageError()+"</h1>");
-						if(e1.getParamsError().contains(1)){
-							numS="";
-							error = true ;
-						}
-						if(e1.getParamsError().contains(2)){
-							dateS="";
-							error = true ;
-						}
-						if(e1.getParamsError().contains(3)){
-							heureS="";
-							error = true ;
-						}
-					} catch (BDException e2) {
-						out.println("<h1>"+e2.getMessage()+"</h1>");
-						error = true ;
-					}
-
+			try {
+				nomSpectacle = BDRequetes.insertRepresentation(numS, dateS, heureS);
+			} catch(BDExceptionParamError e1){
+				out.println("<h1>"+e1.getMessageError()+"</h1>");
+				if(e1.getParamsError().contains(1)){
+					numS="";
+					error = true ;
+				}
+				if(e1.getParamsError().contains(2)){
+					dateS="";
+					error = true ;
+				}
+				if(e1.getParamsError().contains(3)){
+					heureS="";
+					error = true ;
+				}
+			} catch (BDException e2) {
+				out.println("<h1>"+e2.getMessage()+"</h1>");
+				error = true ;
+			}
 
 			if(!error){
 				out.println("<p><i>Vous venez d'ajouter la représentation suivante :</i></p>");
@@ -99,9 +64,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		}
 
 		// Cas affichage du formule (première fois ou error).
-		if (((numS == null || dateS == null || heureS == null) 
-				|| (numS == "" || dateS == "" || heureS == "")) || error )
-		{
+		if (((numS == null || dateS == null || heureS == null) || (numS == "" || dateS == "" || heureS == "")) || error ){
 
 			out.println("Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
 			out.println("<P>");
@@ -142,40 +105,19 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 			out.println("</form>");	
 		}
 
-		out.println("<hr><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
-		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
-		out.println("</BODY>");
-		out.close();
-
+		footer();
 	}
 
-	/**
-	 * HTTP POST request entry point.
-	 *
-	 * @param req	an HttpServletRequest object that contains the request 
-	 *			the client has made of the servlet
-	 * @param res	an HttpServletResponse object that contains the response 
-	 *			the servlet sends to the client
-	 *
-	 * @throws ServletException   if the request for the POST could not be handled
-	 * @throws IOException	   if an input or output error is detected 
-	 *					   when the servlet handles the POST request
-	 */
-	public void doPost(HttpServletRequest req, HttpServletResponse res)
-			throws ServletException, IOException
-			{
+	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
-			}
-
-
-	/**
-	 * Returns information about this servlet.
-	 *
-	 * @return String information about this servlet
-	 */
+	}
 
 	public String getServletInfo() {
 		return "Ajoute une représentation à une date donnée pour un spectacle existant";
 	}
 
+	public void footer() throws IOException {
+		out.println("<hr><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
+		super.footer();
+	}
 }

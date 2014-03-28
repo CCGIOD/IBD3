@@ -10,33 +10,20 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
-/**
- * Proramme Servlet.
- *
- * This servlet dynamically returns the theater program.
- *
- * @author <a href="mailto:Sara.Bouchenak@imag.fr">Sara Bouchenak</a>
- * @version 1.0, 31/10/2007
- */
-
 @SuppressWarnings("serial")
-public class PlacesRepresentationServlet extends HttpServlet {
+public class PlacesRepresentationServlet extends _BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-		ServletOutputStream out = res.getOutputStream();   
+		super.doGet(req, res);
+		header("Programme de la saison");
+		if (!testConnection()){ footer(); return; }	
 
-		res.setContentType("text/html");
-
-		out.println("<HEAD><TITLE> Programme de la saison </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY>");
-		out.println("<h1>Programme de la saison :</h1>");		
-		
 		String numS, date;
-		numS		= req.getParameter("numS");
-		date		= req.getParameter("date");
+		numS = req.getParameter("numS");
+		date = req.getParameter("date");
 		
 		if (numS == null || date == null){
-			res.sendRedirect("ProgrammeServlet");
+			redirect(res, "ProgrammeServlet");
 			return;
 		}
 		else
@@ -48,22 +35,14 @@ public class PlacesRepresentationServlet extends HttpServlet {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 
-		out.println("<hr><p><a href=\"/index.html\">Accueil</a></p>");
-		out.println("</BODY>");
-		out.close();		
+		footer();
 	}
 
-	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
-	/**
-	 * Returns information about this servlet.
-	 *
-	 * @return String information about this servlet
-	 */
 	public String getServletInfo() {
-		return "Retourne le programme du théatre";
+		return "Permet de voir les places disponible pour une représentation d'un spectacle donné";
 	}
-
 }
