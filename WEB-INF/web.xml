@@ -38,6 +38,11 @@
 <servlet-class>servlets.ReservationZoneServlet</servlet-class> 
 </servlet>
 
+- <servlet> 
+<servlet-name>ConsultationCaddieServlet</servlet-name> 
+<servlet-class>servlets.ConsultationCaddieServlet</servlet-class> 
+</servlet>
+
 
 - <servlet-mapping> 
 <servlet-name>ProgrammeServlet</servlet-name> 
@@ -65,8 +70,13 @@
 </servlet-mapping>
 
 - <servlet-mapping> 
-<servlet-name>ReservationZoneServlet</servlet-name> 
+<servlet-name>ConsultationCaddieServlet</servlet-name> 
 <url-pattern>/servlet/ReservationZoneServlet</url-pattern> 
+</servlet-mapping>
+
+- <servlet-mapping> 
+<servlet-name>ConsultationCaddieServlet</servlet-name> 
+<url-pattern>/servlet/ConsultationCaddieServlet</url-pattern> 
 </servlet-mapping>
 
 
