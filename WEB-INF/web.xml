@@ -43,6 +43,11 @@
 <servlet-class>servlets.ConsultationCaddieServlet</servlet-class> 
 </servlet>
 
+- <servlet> 
+<servlet-name>ConfigurationServlet</servlet-name> 
+<servlet-class>servlets.ConfigurationServlet</servlet-class> 
+</servlet>
+
 
 - <servlet-mapping> 
 <servlet-name>ProgrammeServlet</servlet-name> 
@@ -77,6 +82,11 @@
 - <servlet-mapping> 
 <servlet-name>ConsultationCaddieServlet</servlet-name> 
 <url-pattern>/servlet/ConsultationCaddieServlet</url-pattern> 
+</servlet-mapping>
+
+- <servlet-mapping> 
+<servlet-name>ConfigurationServlet</servlet-name> 
+<url-pattern>/servlet/ConfigurationServlet</url-pattern> 
 </servlet-mapping>
 
 

@@ -283,7 +283,7 @@ public class BDRequetes {
 
 		return nomSpectacle;
 	}
-	
+		
 	public static void checkCaddieLifetime () throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
@@ -297,10 +297,10 @@ public class BDRequetes {
 			rs = stmt.executeQuery(requete);
 			
 			boolean delete = false;
-			if (rs.next() && rs.getInt(1) < 0){
+			if (rs.next() && rs.getInt(1) == -1){
 				delete = true;
 			}
-			else{
+			else if (rs.getInt(1) > 0){
 				rs = stmt.executeQuery("select count(*) from config where date_cad + interval '"+rs.getInt(1)+"' day > CURRENT_DATE");
 				if (rs.next() && rs.getInt(1) == 0){
 					delete = true;
@@ -316,5 +316,31 @@ public class BDRequetes {
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
+	}
+	
+	public static int getCaddieLifetime () throws BDException {
+		String requete = "select duree_vie_cad from config";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		int toReturn = 0;
+		
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			
+			if (rs.next()){
+				toReturn = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la récupération de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return toReturn;
 	}
 }
