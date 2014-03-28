@@ -10,12 +10,13 @@ public class ConvertHTML {
 		if (rs.isEmpty())
 			return "Il n'y a pas de représentation à venir ...";
 		
-		String toReturn = "<TABLE BORDER='1' width=\"800\">";
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Les prochaines représentations sont :</CAPTION>";
 		
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="<font color=\"#FFFFFF\"><TR><TH>"+rs.elementAt(i).getNom()+" </TH><TH> "+rs.elementAt(i).getDate();
-			toReturn+="<TH><a style=\"color:white;\" href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">VOIR PLACES DISPONIBLES</a></TH></TR>";
+			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">VOIR LES PLACES DISPONIBLES</a></TH>";
+			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">RESERVEZ DES PLACES</a></TH></TR>";
 		}
 		
 		return toReturn+"</TABLE>";
@@ -48,23 +49,33 @@ public class ConvertHTML {
 	
 	public static String vectorSpectacleConsultationToHTML(Vector<Spectacle> rs){
 		String toReturn = "<TABLE BORDER='1' width=\"600\">";
-		toReturn+="<CAPTION>Les spectacle sont :</CAPTION>";
+		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
 		
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<font color=\"#FFFFFF\"><TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom();
-			toReturn+="<TH><a style=\"color:white;\" href=\"/servlet/RepParProgrammeServlet?numS="+rs.elementAt(i).getNum()+"\">VOIR</a></TH></TR>";
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom();
+			toReturn+="<TH><a href=\"/servlet/RepParProgrammeServlet?numS="+rs.elementAt(i).getNum()+"\">VOIR</a></TH></TR>";
 		}
 		
 		return toReturn+"</TABLE>";
 	}
 	
-	// Pour le debuggage.
-	public static String vectorSpectacleToHTML(Vector<Spectacle> rs){
-		String toReturn = "<TABLE BORDER='1' width=\"400\">";
-		toReturn+="<CAPTION>Les spectacle sont :</CAPTION>";
+	public static String vectorZoneToHTML(Vector<Zone> rs){
+		String toReturn = "<TABLE BORDER='1' width=\"600\">";
+		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
 		
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<font color=\"#FFFFFF\"><TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TR>";
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC();
+		}
+		
+		return toReturn+"</TABLE>";
+	}
+	
+	public static String vectorSpectacleToHTML(Vector<Spectacle> rs){
+		String toReturn = "<TABLE BORDER='1' width=\"400\">";
+		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
+		
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TR>";
 		}
 		
 		return toReturn+"</TABLE>";

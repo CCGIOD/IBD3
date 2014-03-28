@@ -16,6 +16,7 @@ import bdd.exceptions.BDExceptionParamError;
 import bdd.modeles.Place;
 import bdd.modeles.Representation;
 import bdd.modeles.Spectacle;
+import bdd.modeles.Zone;
 
 public class BDRequetes {
 
@@ -71,6 +72,30 @@ public class BDRequetes {
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return res;
+	}
+	
+	public static Vector<Zone> getZones () throws BDException {
+		Vector<Zone> res = new Vector<Zone>();
+		String requete = "select * from LesZones";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				res.addElement(new Zone(rs.getInt(1), rs.getString(2)));
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des zones (Code Oracle : "+e.getErrorCode()+")");
 		}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);
