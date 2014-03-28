@@ -84,7 +84,7 @@ public class ConsultationCaddieServlet extends HttpServlet {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 		
-		out.println("<p>A compléter ...</p>");
+		out.println("<p>A compléter ... <i>(Validation du caddie)</i></p>");
 
 		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");

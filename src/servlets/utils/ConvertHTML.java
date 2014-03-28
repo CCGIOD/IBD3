@@ -35,7 +35,7 @@ public class ConvertHTML {
 			}
 
 			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">VOIR LES PLACES DISPONIBLES</a></TH>";
-			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">RESERVEZ DES PLACES</a></TH></TR>";
+			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"&nomS="+rs.elementAt(i).getNom()+"\">RESERVER DES PLACES</a></TH></TR>";
 		}
 		toReturn=toReturn.replaceAll("#", k+"");
 
@@ -110,12 +110,20 @@ public class ConvertHTML {
 		return toReturn+"</TABLE>";
 	}
 
-	public static String vectorZoneToHTML(Vector<Zone> rs){
+	public static String vectorZoneToHTML(Vector<Zone> rs, String numS, String nomS, String DateRep){
 		String toReturn = "<TABLE BORDER='1' width=\"600\">";
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
 
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Numéro de zone</i></TH>";			
+		toReturn+="<TH> <i>Type</i> </TH>";
+		toReturn+="<TH> <i>Réservation directe</i></TH>";			
+		toReturn+="<TH> <i>Ajouter au caddie</i></TH>";		
+		toReturn+="</TR>";
+		
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
+			toReturn+="<TH><a href=\"#\">RESERVER</a></TH><TH><a href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"\">AJOUTER AU CADDIE</a></TH></TR>";
 		}
 
 		return toReturn+"</TABLE>";

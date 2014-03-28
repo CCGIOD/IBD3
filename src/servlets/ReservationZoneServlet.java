@@ -50,28 +50,44 @@ public class ReservationZoneServlet extends HttpServlet {
 		out.println("<BODY>");
 		out.println("<h1> Reservation de places : </h1>");
 
-		String numS, date, zone;
+		String nomS, numS, date, zone, c, cad_ok;
+		nomS		= req.getParameter("nomS");
 		numS		= req.getParameter("numS");
 		date		= req.getParameter("date");
 		zone		= req.getParameter("zone");
+		c		= req.getParameter("c");
+		cad_ok		= req.getParameter("cad_ok");
 
+		if (numS != null && date != null && c != null && nomS != null){
+			try {
+				BDRequetes.addRepresentationCaddie(numS, date, c);
+				res.sendRedirect("ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS+"&cad_ok="+c);
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+		}
 
-		if (numS == null || date == null)
+		if (numS == null || date == null || nomS == null)
 			res.sendRedirect("ProgrammeServlet");
 		else
 			date=date.replaceAll("%20", " ");
 
+		out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
+
 		if (zone == null || zone == ""){		
 
 			try {
-				out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones())+"</i></p>");
+				out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
 
 		}
-		
-		out.println("<p>A compléter ...</p>");
+
+		if (cad_ok != null)
+			out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
+
+		out.println("<p>A compléter ... <i>(réservation direct sans passer par le caddie)</i></p>");
 
 		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
 		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");

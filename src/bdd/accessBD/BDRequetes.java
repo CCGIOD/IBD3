@@ -106,13 +106,13 @@ public class BDRequetes {
 
 	public static Vector<Caddie> setQtCaddie (String idr, char signe) throws BDException {
 		Vector<Caddie> res = new Vector<Caddie>();
-		
+
 		String requete = null;
 		if (signe != 'd')
 			requete = "update lecaddie set qt = (select qt from lecaddie where idr="+idr+")"+signe+"1 where idr="+idr;
 		else
 			requete = "delete from lecaddie where idr="+idr;
-		
+
 		Statement stmt = null;
 		Connection conn = null;
 
@@ -184,6 +184,53 @@ public class BDRequetes {
 		return res;
 	}
 
+	public static void addRepresentationCaddie (String numS, String dateRep, String zone) throws BDException {
+		String requete = null;
+		PreparedStatement stmt = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			BDRequetesTest.testRepresentation(conn, numS, dateRep);
+			
+			Statement stmt_testExist = conn.createStatement();
+			ResultSet rs_testExist =stmt_testExist.executeQuery("select idr from lecaddie where numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi') and numZ="+zone);
+			if (rs_testExist.next()){
+				setQtCaddie(rs_testExist.getInt(1)+"", '+');
+				return;
+			}	
+			
+			Statement stmt_idr = conn.createStatement();
+			ResultSet rs_idr = stmt_idr.executeQuery("select max(idr) from lecaddie");		
+			
+			int id;
+			if (!rs_idr.next())
+				id=1;
+			else
+				id=rs_idr.getInt(1)+1;			
+			
+			requete = "insert into LeCaddie values (?,?,?,?,?)";
+			stmt = conn.prepareStatement(requete);
+			stmt.setInt(1, id);
+			stmt.setInt(2, Integer.valueOf(numS));
+			stmt.setTimestamp(3, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep).getTime()));
+			stmt.setInt(4, Integer.valueOf(zone));
+			stmt.setInt(5, 1);			
+			int nb_insert = stmt.executeUpdate();
+			conn.commit();
+
+			if(nb_insert != 1)
+				throw new BDException("Problème dans l'ajout d'une représentation dans le caddie");
+
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'ajout d'une représentation dans le caddie (Code Oracle : "+e.getErrorCode()+")");
+		} catch (ParseException e) {}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, null);
+		}
+	}
+
 	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException, BDExceptionParamError {
 		String requete = null;
 		PreparedStatement stmt = null;
@@ -220,10 +267,10 @@ public class BDRequetes {
 			conn.commit();
 
 			if(nb_insert != 1)
-				throw new BDException("Problème, impossible d'insérer une nouvelle représentation.");
+				throw new BDException("Problème, impossible d'insérer une nouvelle représentation");
 
 		} catch (SQLException e) {
-			throw new BDException("Problème, impossible d'insérer une nouvelle représentation.");
+			throw new BDException("Problème, impossible d'insérer une nouvelle représentation");
 		} catch (ParseException e) {}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, null);
