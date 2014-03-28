@@ -70,6 +70,8 @@ public class ReservationZoneServlet extends HttpServlet {
 			}
 
 		}
+		
+		out.println("<p>A compléter ...</p>");
 
 		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
 		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");

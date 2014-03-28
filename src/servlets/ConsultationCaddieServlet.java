@@ -44,6 +44,8 @@ public class ConsultationCaddieServlet extends HttpServlet {
 		out.println("<HEAD><TITLE> Consultation du caddie </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
 		out.println("<BODY>");
 		out.println("<h1> Consultation du caddie : </h1>");
+		
+		out.println("<p>A compléter ...</p>");
 
 		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
