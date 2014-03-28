@@ -186,7 +186,9 @@ public class BDRequetes {
 
 	public static void addRepresentationCaddie (String numS, String dateRep, String zone) throws BDException {
 		String requete = null;
-		PreparedStatement stmt = null;
+		PreparedStatement pstmt = null;
+		Statement stmt = null;
+		ResultSet rs = null;
 		Connection conn = null;
 
 		try {
@@ -194,40 +196,43 @@ public class BDRequetes {
 
 			BDRequetesTest.testRepresentation(conn, numS, dateRep);
 			
-			Statement stmt_testExist = conn.createStatement();
-			ResultSet rs_testExist =stmt_testExist.executeQuery("select idr from lecaddie where numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi') and numZ="+zone);
-			if (rs_testExist.next()){
-				setQtCaddie(rs_testExist.getInt(1)+"", '+');
+			stmt = conn.createStatement();
+			rs =stmt.executeQuery("select idr from lecaddie where numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi') and numZ="+zone);
+			if (rs.next()){
+				setQtCaddie(rs.getInt(1)+"", '+');
 				return;
 			}	
 			
-			Statement stmt_idr = conn.createStatement();
-			ResultSet rs_idr = stmt_idr.executeQuery("select max(idr) from lecaddie");		
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select max(idr) from lecaddie");		
 			
 			int id;
-			if (!rs_idr.next())
+			if (!rs.next())
 				id=1;
 			else
-				id=rs_idr.getInt(1)+1;			
+				id=rs.getInt(1)+1;			
 			
 			requete = "insert into LeCaddie values (?,?,?,?,?)";
-			stmt = conn.prepareStatement(requete);
-			stmt.setInt(1, id);
-			stmt.setInt(2, Integer.valueOf(numS));
-			stmt.setTimestamp(3, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep).getTime()));
-			stmt.setInt(4, Integer.valueOf(zone));
-			stmt.setInt(5, 1);			
-			int nb_insert = stmt.executeUpdate();
+			pstmt = conn.prepareStatement(requete);
+			pstmt.setInt(1, id);
+			pstmt.setInt(2, Integer.valueOf(numS));
+			pstmt.setTimestamp(3, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep).getTime()));
+			pstmt.setInt(4, Integer.valueOf(zone));
+			pstmt.setInt(5, 1);			
+			int nb_insert = pstmt.executeUpdate();
 			conn.commit();
 
 			if(nb_insert != 1)
 				throw new BDException("Problème dans l'ajout d'une représentation dans le caddie");
 
+			stmt.executeUpdate("update config set date_cad = CURRENT_DATE");
+			
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'ajout d'une représentation dans le caddie (Code Oracle : "+e.getErrorCode()+")");
 		} catch (ParseException e) {}
 		finally {
-			BDConnexion.FermerTout(conn, stmt, null);
+			BDConnexion.FermerTout(conn, stmt, rs);
+			BDConnexion.FermerTout(null, pstmt, null);
 		}
 	}
 
@@ -277,5 +282,39 @@ public class BDRequetes {
 		}
 
 		return nomSpectacle;
+	}
+	
+	public static void checkCaddieLifetime () throws BDException {
+		String requete = "select duree_vie_cad from config";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			
+			boolean delete = false;
+			if (rs.next() && rs.getInt(1) < 0){
+				delete = true;
+			}
+			else{
+				rs = stmt.executeQuery("select count(*) from config where date_cad + interval '"+rs.getInt(1)+"' day > CURRENT_DATE");
+				if (rs.next() && rs.getInt(1) == 0){
+					delete = true;
+				}
+			}
+			
+			if (delete)
+				stmt.executeUpdate("delete from lecaddie");
+			
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la vérification initiale du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
 	}
 }

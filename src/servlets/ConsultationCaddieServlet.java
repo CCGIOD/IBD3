@@ -26,6 +26,8 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class ConsultationCaddieServlet extends HttpServlet {
 
+	private static boolean config_checked = false;
+	
 	/**
 	 * HTTP GET request entry point.
 	 *
@@ -48,6 +50,15 @@ public class ConsultationCaddieServlet extends HttpServlet {
 		out.println("<HEAD><TITLE> Consultation du caddie </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
 		out.println("<BODY>");
 		out.println("<h1> Consultation du caddie : </h1>");
+		
+		if (config_checked == false){
+			try {
+				BDRequetes.checkCaddieLifetime();
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+			config_checked=true;
+		}
 		
 		String idp = req.getParameter("idp");
 		String idm = req.getParameter("idm");

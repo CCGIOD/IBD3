@@ -51,3 +51,7 @@ create table LeCaddie (idr number (4), numS number (4), dateRep date, numZ numbe
 	constraint cad_c4 check (qt > 0));
 
 insert into LeCaddie values (1,104,'22-FEB-09',1,2);
+
+create table config (duree_vie_cad number (4), date_cad date);
+insert into config values ('-1','28-MAR-14');
+
