@@ -28,16 +28,16 @@ public class ProgrammeServlet extends HttpServlet {
 		res.setContentType("text/html");
 
 		out.println("<HEAD><TITLE> Programme de la saison </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY style=\"color:white;\">");
-		out.println("<font color=\"#FFFFFF\"><h1>Programme de la saison :</h1>");		
+		out.println("<BODY>");
+		out.println("<h1>Programme de la saison :</h1>");		
 		
 		try {
-			out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null))+"</i></p>");
+			out.println("<p><i>"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null), false)+"</i></p>");
 		} catch (BDException e) {
-			out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Accueil</a></p>");
+		out.println("<hr><p><a href=\"/index.html\">Accueil</a></p>");
 		out.println("</BODY>");
 		out.close();		
 	}

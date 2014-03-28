@@ -47,8 +47,8 @@ public class ReservationZoneServlet extends HttpServlet {
 		res.setContentType("text/html");
 
 		out.println("<HEAD><TITLE> Reservation de places </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
-		out.println("<font color=\"#FFFFFF\"><h1> Reservation de places : </h1>");
+		out.println("<BODY>");
+		out.println("<h1> Reservation de places : </h1>");
 
 		String numS, date, zone;
 		numS		= req.getParameter("numS");
@@ -64,15 +64,15 @@ public class ReservationZoneServlet extends HttpServlet {
 		if (zone == null || zone == ""){		
 
 			try {
-				out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones())+"</i></p>");
+				out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones())+"</i></p>");
 			} catch (BDException e) {
-				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
 
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/servlet/ProgrammeServlet\">Retour au programme</a></p>");
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme</a></p>");
+		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
 		out.close();
 

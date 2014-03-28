@@ -47,13 +47,13 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 		res.setContentType("text/html");
 
 		out.println("<HEAD><TITLE> Ajouter une nouvelle représentation </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
-		out.println("<font color=\"#FFFFFF\"><h1> Ajouter une nouvelle représentation </h1>");
+		out.println("<BODY>");
+		out.println("<h1> Ajouter une nouvelle représentation </h1>");
 		
 		try {
-			out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
+			out.println("<p><i>" + ConvertHTML.vectorSpectacleToHTML(BDRequetes.getSpectables())  + "</i></p>");
 		} catch (BDException e) {
-			out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 
 		numS = req.getParameter("numS");
@@ -71,7 +71,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 					try {
 						nomSpectacle = BDRequetes.insertRepresentation(numS, dateS, heureS);
 					} catch(BDExceptionParamError e1){
-						out.println("<font color=\"#FFFFFF\"><h1>"+e1.getMessageError()+"</h1>");
+						out.println("<h1>"+e1.getMessageError()+"</h1>");
 						if(e1.getParamsError().contains(1)){
 							numS="";
 							error = true ;
@@ -85,14 +85,14 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 							error = true ;
 						}
 					} catch (BDException e2) {
-						out.println("<font color=\"#FFFFFF\"><h1>"+e2.getMessage()+"</h1>");
+						out.println("<h1>"+e2.getMessage()+"</h1>");
 						error = true ;
 					}
 
 
 			if(!error){
-				out.println("<p><i><font color=\"#FFFFFF\">Vous venez d'ajouter la représentation suivante :</i></p>");
-				out.println("<p><i><font color=\"#FFFFFF\">Pour le spectacle "+nomSpectacle + " (" + numS + ")" +" à l'horaire " + dateS + " " + heureS +"</i></p>");
+				out.println("<p><i>Vous venez d'ajouter la représentation suivante :</i></p>");
+				out.println("<p><i>Pour le spectacle "+nomSpectacle + " (" + numS + ")" +" à l'horaire " + dateS + " " + heureS +"</i></p>");
 				out.println("<p>Ajouter une autre représentation <a href=\"/servlet/NouvelleRepresentationServlet?numS="+numS+"\">à ce spectacle</a> ou <a href=\"/servlet/NouvelleRepresentationServlet\">à un autre spectacle</a></p>");
 
 			}
@@ -103,7 +103,7 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 				|| (numS == "" || dateS == "" || heureS == "")) || error )
 		{
 
-			out.println("<font color=\"#FFFFFF\">Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
+			out.println("Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
 			out.println("<P>");
 			out.print("<form action=\"");
 			out.print("NouvelleRepresentationServlet\" ");
@@ -137,13 +137,13 @@ public class NouvelleRepresentationServlet extends HttpServlet {
 
 			// Test s'il y avait une erreur.
 			if(numS == "" || dateS == "" || heureS == ""){
-				out.println("<font color=\"#FF0000\">Les informations que vous avez fourni sont incorrect");
+				out.println("Les informations que vous avez fourni sont incorrect");
 			}
 			out.println("</form>");	
 		}
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
+		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
 		out.close();
 

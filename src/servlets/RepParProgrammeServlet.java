@@ -47,24 +47,24 @@ public class RepParProgrammeServlet extends HttpServlet {
 		res.setContentType("text/html");
 
 		out.println("<HEAD><TITLE> Liste des représentations d'un spectacle </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
-		out.println("<BODY bgproperties=\"fixed\" background=\"/images/rideau.JPG\" style=\"color:white;\">");
-		out.println("<font color=\"#FFFFFF\"><h1> Liste des représentations d'un spectacle </h1>");
+		out.println("<BODY>");
+		out.println("<h1> Liste des représentations d'un spectacle </h1>");
 		try {
-			out.println("<p><i><font color=\"#FFFFFF\">" + ConvertHTML.vectorSpectacleConsultationToHTML(BDRequetes.getSpectables())  + "</i></p>");
+			out.println("<p><i>" + ConvertHTML.vectorSpectacleConsultationToHTML(BDRequetes.getSpectables())  + "</i></p>");
 		} catch (BDException e) {
-			out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
 
 		String numS = req.getParameter("numS");
 		if (numS != null) {
 			try {
-				out.println("<p><i><font color=\"#FFFFFF\">"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(numS))+"</i></p>");
+				out.println("<p><i>"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(numS), true)+"</i></p>");
 			} catch (BDException e) {
-				out.println("<font color=\"#FFFFFF\"><h1>"+e.getMessage()+"</h1>");
+				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
 		} 
 
-		out.println("<hr><p><font color=\"#FFFFFF\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
 		out.close();
 
