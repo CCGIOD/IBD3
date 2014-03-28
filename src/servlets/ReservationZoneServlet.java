@@ -71,7 +71,7 @@ public class ReservationZoneServlet extends HttpServlet {
 
 		}
 
-		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme</a></p>");
+		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
 		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</BODY>");
 		out.close();

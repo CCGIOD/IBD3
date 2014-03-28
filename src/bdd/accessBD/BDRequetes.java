@@ -105,7 +105,7 @@ public class BDRequetes {
 
 	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
 		Vector<Place> res = new Vector<Place>();
-		String requete = "select norang,noplace from lesplaces MINUS select norang, noplace from LesTickets where numS = "+numS+"  and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";;
+		String requete = "select norang,noplace from lesplaces MINUS select norang, noplace from LesTickets where numS = "+numS+"  and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -130,7 +130,7 @@ public class BDRequetes {
 	}
 
 	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException, BDExceptionParamError {
-		String requete = "insert into LESREPRESENTATIONS values ('"+numS+"',to_date('"+dateRep+" "+heureRep+"','dd/mm/yyyy hh24:mi'))";;
+		String requete = null;
 		PreparedStatement stmt = null;
 		Connection conn = null;
 

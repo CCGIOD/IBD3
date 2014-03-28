@@ -70,7 +70,7 @@
 </servlet-mapping>
 
 - <servlet-mapping> 
-<servlet-name>ConsultationCaddieServlet</servlet-name> 
+<servlet-name>ReservationZoneServlet</servlet-name> 
 <url-pattern>/servlet/ReservationZoneServlet</url-pattern> 
 </servlet-mapping>
 
