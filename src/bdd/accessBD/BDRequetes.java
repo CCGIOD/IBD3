@@ -13,6 +13,7 @@ import java.util.Vector;
 import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
 import bdd.exceptions.BDExceptionParamError;
+import bdd.modeles.Caddie;
 import bdd.modeles.Place;
 import bdd.modeles.Representation;
 import bdd.modeles.Spectacle;
@@ -72,6 +73,30 @@ public class BDRequetes {
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des spectacles (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return res;
+	}
+	
+	public static Vector<Caddie> getContenuCaddie () throws BDException {
+		Vector<Caddie> res = new Vector<Caddie>();
+		String requete = "select nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, numZ, qt from lesspectacles, lecaddie where lesspectacles.numS=lecaddie.nums";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				res.addElement(new Caddie(rs.getString(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);

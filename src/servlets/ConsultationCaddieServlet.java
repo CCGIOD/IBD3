@@ -8,6 +8,10 @@ package servlets;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
+import servlets.utils.ConvertHTML;
+import bdd.accessBD.BDRequetes;
+import bdd.exceptions.BDException;
+
 import java.io.IOException;
 
 /**
@@ -44,6 +48,12 @@ public class ConsultationCaddieServlet extends HttpServlet {
 		out.println("<HEAD><TITLE> Consultation du caddie </TITLE><LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\"></HEAD>");
 		out.println("<BODY>");
 		out.println("<h1> Consultation du caddie : </h1>");
+		
+		try {
+			out.println("<p><i>" + ConvertHTML.vectorCaddieToHTML(BDRequetes.getContenuCaddie())  + "</i></p>");
+		} catch (BDException e) {
+			out.println("<h1>"+e.getMessage()+"</h1>");
+		}
 		
 		out.println("<p>A compléter ...</p>");
 

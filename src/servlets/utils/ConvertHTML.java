@@ -72,8 +72,34 @@ public class ConvertHTML {
 		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
 
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom();
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TH>";
 			toReturn+="<TH><a href=\"/servlet/RepParProgrammeServlet?numS="+rs.elementAt(i).getNum()+"\">VOIR</a></TH></TR>";
+		}
+
+		return toReturn+"</TABLE>";
+	}
+	
+	public static String vectorCaddieToHTML(Vector<Caddie> rs){
+		if (rs.isEmpty())
+			return "Le caddie est vide.";
+		
+		String toReturn = "<TABLE BORDER='1' width=\"800\">";
+		toReturn+="<CAPTION>Le caddie :</CAPTION>";
+
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Reservation n°</i></TH>";			
+		toReturn+="<TH> <i>Spectacle</i> </TH><TH> <i>Date représentation</i></TH>";
+		toReturn+="<TH> <i> Zone </i></TH>";			
+		toReturn+="<TH> <i>Nombre de places </i></TH>";			
+		toReturn+="</TR>";
+		
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR>";
+			toReturn+="<TH> "+(i+1)+"</TH>";			
+			toReturn+="<TH>"+rs.elementAt(i).getNom()+" </TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
+			toReturn+="<TH> "+rs.elementAt(i).getZone()+"</TH>";			
+			toReturn+="<TH> "+rs.elementAt(i).getQt()+"</TH>";			
+			toReturn+="</TR>";
 		}
 
 		return toReturn+"</TABLE>";
@@ -84,7 +110,7 @@ public class ConvertHTML {
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
 
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC();
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
 		}
 
 		return toReturn+"</TABLE>";
@@ -95,7 +121,7 @@ public class ConvertHTML {
 		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
 
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TR>";
+			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TH></TR>";
 		}
 
 		return toReturn+"</TABLE>";
