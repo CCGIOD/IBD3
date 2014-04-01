@@ -9,6 +9,7 @@ import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
 
 import servlets.base.BaseServlet;
+import servlets.caddie.CaddieVirtuel;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
@@ -58,13 +59,16 @@ public class ReservationZoneServlet extends BaseServlet {
 
 		if (numS != null && date != null && c != null && nomS != null){
 			try {
-				BDRequetes.addRepresentationCaddie(numS, date, c);
+				if (session.getAttribute("config").toString().compareTo("P") == 0)
+					BDRequetes.addRepresentationCaddie(numS, date, c);
+				else 
+					CaddieVirtuel.ajouterRep(numS, date, c);
 				cad_ok=c;
 				redirect(res, "ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS);
 				return;
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
-			}
+			}				
 		}
 
 		if (cad_ok != null){

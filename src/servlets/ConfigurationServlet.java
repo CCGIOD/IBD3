@@ -18,8 +18,9 @@ public class ConfigurationServlet extends BaseServlet {
 		header("Page de configuration", "Configuration");
 		if (!testConnection()){ footer(); return; }
 
-		String val;
+		String val, val2;
 		val = req.getParameter("val");
+		val2 = req.getParameter("val2");
 
 		if (val != null){
 			boolean valide = false;
@@ -44,15 +45,43 @@ public class ConfigurationServlet extends BaseServlet {
 					out.println("<h1>"+e.getMessage()+"</h1>");
 				}
 		}
-	
+
+		if (val2 != null && (val2.compareTo("PERSISTANT") == 0 || val2.compareTo("VOLATILE") == 0)){
+			try {
+				BDRequetes.majTypeCaddie(val2);
+				session.setAttribute("config", val2.charAt(0));
+				redirect(res, "ConfigurationServlet"); return;
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+		}
+
+		try {
+			char d = BDRequetes.getTypeCaddie();
+			String t="";
+			if (d == 'P')
+				t = "PERSISTANT";
+			else
+				t = "VOLATILE";
+
+			out.println("<h2> Le type du caddie actuelle est : "+t+"</h2>");
+		} catch (BDException e) {
+			out.println("<h1>"+e.getMessage()+"</h1>");
+		}
+
+		out.println("<TABLE BORDER='1' width=\"800\"><CAPTION>Type du caddie :</CAPTION>");
+		out.println("<TR><TH><a href=\"ConfigurationServlet?val2=PERSISTANT\">PERSISTANT</a></TH>");
+		out.println("<TH><a href=\"ConfigurationServlet?val2=VOLATILE\">VOLATILE</a></TH>");
+		out.println("</TR></TABLE>");
+
 		try {
 			int d = BDRequetes.getCaddieLifetime();
-			String d2;
+			String d2="";
 			if (d == -1)
 				d2 = "SESSION";
 			else if (d == -2)
 				d2 = "SANS LIMITE";
-			else
+			else if (d > 0)
 				d2 = d+" JOURS";			
 
 			out.println("<h2> La durée de vie du caddie actuelle est : "+d2+"</h2>");
@@ -61,11 +90,9 @@ public class ConfigurationServlet extends BaseServlet {
 		}
 
 		out.println("<TABLE BORDER='1' width=\"800\"><CAPTION>Durée de vie du caddie :</CAPTION>");
-
 		out.println("<TR><TH><a href=\"ConfigurationServlet?val=SESSION\">SESSION</a></TH>");
 		out.println("<TH><form action=\"\"><input type=\"number\" min=\"1\" step=\"1\" pattern=\"\\d+\" name=\"val\"> <input type=\"submit\" value=\"Submit\"></form></TH>");
 		out.println("<TH><a href=\"ConfigurationServlet?val=NOLIMIT\">SANS LIMITE</a></TH>");
-
 		out.println("</TR></TABLE>");
 
 		footer();

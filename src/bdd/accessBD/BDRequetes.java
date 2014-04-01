@@ -344,6 +344,32 @@ public class BDRequetes {
 		return toReturn;
 	}
 	
+	public static char getTypeCaddie () throws BDException {
+		String requete = "select type_cad from config";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		char toReturn = '?';
+		
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			
+			if (rs.next()){
+				toReturn = rs.getString(1).charAt(0);
+			}
+			
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la récupération du type du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return toReturn;
+	}
+	
 	public static int majCaddieLifetime (String val) throws BDException {
 		String requete = "update config set duree_vie_cad =";
 		if (val.compareTo("SESSION") == 0)
@@ -366,6 +392,35 @@ public class BDRequetes {
 			
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la mise à jour de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return toReturn;
+	}
+	
+	public static int majTypeCaddie (String val) throws BDException {
+		String requete = "update config set type_cad =";
+		if (val.compareTo("PERSISTANT") == 0)
+			requete+="'P'";
+		else if (val.compareTo("VOLATILE") == 0)
+			requete+="'V'";
+		else
+			requete+=val;
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		int toReturn = 0;
+		
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			stmt.executeUpdate(requete);			
+			
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la mise à jour du type du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);

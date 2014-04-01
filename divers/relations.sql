@@ -52,6 +52,6 @@ create table LeCaddie (idr number (4), numS number (4), dateRep date, numZ numbe
 
 insert into LeCaddie values (1,104,'22-FEB-09',1,2);
 
-create table config (duree_vie_cad number (4), date_cad date);
-insert into config values ('-1','28-MAR-14');
+create table config (type_cad char, duree_vie_cad number (4), date_cad date);
+insert into config values ('P','-1','28-MAR-14');
 
