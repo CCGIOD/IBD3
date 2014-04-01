@@ -8,18 +8,31 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import bdd.accessBD.BDConnexion;
+import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
 
 @SuppressWarnings("serial")
 public abstract class BaseServlet extends HttpServlet {
 
 	protected ServletOutputStream out;
-	
+		
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		HttpSession session = req.getSession(true);  
+	    
 		out = res.getOutputStream();
 		res.setContentType("text/html");
+		
+	    if (session.getAttribute("config") == null) {  
+	    	try {
+				BDRequetes.checkCaddieLifetime();
+				session.setAttribute("config", "checked");  
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+	    } 
 	}
 	
 	public boolean testConnection () throws IOException {

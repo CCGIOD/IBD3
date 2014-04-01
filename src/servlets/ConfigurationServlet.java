@@ -39,7 +39,6 @@ public class ConfigurationServlet extends BaseServlet {
 			if (valide)
 				try {
 					BDRequetes.majCaddieLifetime(val);
-					ConsultationCaddieServlet.config_checked=true;
 					redirect(res, "ConfigurationServlet"); return;
 				} catch (BDException e) {
 					out.println("<h1>"+e.getMessage()+"</h1>");

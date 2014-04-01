@@ -13,21 +13,10 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class ConsultationCaddieServlet extends BaseServlet {
 
-	public static boolean config_checked = false;
-
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);
 		header("Consultation du caddie");
 		if (!testConnection()){ footer(); return; }
-
-		if (config_checked == false){
-			try {
-				BDRequetes.checkCaddieLifetime();
-			} catch (BDException e) {
-				out.println("<h1>"+e.getMessage()+"</h1>");
-			}
-			config_checked=true;
-		}
 
 		String idp, idm, idd;
 		idp = req.getParameter("idp");
