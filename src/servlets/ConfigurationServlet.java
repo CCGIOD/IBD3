@@ -72,7 +72,7 @@ public class ConfigurationServlet extends BaseServlet {
 			else
 				t = "VOLATILE";
 
-			out.println("<h2> Le type du caddie actuelle est : "+t+"</h2>");
+			out.println("<h2> Le type du caddie actuelle est : <b>"+t+"</b></h2>");
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
@@ -92,7 +92,7 @@ public class ConfigurationServlet extends BaseServlet {
 			else if (d > 0)
 				d2 = d+" JOURS";			
 
-			out.println("<h2> La durée de vie du caddie actuelle est : "+d2+"</h2>");
+			out.println("<h2> La durée de vie du caddie actuelle est : <b>"+d2+"</b></h2>");
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}
@@ -115,7 +115,7 @@ public class ConfigurationServlet extends BaseServlet {
 	}
 
 	public void footer() throws IOException {
-		out.println("<hr><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
+		out.println("<hr><p class=\"backlink\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
 		super.footer();
 	}
 }

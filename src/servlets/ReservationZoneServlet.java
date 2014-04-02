@@ -88,7 +88,7 @@ public class ReservationZoneServlet extends BaseServlet {
 	}
 
 	public void footer() throws IOException {		
-		out.println("<hr><p><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
+		out.println("<hr><p class=\"backlink\"><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
 		super.footer();
 	}
 }

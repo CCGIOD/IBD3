@@ -85,13 +85,13 @@ public abstract class BaseServlet extends HttpServlet {
 		out.println("<TITLE>"+title+"</TITLE>");
 		out.println("<LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\">");
 		out.println("</HEAD>");
-		out.println("<BODY>");
+		out.println("<BODY><div id=\"block\">");
 		out.println("<h1>"+h1+" :</h1>");
 	}
 
 	public void footer () throws IOException {
-		out.println("<hr><p><a href=\"/index.html\">Page d'accueil</a></p>");
-		out.println("</BODY>");
+		out.println("<hr><p class=\"backlink\"><a href=\"/index.html\">Page d'accueil</a></p>");
+		out.println("</div></BODY>");
 		out.close();
 	}
 

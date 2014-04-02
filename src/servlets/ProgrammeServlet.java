@@ -20,7 +20,7 @@ public class ProgrammeServlet extends BaseServlet {
 		if (!testConnection()){ footer(); return; }	
 		
 		try {
-			out.println("<p><i>"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null), false)+"</i></p>");
+			out.println(ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null), false));
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 		}

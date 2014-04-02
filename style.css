@@ -1,8 +1,65 @@
 body {
-	color : white;
 	background:url("/images/background_rideau_2.jpg") repeat;
+        margin: 0;
+	height:100%;
 }
 
-body a {
-	color : white;
+#block {
+	background-color: white;
+	margin:0px auto;
+	width:1150px;
+	min-height:100%;
+	color: black;
+	font-family: "URW Palladio L";
+}
+
+#block a {
+	color: black;
+}
+
+
+#block h1 {
+	text-align:center;
+	color:#A60000;
+	font-size: 30pt;
+	padding-top:10px;
+}
+
+#block h2 {
+	text-align:center;
+	color:#D92A2A;
+	font-size: 20pt;
+	padding-top:10px;
+}
+
+#block h2 b{
+	color:black;
+}
+
+#block table caption {
+	margin-bottom:5px;
+	font-style:italic;
+}
+
+#block hr {
+	margin-top:20px;
+}
+
+#block table {
+	margin:0px auto;
+}
+
+#block table a {
+	color:red;
+}
+
+#block form {
+	margin-top:5px;
+margin-bottom:5px;
+}
+
+.backlink {
+	text-align:center;
+	padding-top:0px;
+	padding-bottom:15px;
 }

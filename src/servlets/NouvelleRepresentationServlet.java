@@ -118,7 +118,7 @@ public class NouvelleRepresentationServlet extends BaseServlet {
 	}
 
 	public void footer() throws IOException {
-		out.println("<hr><p><a href=\"/admin/admin.html\">Page d'administration</a></p>");
+		out.println("<hr><p class=\"backlink\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
 		super.footer();
 	}
 }

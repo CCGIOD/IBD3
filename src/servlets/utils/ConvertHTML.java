@@ -8,14 +8,14 @@ public class ConvertHTML {
 
 	public static String vectorProgrammeToHTML(Vector<Representation> rs, boolean un_seul_spec){
 		if (rs.isEmpty())
-			return "Il n'y a pas de représentation à venir ...";
+			return "<p>Il n'y a pas de représentation à venir ...</p>";
 
-		String toReturn = "<TABLE BORDER='1' width=\"1200\">";
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">\n";
 
 		if (!un_seul_spec)
-			toReturn+="<CAPTION>Les prochaines représentations sont :</CAPTION>";
+			toReturn+="<CAPTION>Les prochaines représentations sont :</CAPTION>\n";
 		else
-			toReturn+="<CAPTION>Les prochaines représentations du spectacle \""+rs.elementAt(0).getNom()+"\" sont :</CAPTION>";
+			toReturn+="<CAPTION>Les prochaines représentations du spectacle \""+rs.elementAt(0).getNom()+"\" sont :</CAPTION>\n";
 
 		String previous = "";
 		int k=1;
@@ -25,21 +25,21 @@ public class ConvertHTML {
 				k=1;
 				previous=rs.elementAt(i).getNom();
 				if (!un_seul_spec)
-					toReturn+="<TR><TH rowspan=\"#\">"+rs.elementAt(i).getNom()+"</TH><TH rowspan=\"#\"><a href=\"/servlet/RepParProgrammeServlet?numS="+rs.elementAt(i).getNumS()+"\">REPRESENTATIONS DE CE SPECTACLE</a></TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
+					toReturn+="<TR>\n<TH rowspan=\"#\">"+rs.elementAt(i).getNom()+"</TH>\n<TH rowspan=\"#\"><a href=\"/servlet/RepParProgrammeServlet?numS="+rs.elementAt(i).getNumS()+"\">REPRESENTATIONS</a></TH>\n<TH> "+rs.elementAt(i).getDate()+"</TH>\n";
 				else
-					toReturn+="<TR><TH rowspan=\"#\">"+rs.elementAt(i).getNom()+"</TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
+					toReturn+="<TR>\n<TH rowspan=\"#\">"+rs.elementAt(i).getNom()+"</TH>\n<TH> "+rs.elementAt(i).getDate()+"</TH>\n";
 			}
 			else{
-				toReturn+="<TR><TH> "+rs.elementAt(i).getDate()+"</TH>";
+				toReturn+="<TR>\n<TH> "+rs.elementAt(i).getDate()+"</TH>\n";
 				k++;
 			}
 
-			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">VOIR LES PLACES DISPONIBLES</a></TH>";
-			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"&nomS="+rs.elementAt(i).getNom()+"\">RESERVER DES PLACES</a></TH></TR>";
+			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">PLACES DISPONIBLES</a></TH>\n";
+			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"&nomS="+rs.elementAt(i).getNom()+"\">RESERVER DES PLACES</a></TH>\n</TR>\n";
 		}
 		toReturn=toReturn.replaceAll("#", k+"");
 
-		return toReturn+"</TABLE>";
+		return toReturn+"</TABLE>\n";
 	}
 
 	public static String vectorPlaceToHTML(Vector<Place> rs){

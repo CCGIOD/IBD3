@@ -159,11 +159,11 @@ public class BDRequetes {
 
 	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
 		Vector<Place> res = new Vector<Place>();
-		String requete = "select norang,noplace from lesplaces MINUS select norang, noplace from LesTickets where numS = "+numS+"  and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
+		String requete = "select norang, noplace, numz from lesplaces MINUS select lestickets.noplace, lestickets.norang, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-
+		
 		try {
 			conn = BDConnexion.getConnexion();
 
@@ -172,7 +172,7 @@ public class BDRequetes {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
 			while (rs.next()) {
-				res.addElement(new Place(rs.getInt(1), rs.getInt(2)));
+				res.addElement(new Place(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
 			}
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'interrogation des places (Code Oracle : "+e.getErrorCode()+")");

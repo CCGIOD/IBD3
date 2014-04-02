@@ -4,10 +4,12 @@ public class Place {
 
 	private int num ;
 	private int rang;
+	private int zone;
 	
-	public Place(int rang, int num) {
+	public Place(int rang, int num, int zone) {
 		this.setNum(num) ;
 		this.setRang(rang) ;
+		this.setZone(zone);
 	}
 
 	public int getNum() {
@@ -24,5 +26,13 @@ public class Place {
 
 	public void setRang(int rang) {
 		this.rang = rang;
+	}
+
+	public int getZone() {
+		return zone;
+	}
+
+	public void setZone(int zone) {
+		this.zone = zone;
 	}
 }
