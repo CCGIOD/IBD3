@@ -116,4 +116,40 @@ public class BDRequetesTest {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
 	}
+	
+	public static String[] testAjoutCaddie (String numS, String dateRep, String zone) throws BDException {
+		String requete = "select nomS from lesspectacles, lesrepresentations where lesspectacles.numS=lesrepresentations.numS and lesspectacles.numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi')";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		
+		String[] toReturn = new String[2];
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			if (!rs.next()) {
+				throw new BDException("Problème dans l'interrogation des spectacles, des représentations et des zones");
+			}
+			else
+				toReturn[0]=rs.getString(1);
+			
+			requete = "select nomC  from leszones where numZ="+zone;
+			rs = stmt.executeQuery(requete);
+			if (!rs.next()) {
+				throw new BDException("Problème dans l'interrogation des spectacles, des représentations et des zones");
+			}
+			else
+				toReturn[1]=rs.getString(1);
+
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des spectacles, des représentations et des zones (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return toReturn;
+	}
 }

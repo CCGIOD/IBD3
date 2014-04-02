@@ -17,10 +17,7 @@ public class ConsultationCaddieServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);
-		if (session.getAttribute("config") != null)
-			header("Consultation du caddie", "Consultation du caddie <i>("+session.getAttribute("config")+")</i>");
-		else
-			header("Consultation du caddie", "Consultation du caddie");
+			header("Consultation du caddie");
 		if (!testConnection()){ footer(); return; }
 
 		String idp, idm, idd;
@@ -40,6 +37,8 @@ public class ConsultationCaddieServlet extends BaseServlet {
 			else
 				try {
 					CaddieVirtuel.setQt(idp, '+');
+					redirect(res, "ConsultationCaddieServlet");
+					return;
 				} catch (ParseException e) {
 					redirect(res, "ConsultationCaddieServlet");
 					return;
@@ -57,6 +56,8 @@ public class ConsultationCaddieServlet extends BaseServlet {
 			else
 				try {
 					CaddieVirtuel.setQt(idm, '-');
+					redirect(res, "ConsultationCaddieServlet");
+					return;
 				} catch (ParseException e) {
 					redirect(res, "ConsultationCaddieServlet");
 					return;
@@ -74,6 +75,8 @@ public class ConsultationCaddieServlet extends BaseServlet {
 			else
 				try {
 					CaddieVirtuel.setQt(idd, 'd');
+					redirect(res, "ConsultationCaddieServlet");
+					return;
 				} catch (ParseException e) {
 					redirect(res, "ConsultationCaddieServlet");
 					return;

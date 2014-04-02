@@ -4,6 +4,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import servlets.base.BaseServlet;
+import servlets.caddie.CaddieVirtuel;
 
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
@@ -46,9 +47,16 @@ public class ConfigurationServlet extends BaseServlet {
 				}
 		}
 
-		if (val2 != null && (val2.compareTo("PERSISTANT") == 0 || val2.compareTo("VOLATILE") == 0)){
+		if (val2 != null
+				&& (val2.compareTo("PERSISTANT") == 0 || val2.compareTo("VOLATILE") == 0)
+				&& val2.charAt(0) != session.getAttribute("config").toString().charAt(0)){
 			try {
-				BDRequetes.majTypeCaddie(val2);
+				if (val2.compareTo("PERSISTANT") == 0)
+					BDRequetes.majTypeCaddie(val2,CaddieVirtuel.list);
+				else{
+					BDRequetes.majTypeCaddie(val2, null);
+					CaddieVirtuel.list=BDRequetes.getContenuCaddie();
+				}
 				session.setAttribute("config", val2.charAt(0));
 				redirect(res, "ConfigurationServlet"); return;
 			} catch (BDException e) {

@@ -195,23 +195,23 @@ public class BDRequetes {
 			conn = BDConnexion.getConnexion();
 
 			BDRequetesTest.testRepresentation(conn, numS, dateRep);
-			
+
 			stmt = conn.createStatement();
 			rs =stmt.executeQuery("select idr from lecaddie where numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi') and numZ="+zone);
 			if (rs.next()){
 				setQtCaddie(rs.getInt(1)+"", '+');
 				return;
 			}	
-			
+
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select max(idr) from lecaddie");		
-			
+
 			int id;
 			if (!rs.next())
 				id=1;
 			else
 				id=rs.getInt(1)+1;			
-			
+
 			requete = "insert into LeCaddie values (?,?,?,?,?)";
 			pstmt = conn.prepareStatement(requete);
 			pstmt.setInt(1, id);
@@ -226,7 +226,7 @@ public class BDRequetes {
 				throw new BDException("Problème dans l'ajout d'une représentation dans le caddie");
 
 			stmt.executeUpdate("update config set date_cad = CURRENT_DATE");
-			
+
 		} catch (SQLException e) {
 			throw new BDException("Problème dans l'ajout d'une représentation dans le caddie (Code Oracle : "+e.getErrorCode()+")");
 		} catch (ParseException e) {}
@@ -283,7 +283,7 @@ public class BDRequetes {
 
 		return nomSpectacle;
 	}
-		
+
 	public static void checkCaddieLifetime () throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
@@ -295,7 +295,7 @@ public class BDRequetes {
 
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
-			
+
 			boolean delete = false;
 			if (rs.next() && rs.getInt(1) == -1){
 				delete = true;
@@ -306,10 +306,10 @@ public class BDRequetes {
 					delete = true;
 				}
 			}
-			
+
 			if (delete)
 				stmt.executeUpdate("delete from lecaddie");
-			
+
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la vérification initiale du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
@@ -317,24 +317,24 @@ public class BDRequetes {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
 	}
-	
+
 	public static int getCaddieLifetime () throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		int toReturn = 0;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
-			
+
 			if (rs.next()){
 				toReturn = rs.getInt(1);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la récupération de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
@@ -343,24 +343,24 @@ public class BDRequetes {
 		}
 		return toReturn;
 	}
-	
+
 	public static char getTypeCaddie () throws BDException {
 		String requete = "select type_cad from config";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		char toReturn = '?';
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(requete);
-			
+
 			if (rs.next()){
 				toReturn = rs.getString(1).charAt(0);
 			}
-			
+
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la récupération du type du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
@@ -369,7 +369,7 @@ public class BDRequetes {
 		}
 		return toReturn;
 	}
-	
+
 	public static int majCaddieLifetime (String val) throws BDException {
 		String requete = "update config set duree_vie_cad =";
 		if (val.compareTo("SESSION") == 0)
@@ -378,18 +378,18 @@ public class BDRequetes {
 			requete+="-2";
 		else
 			requete+=val;
-		
+
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
 		int toReturn = 0;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
 			stmt = conn.createStatement();
 			stmt.executeUpdate(requete);			
-			
+
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la mise à jour de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
@@ -398,8 +398,8 @@ public class BDRequetes {
 		}
 		return toReturn;
 	}
-	
-	public static int majTypeCaddie (String val) throws BDException {
+
+	public static void majTypeCaddie (String val, Vector<Caddie> toInsert) throws BDException {
 		String requete = "update config set type_cad =";
 		if (val.compareTo("PERSISTANT") == 0)
 			requete+="'P'";
@@ -407,24 +407,42 @@ public class BDRequetes {
 			requete+="'V'";
 		else
 			requete+=val;
-		
+
 		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		int toReturn = 0;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
 			stmt = conn.createStatement();
-			stmt.executeUpdate(requete);			
-			
+			stmt.executeUpdate(requete);
+
+			if (toInsert != null){
+				stmt.executeUpdate("delete from lecaddie");
+				for (int i=0;i<toInsert.size();i++){
+					requete = "insert into LeCaddie values (?,?,?,?,?)";
+					pstmt = conn.prepareStatement(requete);
+					pstmt.setInt(1, toInsert.get(i).getId());
+					pstmt.setInt(2, toInsert.get(i).getNumS());
+					pstmt.setTimestamp(3, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(toInsert.get(i).getDate()).getTime()));
+					pstmt.setInt(4, toInsert.get(i).getZone());
+					pstmt.setInt(5, toInsert.get(i).getQt());			
+					int nb_insert = pstmt.executeUpdate();
+
+					if (nb_insert != 1)
+						throw new BDException("Problème lors du transfert de caddie");
+
+					conn.commit();
+				}
+			}		
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la mise à jour du type du caddie (Code Oracle : "+e.getErrorCode()+")");
-		}
+		} catch (ParseException e) {}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);
+			BDConnexion.FermerTout(null, pstmt, null);
 		}
-		return toReturn;
 	}
 }
