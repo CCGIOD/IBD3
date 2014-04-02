@@ -2,6 +2,8 @@ package servlets.caddie;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Vector;
@@ -42,19 +44,30 @@ public class CaddieVirtuel {
 
 		boolean incr = false;
 		int ID = 1;
-		for (int i=0;i<list.size();i++)
+		for (int i=0;i<list.size();i++){
 			if ((list.get(i).getNumS()+"").compareTo(numS) == 0
-			&& list.get(i).getDate().compareTo(dateRep) == 0
-			&& (list.get(i).getZone()+"").compareTo(zone) == 0){
+					&& list.get(i).getDate().compareTo(dateRep) == 0
+					&& (list.get(i).getZone()+"").compareTo(zone) == 0){
 				list.get(i).setQt(list.get(i).getQt()+1);
 				incr=true;
 			}
-			else
-				if (list.get(i).getId() == ID)
-					ID++;
+			if (list.get(i).getId() > ID)
+				ID=list.get(i).getId()+1;
+		}
 		if (!incr){
 			list.add(new Caddie(ID, infos[0], dateRep, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], 1)); 
 		}
+
+		Collections.sort(list,new Comparator<Caddie>() {
+			public int compare(Caddie o1, Caddie o2) {
+				if (o1.getId() < o2.getId())
+					return -1;
+				else if (o1.getId() > o2.getId())
+					return 1;
+				else
+					return 0;
+			}
+		});
 	}
 
 	public static void setQt (String id, char signe) throws ParseException {

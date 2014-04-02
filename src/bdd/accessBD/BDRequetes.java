@@ -82,7 +82,7 @@ public class BDRequetes {
 
 	public static Vector<Caddie> getContenuCaddie () throws BDException {
 		Vector<Caddie> res = new Vector<Caddie>();
-		String requete = "select idr, nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, lecaddie.numZ, nomC, qt from lesspectacles, lecaddie, leszones where lesspectacles.numS=lecaddie.nums and lecaddie.numz = leszones.numz";
+		String requete = "select idr, nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, lecaddie.numZ, nomC, qt from lesspectacles, lecaddie, leszones where lesspectacles.numS=lecaddie.nums and lecaddie.numz = leszones.numz order by idr asc";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -104,9 +104,7 @@ public class BDRequetes {
 		return res;
 	}
 
-	public static Vector<Caddie> setQtCaddie (String idr, char signe) throws BDException {
-		Vector<Caddie> res = new Vector<Caddie>();
-
+	public static void setQtCaddie (String idr, char signe) throws BDException {
 		String requete = null;
 		if (signe != 'd')
 			requete = "update lecaddie set qt = (select qt from lecaddie where idr="+idr+")"+signe+"1 where idr="+idr;
@@ -121,9 +119,11 @@ public class BDRequetes {
 
 			stmt = conn.createStatement();
 			int nb_insert = stmt.executeUpdate(requete);
-			conn.commit();
+
 			if(nb_insert != 1)
 				throw new BDException("Problème dans la mise à jour d'une quantité du caddie");
+
+			conn.commit();
 
 		} catch (SQLException e) {
 			throw new BDException("Problème dans la mise à jour d'une quantité du caddie (Code Oracle : "+e.getErrorCode()+")");
@@ -131,7 +131,6 @@ public class BDRequetes {
 		finally {
 			BDConnexion.FermerTout(conn, stmt, null);
 		}
-		return res;
 	}
 
 	public static Vector<Zone> getZones () throws BDException {
@@ -269,10 +268,11 @@ public class BDRequetes {
 			stmt.setInt(1, Integer.valueOf(numS));
 			stmt.setTimestamp(2, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep+" "+heureRep).getTime()));
 			int nb_insert = stmt.executeUpdate();
-			conn.commit();
 
 			if(nb_insert != 1)
 				throw new BDException("Problème, impossible d'insérer une nouvelle représentation");
+
+			conn.commit();
 
 		} catch (SQLException e) {
 			throw new BDException("Problème, impossible d'insérer une nouvelle représentation");
@@ -370,7 +370,7 @@ public class BDRequetes {
 		return toReturn;
 	}
 
-	public static int majCaddieLifetime (String val) throws BDException {
+	public static void majCaddieLifetime (String val) throws BDException {
 		String requete = "update config set duree_vie_cad =";
 		if (val.compareTo("SESSION") == 0)
 			requete+="-1";
@@ -382,8 +382,7 @@ public class BDRequetes {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		int toReturn = 0;
-
+		
 		try {
 			conn = BDConnexion.getConnexion();
 
@@ -396,7 +395,6 @@ public class BDRequetes {
 		finally {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
-		return toReturn;
 	}
 
 	public static void majTypeCaddie (String val, Vector<Caddie> toInsert) throws BDException {
