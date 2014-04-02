@@ -113,20 +113,37 @@ public class ConvertHTML {
 	public static String vectorZoneToHTML(Vector<Zone> rs, String numS, String nomS, String DateRep){
 		String toReturn = "<TABLE BORDER='1' width=\"600\">";
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
-
 		toReturn+="<TR>";
 		toReturn+="<TH> <i>Numéro de zone</i></TH>";			
 		toReturn+="<TH> <i>Type</i> </TH>";
+		toReturn+="<TH> <i>Nombre à réserver</i></TH>";
 		toReturn+="<TH> <i>Réservation directe</i></TH>";			
 		toReturn+="<TH> <i>Ajouter au caddie</i></TH>";		
 		toReturn+="</TR>";
 		
 		for (int i = 0; i < rs.size(); i++) {
-			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
-			toReturn+="<TH><a href=\"#\">RESERVER</a></TH><TH><a href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"\">AJOUTER AU CADDIE</a></TH></TR>";
+			toReturn+="\n<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
+			toReturn+="\n<TH>"
+		    + "\n <input type=\"button\" onclick=\"f('" + i + "',-1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "')\" value=\"-\">"
+		    + "\n <span id=\"nbofp" + i + "\">0</span>"
+		    + "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "')\" value=\"+\">"
+		    +	"\n</TH>" ;
+			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "\">RESERVER</a></TH><TH><a href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"\">AJOUTER AU CADDIE</a></TH></TR>";
 		}
+		
+		String scriptJs = "<script>"
+				+ "function f(id,type,link)"
+				+ "{"
+				+ "var obj = document.getElementById('nbofp'+id);"
+				+ "if(type == 1)"
+				+ "obj.innerHTML=parseInt(obj.innerHTML)+1;"
+				+ "else if(obj.innerHTML > 0)"
+				+ "obj.innerHTML=parseInt(obj.innerHTML)-1;"
+				+ "document.getElementById('resZone'+id).href=link + '&nofp=' + obj.innerHTML ;"
+				+ "}"
+				+ "</script>";
 
-		return toReturn+"</TABLE>";
+		return toReturn+"</TABLE>" + scriptJs ;
 	}
 
 	public static String vectorSpectacleToHTML(Vector<Spectacle> rs){
