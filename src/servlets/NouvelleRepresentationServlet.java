@@ -102,7 +102,7 @@ public class NouvelleRepresentationServlet extends BaseServlet {
 
 			// Test s'il y avait une erreur.
 			if(numS == "" || dateS == "" || heureS == ""){
-				out.println("Les informations que vous avez fourni sont incorrect");
+				out.println("<span class=\"error\">Les informations que vous avez fourni sont incorrect.</span>");
 			}
 			out.println("</form>");	
 		}

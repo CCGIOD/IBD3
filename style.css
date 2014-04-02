@@ -98,3 +98,8 @@ body {
 .c6 {
 	color:#FFC000;
 }
+
+.error {
+	color:red;
+	font-style:italic;
+}
