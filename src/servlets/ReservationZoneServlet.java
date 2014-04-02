@@ -24,11 +24,12 @@ public class ReservationZoneServlet extends BaseServlet {
 		header("Réservation de places de spectacle");
 		if (!testConnection()){ footer(); return; }	
 
-		String nomS, numS, date, zone, c;
+		String nomS, numS, date, zone, nofp, c;
 		nomS = req.getParameter("nomS");
 		numS = req.getParameter("numS");
 		date = req.getParameter("date");
 		zone = req.getParameter("zone");
+		nofp = req.getParameter("nofp");
 		c = req.getParameter("c");
 
 		if (numS == null || date == null || nomS == null){
@@ -57,7 +58,10 @@ public class ReservationZoneServlet extends BaseServlet {
 
 		}
 
-		if (numS != null && date != null && c != null && nomS != null){
+		if(numS != null && date != null && c != null && nomS != null && nofp != null ){
+			out.println("<h1>"+"Demande de zone DEBUGGGGGGGOOOOOOOOOO>>>><<<>>>*****oo!"+"</h1>");
+		}
+		else if (numS != null && date != null && c != null && nomS != null){
 			try {
 				if (session.getAttribute("config").toString().compareTo("P") == 0)
 					BDRequetes.addRepresentationCaddie(numS, date, c);
