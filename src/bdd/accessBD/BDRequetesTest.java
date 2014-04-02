@@ -36,25 +36,6 @@ public class BDRequetesTest {
 		}
 		return res ;
 	}
-	
-	public static int getNumz (Connection conn, int norang, int noplace) throws BDException {
-		String requete;
-		Statement stmt;
-		ResultSet rs;
-		int res = 0 ;
-
-		requete = "select numz from lesplaces where noplace=1 and norang=1";
-
-		try {
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(requete);
-			if (rs.next())
-				res = rs.getInt(1);
-		} catch (SQLException e) {
-			throw new BDException("Problème dans la récupération du numéro de zone (Code Oracle : "+e.getErrorCode()+")");
-		}
-		return res ;
-	}
 
 	public static void testDateValide(String date) throws BDException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
