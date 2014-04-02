@@ -17,7 +17,10 @@ public class ConsultationCaddieServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);
-		header("Consultation du caddie", "Consultation du caddie <i>("+session.getAttribute("config")+")</i>");
+		if (session.getAttribute("config") != null)
+			header("Consultation du caddie", "Consultation du caddie <i>("+session.getAttribute("config")+")</i>");
+		else
+			header("Consultation du caddie", "Consultation du caddie");
 		if (!testConnection()){ footer(); return; }
 
 		String idp, idm, idd;

@@ -27,8 +27,10 @@ public abstract class BaseServlet extends HttpServlet {
 		session = req.getSession(true);  
 
 		out = res.getOutputStream();
-		res.setContentType("text/html");
-
+		res.setContentType("text/html"); 
+	}
+	
+	public void testCaddie () throws IOException {
 		if (session.getAttribute("config") == null) {  
 			try {
 				char d = BDRequetes.getTypeCaddie();
@@ -50,20 +52,23 @@ public abstract class BaseServlet extends HttpServlet {
 			} catch (BDException e) {
 				out.println("<h1>"+e.getMessage()+"</h1>");
 			}
-		} 
+		}
 	}
 
 	public boolean testConnection () throws IOException {
 		Connection conn = null;
-		boolean rep;
+		boolean rep = false;
 		try {
 			conn = BDConnexion.getConnexion();
 			rep = true;
+			
+			testCaddie();
+			
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 			rep = false;
 		}
-		finally { BDConnexion.FermerTout(conn, null, null); }
+		finally { if (conn != null) BDConnexion.FermerTout(conn, null, null); }
 		return rep;
 	}
 
