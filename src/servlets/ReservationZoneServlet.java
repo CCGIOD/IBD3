@@ -58,15 +58,12 @@ public class ReservationZoneServlet extends BaseServlet {
 
 		}
 
-		if(numS != null && date != null && c != null && nomS != null && nofp != null ){
-			out.println("<h1>"+"Demande de zone DEBUGGGGGGGOOOOOOOOOO>>>><<<>>>*****oo!"+"</h1>");
-		}
-		else if (numS != null && date != null && c != null && nomS != null){
+		if (numS != null && date != null && c != null && nomS != null && nofp != null){
 			try {
 				if (session.getAttribute("config").toString().compareTo("P") == 0)
-					BDRequetes.addRepresentationCaddie(numS, date, c);
+					BDRequetes.addRepresentationCaddie(numS, date, c, nofp);
 				else 
-					CaddieVirtuel.ajouterRep(numS, date, c);
+					CaddieVirtuel.ajouterRep(numS, date, c, nofp);
 				cad_ok=c;
 				redirect(res, "ReservationZoneServlet?numS="+numS+"&date="+date+"&nomS="+nomS);
 				return;
@@ -76,7 +73,7 @@ public class ReservationZoneServlet extends BaseServlet {
 		}
 
 		if (cad_ok != null){
-			out.println("<h4> Une place en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
+			out.println("<h4> Votre réservation en zone "+cad_ok+" pour la représentation du spectacle \""+nomS+"\" le "+date+" a été ajoutée au caddie ! <i><a href=\"ConsultationCaddieServlet\">(Voir le caddie)</a></i></h4>");
 			cad_ok=null;
 		}	
 

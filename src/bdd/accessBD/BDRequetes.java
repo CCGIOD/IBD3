@@ -183,7 +183,7 @@ public class BDRequetes {
 		return res;
 	}
 
-	public static void addRepresentationCaddie (String numS, String dateRep, String zone) throws BDException {
+	public static void addRepresentationCaddie (String numS, String dateRep, String zone, String nofp) throws BDException {
 		String requete = null;
 		PreparedStatement pstmt = null;
 		Statement stmt = null;
@@ -217,7 +217,7 @@ public class BDRequetes {
 			pstmt.setInt(2, Integer.valueOf(numS));
 			pstmt.setTimestamp(3, new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(dateRep).getTime()));
 			pstmt.setInt(4, Integer.valueOf(zone));
-			pstmt.setInt(5, 1);			
+			pstmt.setInt(5, Integer.valueOf(nofp));			
 			int nb_insert = pstmt.executeUpdate();
 			conn.commit();
 

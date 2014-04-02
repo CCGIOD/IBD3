@@ -39,7 +39,7 @@ public class CaddieVirtuel {
 		return list;
 	}
 
-	public static void ajouterRep (String numS, String dateRep, String zone) throws BDException {
+	public static void ajouterRep (String numS, String dateRep, String zone, String qt) throws BDException {
 		String[] infos = BDRequetesTest.testAjoutCaddie(numS, dateRep, zone);
 
 		boolean incr = false;
@@ -55,7 +55,7 @@ public class CaddieVirtuel {
 				ID=list.get(i).getId()+1;
 		}
 		if (!incr){
-			list.add(new Caddie(ID, infos[0], dateRep, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], 1)); 
+			list.add(new Caddie(ID, infos[0], dateRep, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], Integer.valueOf(qt))); 
 		}
 
 		Collections.sort(list,new Comparator<Caddie>() {

@@ -111,7 +111,7 @@ public class ConvertHTML {
 	}
 
 	public static String vectorZoneToHTML(Vector<Zone> rs, String numS, String nomS, String DateRep){
-		String toReturn = "<TABLE BORDER='1' width=\"600\">";
+		String toReturn = "<TABLE BORDER='1' width=\"800\">";
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
 		toReturn+="<TR>";
 		toReturn+="<TH> <i>Numéro de zone</i></TH>";			
@@ -124,11 +124,11 @@ public class ConvertHTML {
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="\n<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
 			toReturn+="\n<TH>"
-		    + "\n <input type=\"button\" onclick=\"f('" + i + "',-1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "')\" value=\"-\">"
-		    + "\n <span id=\"nbofp" + i + "\">0</span>"
-		    + "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "')\" value=\"+\">"
+		    + "\n <input type=\"button\" onclick=\"f('" + i + "',-1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"-\">"
+		    + "\n <span id=\"nbofp" + i + "\">1</span>"
+		    + "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"+\">"
 		    +	"\n</TH>" ;
-			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=0" + "\">RESERVER</a></TH><TH><a href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"\">AJOUTER AU CADDIE</a></TH></TR>";
+			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=1" + "\">RESERVER</a></TH><TH><a id=\"caddie" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&nofp=1\">AJOUTER AU CADDIE</a></TH></TR>";
 		}
 		
 		String scriptJs = "<script>"
@@ -137,9 +137,10 @@ public class ConvertHTML {
 				+ "var obj = document.getElementById('nbofp'+id);"
 				+ "if(type == 1)"
 				+ "obj.innerHTML=parseInt(obj.innerHTML)+1;"
-				+ "else if(obj.innerHTML > 0)"
+				+ "else if(obj.innerHTML > 1)"
 				+ "obj.innerHTML=parseInt(obj.innerHTML)-1;"
 				+ "document.getElementById('resZone'+id).href=link + '&nofp=' + obj.innerHTML ;"
+				+ "document.getElementById('caddie'+id).href=link + '&nofp=' + obj.innerHTML ;"
 				+ "}"
 				+ "</script>";
 
