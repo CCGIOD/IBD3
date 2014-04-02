@@ -67,8 +67,9 @@ public class NouvelleRepresentationServlet extends BaseServlet {
 		// Cas affichage du formule (première fois ou error).
 		if (((numS == null || dateS == null || heureS == null) || (numS == "" || dateS == "" || heureS == "")) || error ){
 
-			out.println("Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
 			out.println("<P>");
+
+			out.println("Veuillez saisir les informations relatives &agrave; la nouvelle représentation :");
 			out.print("<form action=\"");
 			out.print("NouvelleRepresentationServlet\" ");
 			out.println("method=POST>");
