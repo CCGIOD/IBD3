@@ -51,7 +51,7 @@ public class ConvertHTML {
 
 		int i=0;
 		for (int j=1;j<=10;j++){
-			toReturn+="<TR><TH> Rang n°"+j+" </TH>";
+			toReturn+="<TR><TH class=\"c0\"> Rang n°"+j+" </TH>";
 			for (int k=1;k<=30;k++){
 				if (i < rs.size() && rs.elementAt(i).getRang() == j && rs.elementAt(i).getNum() == k){
 					toReturn+="<TH class=\"c"+rs.elementAt(i).getZone()+"\">"+rs.elementAt(i).getNum()+"</TH>";

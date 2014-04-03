@@ -75,28 +75,38 @@ body {
 	padding-bottom:15px;
 }
 
+.c0, .c1, .c2, .c3, .c4, .c5, .c6 {
+	color:white;
+	text-shadow: 2px 0 0 black, -2px 0 0 black, 0 2px 0 black, 0 -2px 0 black,
+		     1px 1px black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+}
+
+.c0 {
+	background-color:#F19290;
+}
+
 .c1 {
-	color:#A60000;
+	background-color:#A60000;
 }
 
 .c2 {
-	color:#FF3500;
+	background-color:#FF3500;
 }
 
 .c3 {
-	color:#EA0037;
+	background-color:#EA0037;
 }
 
 .c4 {
-	color:#FF6400;
+	background-color:#FF0400;
 }
 
 .c5 {
-	color:#FF8100;
+	background-color:#FF8100;
 }
 
 .c6 {
-	color:#FFC000;
+	background-color:#FFC000;
 }
 
 .error {
