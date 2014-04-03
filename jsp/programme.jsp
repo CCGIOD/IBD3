@@ -10,6 +10,7 @@
    response.setCharacterEncoding( "iso-8859-1" ); %>
 
 <% jsp.Utils.header(_out,"Programme de la saison"); %>
+<% if (!jsp.Utils.testConnection(session,_out)){ jsp.Utils.footer(_out); return; } %>
 
 <%
 		try {
