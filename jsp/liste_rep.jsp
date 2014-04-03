@@ -2,22 +2,32 @@
 
 <%@ page import="bdd.accessBD.BDRequetes"%> 
 <%@ page import="bdd.exceptions.BDException"%> 
-<%@ page import="servlets.base.BaseServlet"%> 
-<%@ page import="servlets.utils.ConvertHTML"%> 
+<%@ page import="jsp.*"%> 
 
 <% ServletOutputStream _out = response.getOutputStream(); 
    response.setContentType("text/html"); 
    response.setCharacterEncoding( "iso-8859-1" ); %>
 
-<% jsp.Utils.header(_out,"Programme de la saison"); %>
-<% if (!jsp.Utils.testConnection(session,_out)){ jsp.Utils.footer(_out); return; } %>
+<% Utils.header(_out,"Programme de la saison"); %>
+<% if (!Utils.testConnection(session,_out)){ Utils.footer(_out); return; } %>
 
 <%
+		String numS;
+		numS = request.getParameter("numS");
+		
 		try {
-			_out.println(ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null), false));
+			_out.println("<p><i>" + ConvertHTML.vectorSpectacleConsultationToHTML(BDRequetes.getSpectables())  + "</i></p>");
 		} catch (BDException e) {
 			_out.println("<h1>"+e.getMessage()+"</h1>");
 		}
+
+		if (numS != null) {
+			try {
+				_out.println("<p><i>"+ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(numS), true)+"</i></p>");
+			} catch (BDException e) {
+				_out.println("<h1>"+e.getMessage()+"</h1>");
+			}
+		}
 %>
 
-<% jsp.Utils.footer(_out); %>
+<% Utils.footer(_out); %>

@@ -2,15 +2,14 @@
 
 <%@ page import="bdd.accessBD.BDRequetes"%> 
 <%@ page import="bdd.exceptions.BDException"%> 
-<%@ page import="servlets.base.BaseServlet"%> 
-<%@ page import="servlets.utils.ConvertHTML"%> 
+<%@ page import="jsp.*"%> 
 
 <% ServletOutputStream _out = response.getOutputStream(); 
    response.setContentType("text/html"); 
    response.setCharacterEncoding( "iso-8859-1" ); %>
 
-<% jsp.Utils.header(_out,"Programme de la saison"); %>
-<% if (!jsp.Utils.testConnection(session,_out)){ jsp.Utils.footer(_out); return; } %>
+<% Utils.header(_out,"Programme de la saison"); %>
+<% if (!Utils.testConnection(session,_out)){ Utils.footer(_out); return; } %>
 
 <%
 		try {
@@ -20,4 +19,4 @@
 		}
 %>
 
-<% jsp.Utils.footer(_out); %>
+<% Utils.footer(_out); %>

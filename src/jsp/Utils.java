@@ -24,7 +24,7 @@ public class Utils {
 
 		out.println("<HTML><HEAD>");
 		out.println("<TITLE>"+title+"</TITLE>");
-		out.println("<LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\">");
+		out.println("<LINK rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">");
 		out.println("<meta charset=\"iso-8859-1\">");
 		out.println("</HEAD>");
 		out.println("<BODY><div id=\"block\">");

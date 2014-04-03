@@ -16,9 +16,8 @@ public class PlacesRepresentationServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
-		header("Programme de la saison");
+		header("Places disponibles pour cette représentation");
 		if (!testConnection()){ footer(); return; }	
-
 		String numS, date;
 		numS = req.getParameter("numS");
 		date = req.getParameter("date");
