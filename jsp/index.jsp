@@ -31,26 +31,26 @@
 	  <ul type="square">
 	    <li>
 	      <p align="left"><font face="URW Palladio L" style="font-size: 16pt">
-		  <a href="index.html">Accueil</a><br>
+		  <a href="index.jsp">Accueil</a><br>
 		  &nbsp;</font></li>
 	    <li>
 	      <p align="left"><font face="URW Palladio L" style="font-size: 16pt">
-		  <a href="servlet/ProgrammeServlet">Programme</a><br>
+		  <a href="programme.jsp">Programme</a><br>
 		  &nbsp;</font></li>
 	    <li>
 	      <p align="left"><font face="URW Palladio L" style="font-size: 16pt">
-		  <a href="servlet/RepParProgrammeServlet">Liste des représentations d'un spectacle</a><br>
+		  <a href="liste_rep.jsp">Liste des représentations d'un spectacle</a><br>
 		  &nbsp;</font></li>
 	    <li>
 	      <p align="left"><font face="URW Palladio L" style="font-size: 16pt">
-		  <a href="servlet/ConsultationCaddieServlet">Consultation du caddie</a><br>
+		  <a href="caddie.jsp">Consultation du caddie</a><br>
 		  &nbsp;</font></li>
 	  </ul>
 	  <p align="left">&nbsp;</p>
 	  <ul>
 	    <li>
 	      <p align="left"><font face="URW Palladio L" style="font-size: 16pt">
-		  <a href="admin/admin.html"><i>Administration - Accès restreint</i></a></font></li>
+		  <a href="admin/admin.jsp"><i>Administration - Accès restreint</i></a></font></li>
 	  </ul>
 	</td>
 	<td width="25%" align="right" valign="top" height="1">

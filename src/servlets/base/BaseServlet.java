@@ -28,6 +28,8 @@ public abstract class BaseServlet extends HttpServlet {
 
 		out = res.getOutputStream();
 		res.setContentType("text/html"); 
+	    res.setCharacterEncoding( "iso-8859-1" );
+
 	}
 	
 	public void testCaddie () throws IOException {
@@ -79,9 +81,10 @@ public abstract class BaseServlet extends HttpServlet {
 			h1 = str[1];
 		}
 
-		out.println("<HEAD>");
+		out.println("<HTML><HEAD>");
 		out.println("<TITLE>"+title+"</TITLE>");
 		out.println("<LINK rel=\"stylesheet\" type=\"text/css\" href=\"../style.css\">");
+		out.println("<meta charset=\"iso-8859-1\">");
 		out.println("</HEAD>");
 		out.println("<BODY><div id=\"block\">");
 		out.println("<h1>"+h1+" :</h1>");
@@ -89,7 +92,7 @@ public abstract class BaseServlet extends HttpServlet {
 
 	public void footer () throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/index.html\">Page d'accueil</a></p>");
-		out.println("</div></BODY>");
+		out.println("</div></BODY></HTML>");
 		out.close();
 	}
 
