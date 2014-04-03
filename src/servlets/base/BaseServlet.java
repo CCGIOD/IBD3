@@ -59,11 +59,9 @@ public abstract class BaseServlet extends HttpServlet {
 		Connection conn = null;
 		boolean rep = false;
 		try {
-			conn = BDConnexion.getConnexion();
-			rep = true;
-			
+			conn = BDConnexion.getConnexion();			
 			testCaddie();
-			
+			rep = true;
 		} catch (BDException e) {
 			out.println("<h1>"+e.getMessage()+"</h1>");
 			rep = false;

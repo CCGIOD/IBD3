@@ -17,8 +17,9 @@ public class ProgrammeServlet extends BaseServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
 		header("Programme de la saison");
-		if (!testConnection()){ footer(); return; }	
-		
+		if (!testConnection()){ footer(); 			out.println("<h1>here</h1>");
+ return; }	
+
 		try {
 			out.println(ConvertHTML.vectorProgrammeToHTML(BDRequetes.getRepresentations(null), false));
 		} catch (BDException e) {
