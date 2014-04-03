@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 import java.util.Vector;
 
 import bdd.exceptions.BDException;
@@ -17,6 +20,7 @@ import bdd.modeles.Caddie;
 import bdd.modeles.Place;
 import bdd.modeles.Representation;
 import bdd.modeles.Spectacle;
+import bdd.modeles.Ticket;
 import bdd.modeles.Zone;
 
 public class BDRequetes {
@@ -160,6 +164,32 @@ public class BDRequetes {
 	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
 		Vector<Place> res = new Vector<Place>();
 		String requete = "select norang, noplace, numz from lesplaces MINUS select lestickets.noplace, lestickets.norang, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		
+		try {
+			conn = BDConnexion.getConnexion();
+
+			BDRequetesTest.testRepresentation(conn, numS, date);
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				res.addElement(new Place(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des places (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return res;
+	}
+	
+	public static Vector<Place> getPlacesDisponiblesFromZone (String numS, String date, int zone) throws BDException {
+		Vector<Place> res = new Vector<Place>();
+		String requete = "select norang, noplace, numZ from lesplaces where numz=" + zone + " MINUS select lestickets.noplace, lestickets.norang, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -443,4 +473,139 @@ public class BDRequetes {
 			BDConnexion.FermerTout(null, pstmt, null);
 		}
 	}
+	public static Vector<Ticket> valideCaddie (Vector<Caddie> caddies) throws BDException, ParseException {
+		ArrayList<Vector<Place>> placesToChoice = new ArrayList<>();
+		ArrayList<Integer> placesPrice = new ArrayList<>();
+		Vector<Ticket> toReturn = new Vector<>();
+		int finalPrice = 0 ;
+		
+		// Test et récupération des places disponibles.
+		for(Caddie caddie : caddies){
+			Vector<Place> places = getPlacesDisponiblesFromZone(Integer.toString(caddie.getNumS()), caddie.getDate(), caddie.getZone());
+
+			// Test si le nombre de places est bon.
+			if(places.size() < caddie.getQt())
+				throw new BDException("Il ne reste plus assez de places !!!!");
+			
+			// Choix des places.
+			placesToChoice.add(choicePlaces(places, caddie.getQt()));
+			
+			// Ajout au prix de la commande.
+			int prix =getPriceOfAPlace(caddie.getZone());
+			finalPrice+=prix*caddie.getQt();
+			placesPrice.add(prix);
+		}
+		
+		// Insertion.
+		PreparedStatement stmt = null;
+		Connection conn = null;
+		String requete = null;
+		try {
+			conn = BDConnexion.getConnexion();
+			conn.setAutoCommit(false);
+			
+			// Création d'une nouvelle commande.
+			int numDossier = BDRequetesTest.testNouveauDossier(conn,finalPrice);
+			
+			// Ajout de tous les tickets
+			for(int i = 0 ; i< caddies.size() ; i++){
+
+				Caddie caddie = caddies.get(i);
+				Vector<Place> places = placesToChoice.get(i);
+				int prixDelaPlace = placesPrice.get(i);
+				for(Place place : places){
+					// Get le nouveau num de serie.
+					int noserie = BDRequetesTest.testNouveauTicket(conn);
+					requete = "insert into lestickets values (?, ?, ?, ?, ?, ?, ?)";
+					stmt = conn.prepareStatement(requete);
+					stmt.setInt(1,noserie);
+					stmt.setInt(2,caddie.getNumS());
+					stmt.setTimestamp(3,new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(caddie.getDate()).getTime()));
+					stmt.setInt(4,place.getNum());
+					stmt.setInt(5,place.getRang());
+					Date dNow = new Date( );
+				    SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+					stmt.setTimestamp(6,new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(ft.format(dNow)).getTime()));
+					stmt.setInt(7,numDossier);
+					int nb_insert = stmt.executeUpdate();
+					if(nb_insert != 1)
+					{
+						// ERREUR CRITIQUE ....
+						conn.rollback();
+						throw new BDException("Impossible de valider la commande");
+					}
+					else
+					{
+						// Ajout d'un ticket à retourner.
+						Ticket tik = new Ticket();
+						tik.setDateEmission(ft.format(dNow));
+						tik.setDateRep(caddie.getDate());
+						tik.setNomS(caddie.getNom());
+						tik.setNumDossier(numDossier);
+						tik.setNumPlace(place.getNum());
+						tik.setNumS(caddie.getNumS());
+						tik.setNumTicket(noserie);
+						tik.setRangPlace(place.getRang());
+						tik.setZonePlace(place.getZone());
+						tik.setPrix(prixDelaPlace);
+						
+						toReturn.add(tik);
+					}
+				}
+			}
+			
+			// To c'est normalement passé.
+			conn.commit();
+
+		} catch (SQLException e) {
+			// TODO Bloc catch généré automatiquement
+			e.printStackTrace();
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, null);
+		}
+		return toReturn ;
+	}
+	
+	public static Vector<Place> choicePlaces(Vector<Place> places, int qt){
+		Vector<Place> toReturn = new Vector<Place>();
+		
+		int index = (int)(Math.random() * (places.size()));
+		
+		for(int i = 0 ; i < qt ; i++){
+			toReturn.add(places.get(index));
+			index++;
+			index%=places.size();
+		}
+		
+		return toReturn;
+	}
+	
+	public static int getPriceOfAPlace(int zone) throws BDException{
+		String requete = "select prix from lescategories c, leszones z where c.nomc = z.nomc and numz=" + zone;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		int res = 0 ;
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			if(rs.next()) {
+				res =rs.getInt(1);
+			}
+			else{
+				throw new BDException("Problème dans l'interrogation, impossible de déterminer le prix. Hey c'est pas gratuit");
+			}
+		} catch (SQLException e) {
+			throw new BDException("Problème dans l'interrogation des places (Code Oracle : "+e.getErrorCode()+")");
+		}
+		finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+		return res;
+	}
+	
+	
 }
