@@ -36,6 +36,7 @@ public class ConsultationCaddieServlet extends BaseServlet {
 					if(caddie.size()>0){
 						try {
 							out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(caddie)));
+							BDRequetes.deleteCaddie();
 						} catch (ParseException e) {
 						}
 					}
@@ -44,14 +45,21 @@ public class ConsultationCaddieServlet extends BaseServlet {
 				}
 			}
 			else
+			{
 				try {
-					CaddieVirtuel.setQt(idp, '+');
-					redirect(res, "ConsultationCaddieServlet");
-					return;
-				} catch (ParseException e) {
-					redirect(res, "ConsultationCaddieServlet");
-					return;
+					Vector<Caddie> caddie = CaddieVirtuel.getList();
+					if(caddie.size()>0){
+						try {
+							out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(caddie)));
+							CaddieVirtuel.vider() ;
+							
+						} catch (ParseException e) {
+						}
+					}
+				} catch (BDException e) {
+					out.println("<h1>"+e.getMessage()+"</h1>");
 				}
+			}
 		}
 		
 		if (idp != null && idm == null && idd == null){

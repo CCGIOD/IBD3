@@ -472,6 +472,7 @@ public class BDRequetes {
 			BDConnexion.FermerTout(null, pstmt, null);
 		}
 	}
+	
 	public static Vector<Ticket> valideCaddie (Vector<Caddie> caddies) throws BDException, ParseException {
 		ArrayList<Vector<Place>> placesToChoice = new ArrayList<Vector<Place>>();
 		ArrayList<Integer> placesPrice = new ArrayList<Integer>();
@@ -605,5 +606,24 @@ public class BDRequetes {
 		return res;
 	}
 	
-	
+	public static void deleteCaddie () throws BDException {
+		String requete = "delete from lecaddie";
+
+		Statement stmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			stmt.executeUpdate(requete);
+
+			conn.commit();		
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la mise à jour du type du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}finally {
+			BDConnexion.FermerTout(conn, stmt, rs);
+		}
+	}
 }
