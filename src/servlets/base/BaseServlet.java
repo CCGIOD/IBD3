@@ -86,7 +86,7 @@ public abstract class BaseServlet extends HttpServlet {
 		out.println("<LINK rel=\"stylesheet\" type=\"text/css\" href=\"/style.css\">");
 		out.println("<meta charset=\"iso-8859-1\">");
 		out.println("</HEAD>");
-		out.println("<BODY><div id=\"block\">");
+		out.println("<BODY><div id=\"block\"><img border=\"0\" src=\"/images/theatre_serv.jpg\" width=\"200\" height=\"200\">");
 		out.println("<h1>"+h1+" :</h1>");
 	}
 

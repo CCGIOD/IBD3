@@ -10,7 +10,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Random;
 import java.util.Vector;
 
 import bdd.exceptions.BDException;
@@ -474,9 +473,9 @@ public class BDRequetes {
 		}
 	}
 	public static Vector<Ticket> valideCaddie (Vector<Caddie> caddies) throws BDException, ParseException {
-		ArrayList<Vector<Place>> placesToChoice = new ArrayList<>();
-		ArrayList<Integer> placesPrice = new ArrayList<>();
-		Vector<Ticket> toReturn = new Vector<>();
+		ArrayList<Vector<Place>> placesToChoice = new ArrayList<Vector<Place>>();
+		ArrayList<Integer> placesPrice = new ArrayList<Integer>();
+		Vector<Ticket> toReturn = new Vector<Ticket>();
 		int finalPrice = 0 ;
 		
 		// Test et récupération des places disponibles.
