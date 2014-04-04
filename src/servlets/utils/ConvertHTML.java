@@ -34,7 +34,7 @@ public class ConvertHTML {
 				k++;
 			}
 
-			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"\">PLACES DISPONIBLES</a></TH>\n";
+			toReturn+="<TH><a href=\"/servlet/PlacesRepresentationServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"&nomS="+rs.elementAt(i).getNom()+"\">PLACES DISPONIBLES</a></TH>\n";
 			toReturn+="<TH><a href=\"/servlet/ReservationZoneServlet?numS="+rs.elementAt(i).getNumS()+"&date="+rs.elementAt(i).getDate()+"&nomS="+rs.elementAt(i).getNom()+"\">RESERVER DES PLACES</a></TH>\n</TR>\n";
 		}
 		toReturn=toReturn.replaceAll("#", k+"");
