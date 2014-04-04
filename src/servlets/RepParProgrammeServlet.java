@@ -16,7 +16,7 @@ public class RepParProgrammeServlet extends BaseServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
-		header("Liste des représentations d'un spectacle");
+		header("Liste des représentations");
 		if (!testConnection()){ footer(); return; }	
 
 		String numS;

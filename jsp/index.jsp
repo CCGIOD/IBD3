@@ -1,3 +1,5 @@
+<%@ page pageEncoding="UTF-8" %>
+
 <!doctype html public "-//w3c//dtd html 4.0 transitional//en">
 <html>
   <head>

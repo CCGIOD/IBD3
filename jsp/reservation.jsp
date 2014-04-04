@@ -44,7 +44,7 @@
 			}
 
 			try {
-				_out.println("<h2> Pour la représentation du spectacle \""+nomS+"\" le "+date+" :</h2>");
+				_out.println("<h2> Pour la représentation du spectacle : <br>\""+nomS+"\" le "+date+"</h2>");
 				_out.println("<p><i>"+ConvertHTML.vectorZoneToHTML(BDRequetes.getZones(),numS, nomS, date)+"</i></p>");
 			} catch (BDException e) {
 				_out.println("<h1>"+e.getMessage()+"</h1>");
