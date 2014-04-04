@@ -107,7 +107,7 @@ public class ConvertHTML {
 			toReturn+="</TR>";
 		}
 
-		return toReturn+"</TABLE>";
+		return toReturn+"</TABLE><form action=\"\"><input type=\"submit\" name=\"valider\" value=\"Valider le caddie\"/></form>";
 	}
 	
 	
