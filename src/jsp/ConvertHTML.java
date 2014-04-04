@@ -102,7 +102,7 @@ public class ConvertHTML {
 			if (rs.elementAt(i).getQt() > 1)
 				toReturn+="<TH> <a href=\"caddie.jsp?idm="+rs.elementAt(i).getId()+"\" >(-)</a> "+rs.elementAt(i).getQt()+" <a href=\"caddie.jsp?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
 			else
-				toReturn+="<TH>"+rs.elementAt(i).getQt()+" <a href=\"/servlet/ConsultationCaddieServlet?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
+				toReturn+="<TH>"+rs.elementAt(i).getQt()+" <a href=\"caddie.jsp?idp="+rs.elementAt(i).getId()+"\" >(+)</a></TH>";			
 			toReturn+="<TH> <a href=\"caddie.jsp?idd="+rs.elementAt(i).getId()+"\" >(X)</a> </TH>";			
 			toReturn+="</TR>";
 		}
