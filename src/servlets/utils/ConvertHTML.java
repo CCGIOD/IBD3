@@ -8,7 +8,7 @@ public class ConvertHTML {
 
 	public static String vectorProgrammeToHTML(Vector<Representation> rs, boolean un_seul_spec){
 		if (rs.isEmpty())
-			return "<p>Il n'y a pas de représentation à venir ...</p>";
+			return "<p class=\"plusbas\">Il n'y a pas de représentation à venir ...</p>";
 
 		String toReturn = "<TABLE BORDER='1' width=\"1000\">\n";
 
@@ -44,7 +44,7 @@ public class ConvertHTML {
 
 	public static String vectorPlaceToHTML(Vector<Place> rs){
 		if (rs.isEmpty())
-			return "Il n'y a plus de places disponibles.";
+			return "<p class=\"plusbas\">Il n'y a plus de places disponibles.</p>";
 
 		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Les places disponibles (#) sont :</CAPTION>";
@@ -81,7 +81,7 @@ public class ConvertHTML {
 	
 	public static String vectorCaddieToHTML(Vector<Caddie> rs){
 		if (rs.isEmpty())
-			return "Le caddie est vide.";
+			return "<p class=\"plusbas\">Le caddie est vide.</p>";
 		
 		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Le caddie :</CAPTION>";
