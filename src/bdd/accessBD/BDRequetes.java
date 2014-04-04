@@ -162,7 +162,7 @@ public class BDRequetes {
 
 	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
 		Vector<Place> res = new Vector<Place>();
-		String requete = "select norang, noplace, numz from lesplaces MINUS select lestickets.noplace, lestickets.norang, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
+		String requete = "select norang, noplace, numz from lesplaces MINUS select lestickets.norang, lestickets.noplace, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -188,7 +188,7 @@ public class BDRequetes {
 	
 	public static Vector<Place> getPlacesDisponiblesFromZone (String numS, String date, int zone) throws BDException {
 		Vector<Place> res = new Vector<Place>();
-		String requete = "select norang, noplace, numZ from lesplaces where numz=" + zone + " MINUS select lestickets.noplace, lestickets.norang, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
+		String requete = "select norang, noplace, numZ from lesplaces where numz=" + zone + " MINUS select lestickets.norang, lestickets.noplace, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
