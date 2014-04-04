@@ -65,7 +65,7 @@ public abstract class BaseServlet extends HttpServlet {
 			testCaddie();
 			rep = true;
 		} catch (BDException e) {
-			out.println("<h1 class=\"errortest\">Erreur : le test de connection à la Base de données à échoué.</h1>");
+			out.println("<h1 class=\"errortest\">Erreur : le test de connexion à la Base de données à échoué.</h1>");
 			rep = false;
 		}
 		finally { if (conn != null) BDConnexion.FermerTout(conn, null, null); }
