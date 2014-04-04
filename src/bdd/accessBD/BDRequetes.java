@@ -557,8 +557,7 @@ public class BDRequetes {
 			conn.commit();
 
 		} catch (SQLException e) {
-			// TODO Bloc catch généré automatiquement
-			e.printStackTrace();
+			throw new BDException("Problème de création de commande (Code Oracle : "+e.getErrorCode()+")");
 		}
 		finally {
 			BDConnexion.FermerTout(conn, stmt, null);
