@@ -1,6 +1,7 @@
 package bdd.accessBD;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -151,5 +152,64 @@ public class BDRequetesTest {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
 		return toReturn;
+	}
+	
+	public static int testNouveauDossier (Connection conn,int finalPrice) throws BDException {
+		String requete = "select max(nodossier) from lesdossiers";
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int toReturn = 0;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			if (!rs.next()) {
+				throw new BDException("Problème, impossible de créer un nouveau dossier");
+			}
+			else
+				toReturn=rs.getInt(1);
+			
+			requete = "insert INTO lesdossiers values (?,?)";
+			pstmt = conn.prepareStatement(requete);
+			pstmt.setInt(1, toReturn+1 );
+			pstmt.setInt(2, finalPrice);
+			
+			int nb_insert = pstmt.executeUpdate();
+
+			if (nb_insert != 1)
+				throw new BDException("Problème lors de la création du dossier");
+
+
+		} catch (SQLException e) {
+			throw new BDException("Problème dossier (Code Oracle : "+e.getErrorCode()+")");
+		}
+		return toReturn+1;
+	}
+	
+	public static int testNouveauTicket (Connection conn) throws BDException {
+		String requete = "select max(noserie) from lestickets";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		int toReturn = 0;
+
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+			if (!rs.next()) {
+				throw new BDException("Problème, impossible de créer un nouveau ticket");
+			}
+			else
+				toReturn=rs.getInt(1);
+			
+			requete = "insert INTO lesdossiers values (?,?)";
+
+
+		} catch (SQLException e) {
+			throw new BDException("Problème ticket (Code Oracle : "+e.getErrorCode()+")");
+		}
+		return toReturn+1;
 	}
 }

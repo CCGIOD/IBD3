@@ -109,7 +109,44 @@ public class ConvertHTML {
 
 		return toReturn+"</TABLE>";
 	}
+	
+	
+	public static String vectorTicketsToHTML(Vector<Ticket> rs){
+		
+		int totalCommand = 0 ;
+		
+		String toReturnHead = "<TABLE BORDER='1' width=\"1000\">";
+		toReturnHead+="<CAPTION>La commande (prix : ";
+		
+		String toReturn = ") :</CAPTION>";
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Dossier n°</i></TH>";			
+		toReturn+="<TH> <i>Ticket n°</i></TH>";	
+		toReturn+="<TH> <i>Place n°</i></TH>";
+		toReturn+="<TH> <i>Spectacle</i> </TH>";
+		toReturn+="<TH> <i>Date représentation</i></TH>";
+		toReturn+="<TH> <i>Zone</i></TH>";			
+		toReturn+="<TH> <i>Prix</i></TH>";		
+		toReturn+="<TH> <i>Date Emission</i></TH>";			
+		toReturn+="</TR>";
+		
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR>";
+			toReturn+="<TH>"+rs.get(i).getNumDossier()  +"</TH>";			
+			toReturn+="<TH>"+rs.get(i).getNumTicket()  +"</TH>";	
+			toReturn+="<TH>"+rs.get(i).getNumPlace()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getNomS()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getDateRep()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getZonePlace()  +"</TH>";			
+			toReturn+="<TH>"+rs.get(i).getPrix()  +"</TH>";		
+			toReturn+="<TH>"+rs.get(i).getDateEmission()  +"</TH>";			
+			toReturn+="</TR>";
+			totalCommand+=rs.get(i).getPrix();
+		}
 
+		return toReturnHead + totalCommand + toReturn+"</TABLE>";
+	}
+	
 	public static String vectorZoneToHTML(Vector<Zone> rs, String numS, String nomS, String DateRep){
 		String toReturn = "<TABLE BORDER='1' width=\"800\">";
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
