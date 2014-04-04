@@ -5,6 +5,10 @@
 <%@ page import="bdd.exceptions.BDException"%> 
 <%@ page import="bdd.exceptions.BDExceptionIllegal"%>
 <%@ page import="servlets.caddie.CaddieVirtuel"%> 
+<%@ page import="bdd.modeles.Caddie"%>
+<%@ page import="servlets.utils.ConvertHTML"%> 
+<%@ page import="java.util.Vector"%> 
+<%@ page import="java.text.ParseException"%> 
 <%@ page import="jsp.*"%> 
 
 <% ServletOutputStream _out = response.getOutputStream(); 
@@ -16,12 +20,13 @@
 <% if (!Utils.testConnection(session,_out)){ Utils.footer(_out); return; } %>
 
 <%
-		String nomS, numS, date, zone, nofp, c;
+		String nomS, numS, date, zone, nofp, c, work;
 		nomS = request.getParameter("nomS");
 		numS = request.getParameter("numS");
 		date = request.getParameter("date");
 		zone = request.getParameter("zone");
 		nofp = request.getParameter("nofp");
+		work = request.getParameter("work");
 		c = request.getParameter("c");
 
 		if (numS == null || date == null || nomS == null){
@@ -52,7 +57,22 @@
 
 		}
 
-		if (numS != null && date != null && c != null && nomS != null && nofp != null){
+       if (numS != null && date != null && c != null && nomS != null && nofp != null && work != null && work.compareTo("R") == 0){
+			try {
+				String[] infos = BDRequetesTest.testAjoutCaddie(numS, date, zone);
+				Caddie tmpCad = new Caddie(1, infos[0], date, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], Integer.valueOf(nofp));
+				Vector<Caddie> cads = new Vector<Caddie>();
+				cads.add(tmpCad);
+				try {
+					_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(cads)));
+				} catch (ParseException e) {
+				}
+				
+			} catch (BDException e) {
+				_out.println("<h1>"+e.getMessage()+"</h1>");
+			}	
+		}
+		else if (numS != null && date != null && c != null && nomS != null && nofp != null){
 			try {
 				if (session.getAttribute("config").toString().compareTo("P") == 0)
 					BDRequetes.addRepresentationCaddie(numS, date, c, nofp);

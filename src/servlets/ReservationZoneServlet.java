@@ -7,12 +7,14 @@ import bdd.accessBD.BDRequetes;
 import bdd.accessBD.BDRequetesTest;
 import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
-
+import bdd.modeles.Caddie;
 import servlets.base.BaseServlet;
 import servlets.caddie.CaddieVirtuel;
 import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class ReservationZoneServlet extends BaseServlet {
@@ -24,12 +26,13 @@ public class ReservationZoneServlet extends BaseServlet {
 		header("Réservation de places de spectacle");
 		if (!testConnection()){ footer(); return; }	
 
-		String nomS, numS, date, zone, nofp, c;
+		String nomS, numS, date, zone, nofp, c, work;
 		nomS = req.getParameter("nomS");
 		numS = req.getParameter("numS");
 		date = req.getParameter("date");
 		zone = req.getParameter("zone");
 		nofp = req.getParameter("nofp");
+		work = req.getParameter("work");
 		c = req.getParameter("c");
 
 		if (numS == null || date == null || nomS == null){
@@ -57,8 +60,22 @@ public class ReservationZoneServlet extends BaseServlet {
 			}
 
 		}
-
-		if (numS != null && date != null && c != null && nomS != null && nofp != null){
+		if (numS != null && date != null && c != null && nomS != null && nofp != null && work != null && work.compareTo("R") == 0){
+			try {
+				String[] infos = BDRequetesTest.testAjoutCaddie(numS, date, zone);
+				Caddie tmpCad = new Caddie(1, infos[0], date, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], Integer.valueOf(nofp));
+				Vector<Caddie> cads = new Vector<Caddie>();
+				cads.add(tmpCad);
+				try {
+					out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(cads)));
+				} catch (ParseException e) {
+				}
+				
+			} catch (BDException e) {
+				out.println("<h1>"+e.getMessage()+"</h1>");
+			}	
+		}
+		else if (numS != null && date != null && c != null && nomS != null && nofp != null){
 			try {
 				if (session.getAttribute("config").toString().compareTo("P") == 0)
 					BDRequetes.addRepresentationCaddie(numS, date, c, nofp);

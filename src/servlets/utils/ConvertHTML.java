@@ -167,7 +167,7 @@ public class ConvertHTML {
 		    + "\n <span id=\"nbofp" + i + "\">1</span>"
 		    + "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"+\">"
 		    +	"\n</TH>" ;
-			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=1" + "\">RESERVER</a></TH><TH><a id=\"caddie" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&nofp=1\">AJOUTER AU CADDIE</a></TH></TR>";
+			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=1&work=R" + "\">RESERVER</a></TH><TH><a id=\"caddie" + i + "\"href=\"/servlet/ReservationZoneServlet?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&nofp=1\">AJOUTER AU CADDIE</a></TH></TR>";
 		}
 		
 		String scriptJs = "<script>"
@@ -178,7 +178,7 @@ public class ConvertHTML {
 				+ "obj.innerHTML=parseInt(obj.innerHTML)+1;"
 				+ "else if(obj.innerHTML > 1)"
 				+ "obj.innerHTML=parseInt(obj.innerHTML)-1;"
-				+ "document.getElementById('resZone'+id).href=link + '&nofp=' + obj.innerHTML ;"
+				+ "document.getElementById('resZone'+id).href=link + '&work=R' + '&nofp=' + obj.innerHTML ;"
 				+ "document.getElementById('caddie'+id).href=link + '&nofp=' + obj.innerHTML ;"
 				+ "}"
 				+ "</script>";
