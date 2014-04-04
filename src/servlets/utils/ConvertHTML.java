@@ -126,6 +126,7 @@ public class ConvertHTML {
 		toReturn+="<TH> <i>Spectacle</i> </TH>";
 		toReturn+="<TH> <i>Date représentation</i></TH>";
 		toReturn+="<TH> <i>Zone</i></TH>";			
+		toReturn+="<TH> <i>Rang</i></TH>";			
 		toReturn+="<TH> <i>Prix</i></TH>";		
 		toReturn+="<TH> <i>Date Emission</i></TH>";			
 		toReturn+="</TR>";
@@ -137,7 +138,8 @@ public class ConvertHTML {
 			toReturn+="<TH>"+rs.get(i).getNumPlace()  +"</TH>";
 			toReturn+="<TH>"+rs.get(i).getNomS()  +"</TH>";
 			toReturn+="<TH>"+rs.get(i).getDateRep()  +"</TH>";
-			toReturn+="<TH>"+rs.get(i).getZonePlace()  +"</TH>";			
+			toReturn+="<TH>"+rs.get(i).getZonePlace()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getRangPlace()  +"</TH>";			
 			toReturn+="<TH>"+rs.get(i).getPrix()  +"</TH>";		
 			toReturn+="<TH>"+rs.get(i).getDateEmission()  +"</TH>";			
 			toReturn+="</TR>";

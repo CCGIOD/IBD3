@@ -8,9 +8,11 @@ import servlets.caddie.CaddieVirtuel;
 import servlets.utils.ConvertHTML;
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
+import bdd.modeles.Caddie;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class ConsultationCaddieServlet extends BaseServlet {
@@ -20,11 +22,38 @@ public class ConsultationCaddieServlet extends BaseServlet {
 			header("Consultation du caddie");
 		if (!testConnection()){ footer(); return; }
 
-		String idp, idm, idd;
+		String idp, idm, idd, valider;
 		idp = req.getParameter("idp");
 		idm = req.getParameter("idm");
 		idd = req.getParameter("idd");
+		idd = req.getParameter("idd");
+		valider = req.getParameter("valider");
 
+		if(valider != null){
+			if (session.getAttribute("config").toString().compareTo("P") == 0){
+				try {
+					Vector<Caddie> caddie = BDRequetes.getContenuCaddie() ;
+					if(caddie.size()>0){
+						try {
+							out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(caddie)));
+						} catch (ParseException e) {
+						}
+					}
+				} catch (BDException e) {
+					out.println("<h1>"+e.getMessage()+"</h1>");
+				}
+			}
+			else
+				try {
+					CaddieVirtuel.setQt(idp, '+');
+					redirect(res, "ConsultationCaddieServlet");
+					return;
+				} catch (ParseException e) {
+					redirect(res, "ConsultationCaddieServlet");
+					return;
+				}
+		}
+		
 		if (idp != null && idm == null && idd == null){
 			if (session.getAttribute("config").toString().compareTo("P") == 0)
 				try {
