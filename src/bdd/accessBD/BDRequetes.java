@@ -313,11 +313,10 @@ public class BDRequetes {
 		return nomSpectacle;
 	}
 
-	public static void checkCaddieLifetime () throws BDException {
+	public static void checkCaddieLifetime (Connection conn) throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
 		ResultSet rs = null;
-		Connection conn = null;
 
 		try {
 			conn = BDConnexion.getConnexion();
@@ -342,11 +341,52 @@ public class BDRequetes {
 		} catch (SQLException e) {
 			throw new BDException("Problème lors de la vérification initiale du caddie (Code Oracle : "+e.getErrorCode()+")");
 		}
-		finally {
-			BDConnexion.FermerTout(conn, stmt, rs);
-		}
 	}
 
+	public static int getCaddieLifetime (Connection conn) throws BDException {
+		String requete = "select duree_vie_cad from config";
+		Statement stmt = null;
+		ResultSet rs = null;
+		int toReturn = 0;
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+
+			if (rs.next()){
+				toReturn = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la récupération de la durée de vie du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		return toReturn;
+	}
+
+	public static char getTypeCaddie (Connection conn) throws BDException {
+		String requete = "select type_cad from config";
+		Statement stmt = null;
+		ResultSet rs = null;
+		char toReturn = '?';
+
+		try {
+			conn = BDConnexion.getConnexion();
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(requete);
+
+			if (rs.next()){
+				toReturn = rs.getString(1).charAt(0);
+			}
+
+		} catch (SQLException e) {
+			throw new BDException("Problème lors de la récupération du type du caddie (Code Oracle : "+e.getErrorCode()+")");
+		}
+		return toReturn;
+	}
+	
 	public static int getCaddieLifetime () throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;

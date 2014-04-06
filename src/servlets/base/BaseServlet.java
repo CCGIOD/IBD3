@@ -20,7 +20,7 @@ import bdd.exceptions.BDException;
 public abstract class BaseServlet extends HttpServlet {
 
 	protected ServletOutputStream out;
-	
+
 	public static HttpSession session;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -28,31 +28,27 @@ public abstract class BaseServlet extends HttpServlet {
 
 		out = res.getOutputStream();
 		res.setContentType("text/html"); 
-	    res.setCharacterEncoding( "iso-8859-1" );
+		res.setCharacterEncoding( "iso-8859-1" );
 
 	}
-	
-	public void testCaddie () throws IOException {
-		if (session.getAttribute("config") == null) {  
-			try {
-				char d = BDRequetes.getTypeCaddie();
 
-				if (d == 'P'){	    		
-					BDRequetes.checkCaddieLifetime();
-					session.setAttribute("config", "P");
+	public void testCaddie (Connection conn) throws IOException, BDException {
+		if (session.getAttribute("config") == null) {  
+			char d = BDRequetes.getTypeCaddie(conn);
+
+			if (d == 'P'){	    		
+				BDRequetes.checkCaddieLifetime(conn);
+				session.setAttribute("config", "P");
+			}
+			else {
+				int d2 = BDRequetes.getCaddieLifetime(conn);
+				if (d2 == -1){
+					CaddieVirtuel.vider();
 				}
-				else {
-					int d2 = BDRequetes.getCaddieLifetime();
-					if (d2 == -1){
-						CaddieVirtuel.vider();
-					}
-					else if (d2 > 0){
-						CaddieVirtuel.checkDate(d2);
-					}
-					session.setAttribute("config", "V");
+				else if (d2 > 0){
+					CaddieVirtuel.checkDate(d2);
 				}
-			} catch (BDException e) {
-				out.println("<h1>"+e.getMessage()+"</h1>");
+				session.setAttribute("config", "V");
 			}
 		}
 	}
@@ -61,14 +57,14 @@ public abstract class BaseServlet extends HttpServlet {
 		Connection conn = null;
 		boolean rep = false;
 		try {
-			conn = BDConnexion.getConnexion();			
-			testCaddie();
+			conn = BDConnexion.getConnexion();
+			testCaddie(conn);
 			rep = true;
 		} catch (BDException e) {
-			out.println("<h1 class=\"errortest\">Erreur : le test de connexion à la Base de données à échoué.</h1>");
+			out.println("<h1 class=\"errortest\">"+e.getMessage()+"</h1>");
 			rep = false;
 		}
-		finally { if (conn != null) BDConnexion.FermerTout(conn, null, null); }
+		finally { BDConnexion.FermerTout(conn, null, null); }
 		return rep;
 	}
 

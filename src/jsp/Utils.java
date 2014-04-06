@@ -30,34 +30,30 @@ public class Utils {
 		out.println("<BODY><div id=\"block\"><img border=\"0\" src=\"/images/theatre_jsp.jpg\" width=\"200\" height=\"200\">");
 		out.println("<h1>"+h1+" :</h1>");
 	}
-	
+
 	public static void footer (ServletOutputStream out) throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/jsp/index.jsp\">Page d'accueil</a></p>");
 		out.println("</div></BODY></HTML>");
 		out.close();
 	}
-	
-	private static void testCaddie (HttpSession session, ServletOutputStream out) throws IOException {
-		if (session.getAttribute("config") == null) {  
-			try {
-				char d = BDRequetes.getTypeCaddie();
 
-				if (d == 'P'){	    		
-					BDRequetes.checkCaddieLifetime();
-					session.setAttribute("config", "P");
+	private static void testCaddie (HttpSession session, ServletOutputStream out, Connection conn) throws IOException, BDException {
+		if (session.getAttribute("config") == null) {  
+			char d = BDRequetes.getTypeCaddie(conn);
+
+			if (d == 'P'){	    		
+				BDRequetes.checkCaddieLifetime(conn);
+				session.setAttribute("config", "P");
+			}
+			else {
+				int d2 = BDRequetes.getCaddieLifetime(conn);
+				if (d2 == -1){
+					CaddieVirtuel.vider();
 				}
-				else {
-					int d2 = BDRequetes.getCaddieLifetime();
-					if (d2 == -1){
-						CaddieVirtuel.vider();
-					}
-					else if (d2 > 0){
-						CaddieVirtuel.checkDate(d2);
-					}
-					session.setAttribute("config", "V");
+				else if (d2 > 0){
+					CaddieVirtuel.checkDate(d2);
 				}
-			} catch (BDException e) {
-				out.println("<h1>"+e.getMessage()+"</h1>");
+				session.setAttribute("config", "V");
 			}
 		}
 	}
@@ -67,13 +63,13 @@ public class Utils {
 		boolean rep = false;
 		try {
 			conn = BDConnexion.getConnexion();			
-			testCaddie(session, out);
+			testCaddie(session,out,conn);
 			rep = true;
 		} catch (BDException e) {
-			out.println("<h1 class=\"errortest\">Erreur : le test de connexion à la Base de données à échoué.</h1>");
+			out.println("<h1 class=\"errortest\">"+e.getMessage()+"</h1>");
 			rep = false;
 		}
-		finally { if (conn != null) BDConnexion.FermerTout(conn, null, null); }
+		finally { BDConnexion.FermerTout(conn, null, null); }
 		return rep;
 	}
 }
