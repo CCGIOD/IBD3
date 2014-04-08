@@ -5,11 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
 
+import servlets.caddie.CaddieVirtuel;
 import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
+import bdd.modeles.Caddie;
 
 public class BDRequetesTest {
 
@@ -211,5 +216,36 @@ public class BDRequetesTest {
 			throw new BDException("Problème ticket (Code Oracle : "+e.getErrorCode()+")");
 		}
 		return toReturn+1;
+	}
+	
+	public static Vector<Caddie> testCheckValideCaddie(Vector<Caddie> caddies, int formCaddie) throws ParseException, BDException{
+		Vector<Caddie> toDelete = new Vector<Caddie>();
+		
+		// Vérification
+		for(int i = 0 ; i< caddies.size() ; i++){
+			Caddie caddie = caddies.get(i);
+			Date dNow = new Date( );
+		    SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+		    long t1 = (new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(caddie.getDate()).getTime() ;
+			long t2 = (new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(ft.format(dNow)).getTime();
+			if(t1 < t2){
+				Caddie delete = new Caddie(caddie.getId(), caddie.getNom(), caddie.getDate(), caddie.getNumS(), caddie.getZone(), caddie.getNomZ(), caddie.getQt());
+				toDelete.add(delete);
+			}
+		}
+		
+		// Suppression 
+		if(formCaddie > 0)
+		{
+			for(int i = 0 ; i< toDelete.size() ; i++){
+				Caddie caddie = toDelete.get(i);
+				if(formCaddie == 1)
+					BDRequetes.setQtCaddie(Integer.toString(caddie.getId()), 'd');
+				else
+					CaddieVirtuel.setQt(Integer.toString(caddie.getId()), 'd');
+			}
+		}
+		
+		return toDelete;
 	}
 }

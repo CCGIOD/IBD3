@@ -63,9 +63,19 @@
 				Caddie tmpCad = new Caddie(1, infos[0], date, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], Integer.valueOf(nofp));
 				Vector<Caddie> cads = new Vector<Caddie>();
 				cads.add(tmpCad);
+				Vector<Caddie> deleteC = null ;
 				try {
-					_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(cads)));
-				} catch (ParseException e) {
+					deleteC = BDRequetesTest.testCheckValideCaddie(cads, 0);
+				} catch (ParseException e1) {
+				}
+				if(deleteC != null && deleteC.size() > 0){
+					_out.println("<p><i>" + ConvertHTML.vectorCaddieDeletionToHTML(deleteC) + "</i></p>");
+				}
+				else{
+					try {
+						_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(cads)));
+					} catch (ParseException e) {
+					}
 				}
 				
 			} catch (BDException e) {

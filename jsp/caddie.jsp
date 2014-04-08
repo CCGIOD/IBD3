@@ -27,9 +27,17 @@
 			if (session.getAttribute("config").toString().compareTo("P") == 0){
 				try {
 					Vector<Caddie> caddie = BDRequetes.getContenuCaddie() ;
-					if(caddie.size()>0){
+					Vector<Caddie> deleteC = null ;
+					try {
+						deleteC = BDRequetesTest.testCheckValideCaddie(caddie, 1);
+					} catch (ParseException e1) {
+					}
+					if(deleteC != null && deleteC.size() > 0){
+						_out.println("<p><i>" + ConvertHTML.vectorCaddieDeletionToHTML(deleteC)+ "</i></p>");
+					}
+					if(caddie.size()-deleteC.size()>0){
 						try {
-							_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(caddie)));
+							_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(BDRequetes.getContenuCaddie())));
 							BDRequetes.deleteCaddie();
 						} catch (ParseException e) {
 						}
@@ -42,9 +50,17 @@
 			{
 				try {
 					Vector<Caddie> caddie = CaddieVirtuel.getList();
-					if(caddie.size()>0){
+					Vector<Caddie> deleteC = null ;
+					try {
+						deleteC = BDRequetesTest.testCheckValideCaddie(caddie, 2);
+					} catch (ParseException e1) {
+					}
+					if(deleteC != null && deleteC.size() > 0){
+						_out.println("<p><i>" + ConvertHTML.vectorCaddieDeletionToHTML(deleteC) + "</i></p>");
+					}
+					if(CaddieVirtuel.getList().size()>0){
 						try {
-							_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(caddie)));
+							_out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(CaddieVirtuel.getList())));
 							CaddieVirtuel.vider() ;
 							
 						} catch (ParseException e) {

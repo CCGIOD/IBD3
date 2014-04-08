@@ -196,4 +196,28 @@ public class ConvertHTML {
 
 		return toReturn+"</TABLE>";
 	}
+	
+	public static String vectorCaddieDeletionToHTML(Vector<Caddie> rs){
+		if (rs.isEmpty())
+			return "";
+		
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
+		toReturn+="<CAPTION>Ces places ne sont pas réservables car la représentation a déjà eu lieu :</CAPTION>";
+
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Reservation n°</i></TH>";			
+		toReturn+="<TH> <i>Spectacle</i> </TH><TH> <i>Date représentation</i></TH>";
+		toReturn+="<TH> <i> Zone </i></TH>";						
+		toReturn+="</TR>";
+		
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR>";
+			toReturn+="<TH> "+(i+1)+"</TH>";			
+			toReturn+="<TH>"+rs.elementAt(i).getNom()+" </TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
+			toReturn+="<TH> "+rs.elementAt(i).getZone()+" ("+rs.elementAt(i).getNomZ()+")</TH>";			
+			toReturn+="</TR>";
+		}
+
+		return toReturn+"</TABLE>";
+	}
 }
