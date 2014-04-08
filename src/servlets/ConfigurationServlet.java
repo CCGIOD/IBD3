@@ -11,9 +11,15 @@ import bdd.exceptions.BDException;
 
 import java.io.IOException;
 
+/**
+ * Servlet qui permet de configurer le caddie.
+ */
 @SuppressWarnings("serial")
 public class ConfigurationServlet extends BaseServlet {
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
 		header("Page de configuration", "Configuration");
@@ -106,14 +112,24 @@ public class ConfigurationServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Permet de configurer l'application";
 	}
 
+	/**
+	 * Redéfinition de la méthode footer de la Servlet.
+	 */
 	public void footer() throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
 		super.footer();

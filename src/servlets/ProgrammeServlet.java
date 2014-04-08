@@ -11,9 +11,15 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
+/**
+ * Servlet qui permet d'afficher le programme.
+ */
 @SuppressWarnings("serial")
 public class ProgrammeServlet extends BaseServlet {
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
 		header("Programme de la saison");
@@ -28,10 +34,17 @@ public class ProgrammeServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Permet de voir le programme complet";
 	}

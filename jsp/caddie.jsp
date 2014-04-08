@@ -1,8 +1,8 @@
 <%@ page pageEncoding="UTF-8" %>
 
-<%@ page import="bdd.accessBD.BDRequetes"%> 
+<%@ page import="bdd.accessBD.BDRequetes"%>
+<%@ page import="bdd.accessBD.BDRequetesTest"%>
 <%@ page import="bdd.exceptions.BDException"%> 
-<%@ page import="servlets.utils.ConvertHTML"%>
 <%@ page import="bdd.modeles.Caddie"%>
 <%@ page import="servlets.caddie.CaddieVirtuel"%>
 <%@ page import="java.util.Vector"%>

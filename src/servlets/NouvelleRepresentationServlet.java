@@ -11,9 +11,15 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
+/**
+ * Servlet qui permet d'ajouter une nouvelle représentation.
+ */
 @SuppressWarnings("serial")
 public class NouvelleRepresentationServlet extends BaseServlet {
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);
 		header("Ajouter une nouvelle représentation");
@@ -110,14 +116,24 @@ public class NouvelleRepresentationServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Ajoute une représentation à une date donnée pour un spectacle existant";
 	}
 
+	/**
+	 * Redéfinition de la méthode footer de la Servlet.
+	 */
 	public void footer() throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/admin/admin.html\">Page d'administration</a></p>");
 		super.footer();
