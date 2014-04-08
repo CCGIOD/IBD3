@@ -84,7 +84,7 @@ public class BDRequetes {
 	 */
 	public static Vector<Spectacle> getSpectables () throws BDException {
 		Vector<Spectacle> res = new Vector<Spectacle>();
-		String requete = "select DISTINCT numS, nomS from LesSpectacles";
+		String requete = "select DISTINCT numS, nomS from LesSpectacles order by numS asc";
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
