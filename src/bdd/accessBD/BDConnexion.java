@@ -34,7 +34,7 @@ public class BDConnexion {
 			String driver = p.getProperty("driver");
 			String login = p.getProperty("user");
 			String mdp = p.getProperty("mdp");
-			
+
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url,login,mdp);
 			conn.setAutoCommit(false);
@@ -47,7 +47,7 @@ public class BDConnexion {
 		}
 		return conn;
 	}
-	
+
 	/**
 	 * Permet de fermer proprement des objets utilisés pour dialoguer avec 
 	 * le serveur de BD.
@@ -79,7 +79,7 @@ public class BDConnexion {
 			conn = null;
 		}
 	}
-	
+
 	/**
 	 * Permet de fermer proprement des objets utilisés pour dialoguer avec 
 	 * le serveur de BD.

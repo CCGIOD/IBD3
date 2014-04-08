@@ -219,7 +219,7 @@ public class BDRequetes {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
@@ -238,7 +238,7 @@ public class BDRequetes {
 		}
 		return res;
 	}
-	
+
 	/** 
 	 * Requête pour obtenir la liste des places disponibles d'une zone pour une représentation.
 	 * @param numS
@@ -257,7 +257,7 @@ public class BDRequetes {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
@@ -496,7 +496,7 @@ public class BDRequetes {
 		}
 		return toReturn;
 	}
-	
+
 	/**
 	 * Requête pour obtenir le temp de la session du caddie pour un caddie persistant.
 	 * @throws BDException
@@ -577,7 +577,7 @@ public class BDRequetes {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		
+
 		try {
 			conn = BDConnexion.getConnexion();
 
@@ -646,7 +646,7 @@ public class BDRequetes {
 			BDConnexion.FermerTout(null, pstmt, null);
 		}
 	}
-	
+
 	/**
 	 * Requête permettant la réservation d'un caddie.
 	 * @param caddies
@@ -661,7 +661,7 @@ public class BDRequetes {
 		ArrayList<Integer> placesPrice = new ArrayList<Integer>();
 		Vector<Ticket> toReturn = new Vector<Ticket>();
 		int finalPrice = 0 ;
-		
+
 		// Test et récupération des places disponibles.
 		for(Caddie caddie : caddies){
 			Vector<Place> places = getPlacesDisponiblesFromZone(Integer.toString(caddie.getNumS()), caddie.getDate(), caddie.getZone());
@@ -669,16 +669,16 @@ public class BDRequetes {
 			// Test si le nombre de places est bon.
 			if(places.size() < caddie.getQt())
 				throw new BDException("Il ne reste plus assez de places !!!!");
-			
+
 			// Choix des places.
 			placesToChoice.add(choicePlaces(places, caddie.getQt()));
-			
+
 			// Ajout au prix de la commande.
 			int prix =getPriceOfAPlace(caddie.getZone());
 			finalPrice+=prix*caddie.getQt();
 			placesPrice.add(prix);
 		}
-		
+
 		// Insertion.
 		PreparedStatement stmt = null;
 		Connection conn = null;
@@ -686,10 +686,10 @@ public class BDRequetes {
 		try {
 			conn = BDConnexion.getConnexion();
 			conn.setAutoCommit(false);
-			
+
 			// Création d'une nouvelle commande.
 			int numDossier = BDRequetesTest.testNouveauDossier(conn,finalPrice);
-			
+
 			// Ajout de tous les tickets
 			for(int i = 0 ; i< caddies.size() ; i++){
 
@@ -707,7 +707,7 @@ public class BDRequetes {
 					stmt.setInt(4,place.getNum());
 					stmt.setInt(5,place.getRang());
 					Date dNow = new Date( );
-				    SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+					SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
 					stmt.setTimestamp(6,new Timestamp((new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(ft.format(dNow)).getTime()));
 					stmt.setInt(7,numDossier);
 					int nb_insert = stmt.executeUpdate();
@@ -731,12 +731,12 @@ public class BDRequetes {
 						tik.setRangPlace(place.getRang());
 						tik.setZonePlace(place.getZone());
 						tik.setPrix(prixDelaPlace);
-						
+
 						toReturn.add(tik);
 					}
 				}
 			}
-			
+
 			// To c'est normalement passé.
 			conn.commit();
 
@@ -748,7 +748,7 @@ public class BDRequetes {
 		}
 		return toReturn ;
 	}
-	
+
 	/**
 	 * Permet de choisir des places à réserver.
 	 * @param places
@@ -760,18 +760,18 @@ public class BDRequetes {
 	 */
 	public static Vector<Place> choicePlaces(Vector<Place> places, int qt){
 		Vector<Place> toReturn = new Vector<Place>();
-		
+
 		int index = (int)(Math.random() * (places.size()));
-		
+
 		for(int i = 0 ; i < qt ; i++){
 			toReturn.add(places.get(index));
 			index++;
 			index%=places.size();
 		}
-		
+
 		return toReturn;
 	}
-	
+
 	/**
 	 * Requête pour obtenir le prix des places d'une zone.
 	 * @param zone
@@ -805,7 +805,7 @@ public class BDRequetes {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * Supprime complétement le caddie en mode persistant.
 	 * @throws BDException
