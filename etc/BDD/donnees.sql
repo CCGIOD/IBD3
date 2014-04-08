@@ -1,3 +1,12 @@
+-- Fichier de données pour la base :
+-- (fichier récupéré avec le sujet puis modifié)
+
+
+-- Ajouts :
+insert into LeCaddie values (1,104,'22-FEB-09',1,2);
+insert into config values ('P','-1','28-MAR-14');
+--
+
 insert into LESCATEGORIES values ('orchestre', '35');
 insert into LESCATEGORIES values ('balcon', '25');
 insert into LESCATEGORIES values ('poulailler', '10');
