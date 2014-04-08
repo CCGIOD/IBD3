@@ -1,3 +1,6 @@
+-- Fichier de relation pour la base :
+-- (fichier récupéré avec le sujet puis modifié)
+
 drop table LesTickets ; 
 drop table LesDossiers;
 drop table LesRepresentations ; 
@@ -44,14 +47,14 @@ create table LesTickets (noSerie number (4), numS number (4),
                  references LesDossiers (noDossier)
 ) ;
 
+
+-- Ajouts :
 create table LeCaddie (idr number (4), numS number (4), dateRep date, numZ number (4), qt number (4),
 	constraint cad_c1 primary key (idr),
 	constraint cad_c2 foreign key (numS,dateRep) references LesRepresentations (numS,dateRep),
 	constraint cad_c3 foreign key (numZ) references LesZones (numZ),
 	constraint cad_c4 check (qt > 0));
 
-insert into LeCaddie values (1,104,'22-FEB-09',1,2);
-
 create table config (type_cad char, duree_vie_cad number (4), date_cad date);
-insert into config values ('P','-1','28-MAR-14');
+--
 
