@@ -39,7 +39,7 @@ public class BDConnexion {
 			conn = DriverManager.getConnection(url,login,mdp);
 			conn.setAutoCommit(false);
 		} catch (SQLException e) {
-			throw new BDException("Connexion impossible à la base de données");
+			throw new BDException("Connexion impossible à la Base de Données");
 		} catch (IOException e) {
 			throw new BDException("Fichier conf illisible");
 		} catch (ClassNotFoundException e) {
