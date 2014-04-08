@@ -182,7 +182,6 @@ public class BDRequetesTest {
 	 * 		Le nom du spectacle et le nom de la zone.
 	 * @throws BDException
 	 */
-	@SuppressWarnings("resource")
 	public static String[] testAjoutCaddie (String numS, String dateRep, String zone) throws BDException {
 		String requete = "select nomS from lesspectacles, lesrepresentations where lesspectacles.numS=lesrepresentations.numS and lesspectacles.numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi')";
 		Statement stmt = null;

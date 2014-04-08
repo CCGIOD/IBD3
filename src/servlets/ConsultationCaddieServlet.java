@@ -15,18 +15,23 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Vector;
 
+/**
+ * Servlet qui permet de consulter la caddie.
+ */
 @SuppressWarnings("serial")
 public class ConsultationCaddieServlet extends BaseServlet {
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException	{
 		super.doGet(req, res);
-			header("Consultation du caddie");
+		header("Consultation du caddie");
 		if (!testConnection()){ footer(); return; }
 
 		String idp, idm, idd, valider;
 		idp = req.getParameter("idp");
 		idm = req.getParameter("idm");
-		idd = req.getParameter("idd");
 		idd = req.getParameter("idd");
 		valider = req.getParameter("valider");
 
@@ -69,7 +74,7 @@ public class ConsultationCaddieServlet extends BaseServlet {
 						try {
 							out.println("<p><i>" + ConvertHTML.vectorTicketsToHTML(BDRequetes.valideCaddie(CaddieVirtuel.getList())));
 							CaddieVirtuel.vider() ;
-							
+
 						} catch (ParseException e) {
 						}
 					}
@@ -78,7 +83,7 @@ public class ConsultationCaddieServlet extends BaseServlet {
 				}
 			}
 		}
-		
+
 		if (idp != null && idm == null && idd == null){
 			if (session.getAttribute("config").toString().compareTo("P") == 0)
 				try {
@@ -151,10 +156,17 @@ public class ConsultationCaddieServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Ajoute une représentation à une date donnée pour un spectacle existant";
 	}

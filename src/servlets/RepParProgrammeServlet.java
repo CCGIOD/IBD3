@@ -11,9 +11,15 @@ import servlets.utils.ConvertHTML;
 
 import java.io.IOException;
 
+/**
+ * Servlet qui permet d'afficher une représentation par programme.
+ */
 @SuppressWarnings("serial")
 public class RepParProgrammeServlet extends BaseServlet {
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
 		header("Liste des représentations");
@@ -21,7 +27,7 @@ public class RepParProgrammeServlet extends BaseServlet {
 
 		String numS;
 		numS = req.getParameter("numS");
-		
+
 		try {
 			out.println("<p><i>" + ConvertHTML.vectorSpectacleConsultationToHTML(BDRequetes.getSpectables())  + "</i></p>");
 		} catch (BDException e) {
@@ -39,10 +45,17 @@ public class RepParProgrammeServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Permet de voir les représentations d'un spectacle donné";
 	}

@@ -4,8 +4,18 @@ import java.util.Vector;
 
 import bdd.modeles.*;
 
+/**
+ * Cette classe permet de fournir du code HTML à partir de données venant de la BDD stockées dans un modèle.
+ * Les méthodes de cette classe sont statiques et sont destinées à être appelées depuis une JSP.
+ */
 public class ConvertHTML {
 
+	/**
+	 * Donne le tableau HTML affichant le programme.
+	 * @param rs Le vector de représentation.
+	 * @param un_seul_spec Indique s'il s'agit d'un programme ou d'une liste de représentation d'un seul spectacle.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorProgrammeToHTML(Vector<Representation> rs, boolean un_seul_spec){
 		if (rs.isEmpty())
 			return "<p class=\"plusbas\">Il n'y a pas de représentation à venir ...</p>";
@@ -42,6 +52,11 @@ public class ConvertHTML {
 		return toReturn+"</TABLE>\n";
 	}
 
+	/**
+	 * Donne le tableau HTML affichant les places disponibles.
+	 * @param rs Le vector de places.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorPlaceToHTML(Vector<Place> rs){
 		if (rs.isEmpty())
 			return "<p class=\"plusbas\">Il n'y a plus de places disponibles.</p>";
@@ -67,6 +82,11 @@ public class ConvertHTML {
 		return toReturn+"</TABLE>";
 	}
 
+	/**
+	 * Donne la liste des spectacles sans intéractions VOIR possible en HTML.
+	 * @param rs Le vector de spectacles.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorSpectacleConsultationToHTML(Vector<Spectacle> rs){
 		String toReturn = "<TABLE BORDER='1' width=\"600\">";
 		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
@@ -78,11 +98,16 @@ public class ConvertHTML {
 
 		return toReturn+"</TABLE>";
 	}
-	
+
+	/**
+	 * Donne le caddie sous forme HTML.
+	 * @param rs Le vector de caddie.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorCaddieToHTML(Vector<Caddie> rs){
 		if (rs.isEmpty())
 			return "<p class=\"plusbas\">Le caddie est vide.</p>";
-		
+
 		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
 		toReturn+="<CAPTION>Le caddie :</CAPTION>";
 
@@ -93,7 +118,7 @@ public class ConvertHTML {
 		toReturn+="<TH> <i>Nombre de places (Ajouter/Retirer)</i></TH>";		
 		toReturn+="<TH> <i>Supprimer la réservation</i></TH>";			
 		toReturn+="</TR>";
-		
+
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="<TR>";
 			toReturn+="<TH> "+(i+1)+"</TH>";			
@@ -110,6 +135,57 @@ public class ConvertHTML {
 		return toReturn+"</TABLE><form action=\"\"><input type=\"submit\" name=\"valider\" value=\"Valider le caddie\"/></form>";
 	}
 
+	/**
+	 * Donne la liste des tickets après une réservation sous forme HTML.
+	 * @param rs Le vector de tickets.
+	 * @return String du tableau HTML.
+	 */
+	public static String vectorTicketsToHTML(Vector<Ticket> rs){
+
+		int totalCommand = 0 ;
+
+		String toReturnHead = "<TABLE BORDER='1' width=\"1000\">";
+		toReturnHead+="<CAPTION>La commande (prix : ";
+
+		String toReturn = ") :</CAPTION>";
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Dossier n°</i></TH>";			
+		toReturn+="<TH> <i>Ticket n°</i></TH>";	
+		toReturn+="<TH> <i>Place n°</i></TH>";
+		toReturn+="<TH> <i>Spectacle</i> </TH>";
+		toReturn+="<TH> <i>Date représentation</i></TH>";
+		toReturn+="<TH> <i>Zone</i></TH>";			
+		toReturn+="<TH> <i>Rang</i></TH>";			
+		toReturn+="<TH> <i>Prix</i></TH>";		
+		toReturn+="<TH> <i>Date Emission</i></TH>";			
+		toReturn+="</TR>";
+
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR>";
+			toReturn+="<TH>"+rs.get(i).getNumDossier()  +"</TH>";			
+			toReturn+="<TH>"+rs.get(i).getNumTicket()  +"</TH>";	
+			toReturn+="<TH>"+rs.get(i).getNumPlace()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getNomS()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getDateRep()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getZonePlace()  +"</TH>";
+			toReturn+="<TH>"+rs.get(i).getRangPlace()  +"</TH>";			
+			toReturn+="<TH>"+rs.get(i).getPrix()  +"</TH>";		
+			toReturn+="<TH>"+rs.get(i).getDateEmission()  +"</TH>";			
+			toReturn+="</TR>";
+			totalCommand+=rs.get(i).getPrix();
+		}
+
+		return toReturnHead + totalCommand + toReturn+"</TABLE>";
+	}
+
+	/**
+	 * Donne la liste des places et les intéractions associées pour une représentation en HTML.
+	 * @param rs Le vector de zone.
+	 * @param numS Le nom du spectacle.
+	 * @param nomS Le numéro du spectacle.
+	 * @param DateRep La date de la représentation.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorZoneToHTML(Vector<Zone> rs, String numS, String nomS, String DateRep){
 		String toReturn = "<TABLE BORDER='1' width=\"800\">";
 		toReturn+="<CAPTION>Les zones sont :</CAPTION>";
@@ -120,17 +196,17 @@ public class ConvertHTML {
 		toReturn+="<TH> <i>Réservation directe</i></TH>";			
 		toReturn+="<TH> <i>Ajouter au caddie</i></TH>";		
 		toReturn+="</TR>";
-		
+
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="\n<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNomC()+"</TH>";
 			toReturn+="\n<TH>"
-		    + "\n <input type=\"button\" onclick=\"f('" + i + "',-1,'" + "reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"-\">"
-		    + "\n <span id=\"nbofp" + i + "\">1</span>"
-		    + "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"+\">"
-		    +	"\n</TH>" ;
-			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=1" + "\">RESERVER</a></TH><TH><a id=\"caddie" + i + "\"href=\"reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&nofp=1\">AJOUTER AU CADDIE</a></TH></TR>";
+					+ "\n <input type=\"button\" onclick=\"f('" + i + "',-1,'" + "reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"-\">"
+					+ "\n <span id=\"nbofp" + i + "\">1</span>"
+					+ "\n <input type=\"button\" onclick=\"f('" + i + "',1,'" + "reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum() + "')\" value=\"+\">"
+					+	"\n</TH>" ;
+			toReturn+="\n<TH><a id=\"resZone" + i + "\"href=\"reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&zone="+rs.elementAt(i).getNum()+ "&nofp=1&work=R" + "\">RESERVER</a></TH><TH><a id=\"caddie" + i + "\"href=\"reservation.jsp?numS="+numS+"&date="+DateRep+"&nomS="+nomS+"&c="+(i+1)+"&nofp=1\">AJOUTER AU CADDIE</a></TH></TR>";
 		}
-		
+
 		String scriptJs = "<script>"
 				+ "function f(id,type,link)"
 				+ "{"
@@ -147,12 +223,46 @@ public class ConvertHTML {
 		return toReturn+"</TABLE>" + scriptJs ;
 	}
 
+	/**
+	 * Donne la liste des spectacles avec intéractions VOIR possible en HTML.
+	 * @param rs Le vector de spectacles.
+	 * @return String du tableau HTML.
+	 */
 	public static String vectorSpectacleToHTML(Vector<Spectacle> rs){
 		String toReturn = "<TABLE BORDER='1' width=\"400\">";
 		toReturn+="<CAPTION>Les spectacles sont :</CAPTION>";
 
 		for (int i = 0; i < rs.size(); i++) {
 			toReturn+="<TR><TH>"+rs.elementAt(i).getNum()+" </TH><TH> "+rs.elementAt(i).getNom()+"</TH></TR>";
+		}
+
+		return toReturn+"</TABLE>";
+	}
+
+	/**
+	 * Donne la liste des reservations impossible en en HTML.
+	 * @param rs Le vector de caddie.
+	 * @return String du tableau HTML.
+	 */
+	public static String vectorCaddieDeletionToHTML(Vector<Caddie> rs){
+		if (rs.isEmpty())
+			return "";
+
+		String toReturn = "<TABLE BORDER='1' width=\"1000\">";
+		toReturn+="<CAPTION>Ces places ne sont pas réservables car la représentation a déjà eu lieu :</CAPTION>";
+
+		toReturn+="<TR>";
+		toReturn+="<TH> <i>Reservation n°</i></TH>";			
+		toReturn+="<TH> <i>Spectacle</i> </TH><TH> <i>Date représentation</i></TH>";
+		toReturn+="<TH> <i> Zone </i></TH>";						
+		toReturn+="</TR>";
+
+		for (int i = 0; i < rs.size(); i++) {
+			toReturn+="<TR>";
+			toReturn+="<TH> "+(i+1)+"</TH>";			
+			toReturn+="<TH>"+rs.elementAt(i).getNom()+" </TH><TH> "+rs.elementAt(i).getDate()+"</TH>";
+			toReturn+="<TH> "+rs.elementAt(i).getZone()+" ("+rs.elementAt(i).getNomZ()+")</TH>";			
+			toReturn+="</TR>";
 		}
 
 		return toReturn+"</TABLE>";

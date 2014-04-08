@@ -6,7 +6,6 @@
 <%@ page import="bdd.exceptions.BDExceptionIllegal"%>
 <%@ page import="servlets.caddie.CaddieVirtuel"%> 
 <%@ page import="bdd.modeles.Caddie"%>
-<%@ page import="servlets.utils.ConvertHTML"%> 
 <%@ page import="java.util.Vector"%> 
 <%@ page import="java.text.ParseException"%> 
 <%@ page import="jsp.*"%> 

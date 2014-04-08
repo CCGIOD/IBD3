@@ -11,8 +11,16 @@ import bdd.accessBD.BDConnexion;
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
 
+/**
+ * Permet de factoriser le code des pages JSP.
+ */
 public class Utils {
 
+	/**
+	 * Header de la page
+	 * @param out L'objet ServletOutputStream.
+	 * @param str Le titre de la page (title) et éventuellement un h1.
+	 */
 	public static void header (ServletOutputStream out, String... str) throws IOException {
 		String title, h1;
 		if (str.length == 1)
@@ -31,12 +39,22 @@ public class Utils {
 		out.println("<h1>"+h1+" :</h1>");
 	}
 
+	/**
+	 * Le footer de la page.
+	 * @param out
+	 */
 	public static void footer (ServletOutputStream out) throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/jsp/index.jsp\">Page d'accueil</a></p>");
 		out.println("</div></BODY></HTML>");
 		out.close();
 	}
 
+	/**
+	 * Permet de tester si le caddie est défini dans la session et de le définir sinon.
+	 * @param session La variable session de la JSP.
+	 * @param out L'objet ServletOutputStream.
+	 * @param conn Une connexion à la BDD.
+	 */
 	private static void testCaddie (HttpSession session, ServletOutputStream out, Connection conn) throws IOException, BDException {
 		if (session.getAttribute("config") == null) {  
 			char d = BDRequetes.getTypeCaddie(conn);
@@ -58,6 +76,12 @@ public class Utils {
 		}
 	}
 
+	/**
+	 * Le test de connexion à faire avant de charger la page pour vérifier que la BD est accessible.
+	 * @param session La variable session de la JSP.
+	 * @param out L'objet ServletOutputStream.
+	 * @return True si la connexion est valide, false sinon.
+	 */
 	public static boolean testConnection (HttpSession session, ServletOutputStream out) throws IOException {
 		Connection conn = null;
 		boolean rep = false;

@@ -12,19 +12,40 @@ import bdd.accessBD.BDRequetesTest;
 import bdd.exceptions.BDException;
 import bdd.modeles.Caddie;
 
+/**
+ * Cette classe permet gérer un caddie virtuel.
+ */
 public class CaddieVirtuel {
 
+	/**
+	 * La date du dernier ajout.
+	 */
 	public static Date dateDernierAjout;
+
+	/**
+	 * La liste d'élément de type caddie (<=> liste de réservations).
+	 */
 	public static Vector<Caddie> list = new Vector<Caddie>();	
 
+	/**
+	 * Permet de vider le caddie.
+	 */
 	public static void vider (){
 		list = new Vector<Caddie>();
 	}
 
+	/**
+	 * Permet de mettre à jour la date du caddie.
+	 * @param d La date.
+	 */
 	public static void majDate (Date d){
 		dateDernierAjout=d;
 	}
 
+	/**
+	 * Permet de vérifier si le caddie est valide.
+	 * @param exp le nombre de jour de validité.
+	 */
 	public static void checkDate (int exp){
 		java.util.Date dateOjd = new java.util.Date();
 		GregorianCalendar calendar = new java.util.GregorianCalendar(); 
@@ -35,10 +56,22 @@ public class CaddieVirtuel {
 			vider();	
 	}
 
+	/**
+	 * Getter sur la liste.
+	 * @return list La liste.
+	 */
 	public static Vector<Caddie> getList (){
 		return list;
 	}
 
+	/**
+	 * Permet d'ajouter un élément au caddie virtuel.
+	 * @param numS Le nom du spectacle.
+	 * @param dateRep La date de la représentation.
+	 * @param zone La zone où reservé.
+	 * @param qt La quantité à reservé.
+	 * @throws BDException Une erreur retourné par la BDD.
+	 */
 	public static void ajouterRep (String numS, String dateRep, String zone, String qt) throws BDException {
 		String[] infos = BDRequetesTest.testAjoutCaddie(numS, dateRep, zone);
 
@@ -70,6 +103,12 @@ public class CaddieVirtuel {
 		});
 	}
 
+	/**
+	 * Permet de modifier la quantité de places pour un élément de la liste.
+	 * @param id L'idée de la reservation.
+	 * @param signe Le type de modification.
+	 * @throws ParseException L'erreur sur le Integer.parseInt().
+	 */
 	public static void setQt (String id, char signe) throws ParseException {
 		for (int i=0;i<list.size();i++){
 			if (list.get(i).getId() == Integer.parseInt(id)){

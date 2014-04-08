@@ -16,11 +16,20 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Vector;
 
+/**
+ * Servlet qui permet de gérer une réservation dans une zone.
+ */
 @SuppressWarnings("serial")
 public class ReservationZoneServlet extends BaseServlet {
 
+	/**
+	 * Variable static d'affichage de confirmation.
+	 */
 	private static String cad_ok = null;
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		super.doGet(req, res);
 		header("Réservation de places de spectacle");
@@ -107,14 +116,24 @@ public class ReservationZoneServlet extends BaseServlet {
 		footer();
 	}
 
+	/**
+	 * Méthode doPost de la Servlet.
+	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)	throws ServletException, IOException {
 		doGet(req, res);
 	}
 
+	/**
+	 * Méthode getServletInfo de la Servlet.
+	 * @return L'info.
+	 */
 	public String getServletInfo() {
 		return "Permet de réserver des places dans une zone pour une représentation d'un spectacle donné";
 	}
 
+	/**
+	 * Redéfinition de la méthode footer de la Servlet.
+	 */
 	public void footer() throws IOException {		
 		out.println("<hr><p class=\"backlink\"><a href=\"/servlet/ProgrammeServlet\">Retour au programme complet</a></p>");
 		super.footer();

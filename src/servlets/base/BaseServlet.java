@@ -16,13 +16,25 @@ import bdd.accessBD.BDConnexion;
 import bdd.accessBD.BDRequetes;
 import bdd.exceptions.BDException;
 
+/**
+ * Cette classe permet de factoriser le code des Servlets. 
+ */
 @SuppressWarnings("serial")
 public abstract class BaseServlet extends HttpServlet {
 
+	/**
+	 * La variable out où l'on écrit le code HTML.
+	 */
 	protected ServletOutputStream out;
 
+	/**
+	 * La variable de session.
+	 */
 	public static HttpSession session;
 
+	/**
+	 * Méthode doGet de la Servlet.
+	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		session = req.getSession(true);  
 
@@ -32,6 +44,10 @@ public abstract class BaseServlet extends HttpServlet {
 
 	}
 
+	/**
+	 * Permet de tester si le caddie est défini dans la session et de le définir sinon.
+	 * @param conn Une connexion à la BDD.
+	 */
 	public void testCaddie (Connection conn) throws IOException, BDException {
 		if (session.getAttribute("config") == null) {  
 			char d = BDRequetes.getTypeCaddie(conn);
@@ -53,6 +69,10 @@ public abstract class BaseServlet extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Le test de connexion à faire avant de charger la page pour vérifier que la BD est accessible.
+	 * @return True si la connexion est valide, false sinon.
+	 */
 	public boolean testConnection () throws IOException {
 		Connection conn = null;
 		boolean rep = false;
@@ -68,6 +88,10 @@ public abstract class BaseServlet extends HttpServlet {
 		return rep;
 	}
 
+	/**
+	 * Header de la page
+	 * @param str Le titre de la page (title) et éventuellement un h1.
+	 */
 	public void header (String... str) throws IOException {
 		String title, h1;
 		if (str.length == 1)
@@ -86,12 +110,20 @@ public abstract class BaseServlet extends HttpServlet {
 		out.println("<h1>"+h1+" :</h1>");
 	}
 
+	/**
+	 * Le footer de la page.
+	 */
 	public void footer () throws IOException {
 		out.println("<hr><p class=\"backlink\"><a href=\"/index.html\">Page d'accueil</a></p>");
 		out.println("</div></BODY></HTML>");
 		out.close();
 	}
 
+	/**
+	 * Permet de faire une redirection.
+	 * @param res L'objet response.
+	 * @param url L'url de redirection.
+	 */
 	public void redirect (HttpServletResponse res, String url) throws IOException {
 		res.sendRedirect(url);
 		out.close();

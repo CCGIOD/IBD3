@@ -289,7 +289,6 @@ public class BDRequetes {
 	 * 		: Le nombre de place souhaitées pour la représentation à ajouter, sous forme string.
 	 * @throws BDException
 	 */
-	@SuppressWarnings("resource")
 	public static void addRepresentationCaddie (String numS, String dateRep, String zone, String nofp) throws BDException {
 		String requete = null;
 		PreparedStatement pstmt = null;
@@ -601,7 +600,6 @@ public class BDRequetes {
 	 * 		: La modification à effectuer.
 	 * @throws BDException
 	 */
-	@SuppressWarnings("resource")
 	public static void majTypeCaddie (String val, Vector<Caddie> toInsert) throws BDException {
 		String requete = "update config set type_cad =";
 		if (val.compareTo("PERSISTANT") == 0)
@@ -658,7 +656,6 @@ public class BDRequetes {
 	 * @throws BDException
 	 * @throws ParseException
 	 */
-	@SuppressWarnings("resource")
 	public static Vector<Ticket> valideCaddie (Vector<Caddie> caddies) throws BDException, ParseException {
 		ArrayList<Vector<Place>> placesToChoice = new ArrayList<Vector<Place>>();
 		ArrayList<Integer> placesPrice = new ArrayList<Integer>();
