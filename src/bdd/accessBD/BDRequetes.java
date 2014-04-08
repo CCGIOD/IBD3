@@ -22,8 +22,19 @@ import bdd.modeles.Spectacle;
 import bdd.modeles.Ticket;
 import bdd.modeles.Zone;
 
+/**
+ * Classe permettant de traiter des requêtes avec la base de données.
+ */
 public class BDRequetes {
 
+	/**
+	 * Requête pour obtenir les représentations d'un spectacle.
+	 * @param numS
+	 * 		: Le numéro du spectacle sous forme de String.
+	 * @return
+	 * 		La liste des représentattions.
+	 * @throws BDException
+	 */
 	public static Vector<Representation> getRepresentations (String numS) throws BDException {
 		Vector<Representation> res = new Vector<Representation>();
 		String requete = null;
@@ -55,10 +66,22 @@ public class BDRequetes {
 		return res;
 	}
 
+	/**
+	 * Requête pour obtenir les représentations de tous les spectacles.
+	 * @return
+	 *     La lsite des représentations de tous les spectacles.
+	 * @throws BDException
+	 */
 	public static Vector<Representation> getRepresentations () throws BDException {
 		return getRepresentations(null);
 	}
 
+	/**
+	 * Requête pour obtenir la liste de tous les spectacles.
+	 * @return
+	 * 		La liste de tous les spectacles.
+	 * @throws BDException
+	 */
 	public static Vector<Spectacle> getSpectables () throws BDException {
 		Vector<Spectacle> res = new Vector<Spectacle>();
 		String requete = "select DISTINCT numS, nomS from LesSpectacles";
@@ -83,6 +106,12 @@ public class BDRequetes {
 		return res;
 	}
 
+	/**
+	 * Requête pour obtenir le contenu d'un caddie en mode persistant.
+	 * @return
+	 * 			Le contenu du caddie.
+	 * @throws BDException
+	 */
 	public static Vector<Caddie> getContenuCaddie () throws BDException {
 		Vector<Caddie> res = new Vector<Caddie>();
 		String requete = "select idr, nomS, TO_CHAR(DATEREP, 'DD/MM/YYYY HH24:MI') AS DATEREP, lecaddie.numS, lecaddie.numZ, nomC, qt from lesspectacles, lecaddie, leszones where lesspectacles.numS=lecaddie.nums and lecaddie.numz = leszones.numz order by idr asc";
@@ -107,6 +136,14 @@ public class BDRequetes {
 		return res;
 	}
 
+	/**
+	 * Requête pour mettre à jour le contenu d'un caddie en mode persistant.
+	 * @param idr
+	 * 		: L'identifiant du caddie à modifier.
+	 * @param signe
+	 * 		: 'd' pour delete, '-' pour soustraction de 1, '+' pour addition de 1.
+	 * @throws BDException
+	 */
 	public static void setQtCaddie (String idr, char signe) throws BDException {
 		String requete = null;
 		if (signe != 'd')
@@ -136,6 +173,12 @@ public class BDRequetes {
 		}
 	}
 
+	/**
+	 * Requête pour obtenir la liste des zones du théatre.
+	 * @return
+	 * 		La liste des zones.
+	 * @throws BDException
+	 */
 	public static Vector<Zone> getZones () throws BDException {
 		Vector<Zone> res = new Vector<Zone>();
 		String requete = "select * from LesZones";
@@ -160,6 +203,16 @@ public class BDRequetes {
 		return res;
 	}
 
+	/**
+	 * Requête pour obtenir la liste des places disponibles pour une représentation.
+	 * @param numS
+	 * 		: Le numéro du spectacle, comme un string.
+	 * @param date
+	 * 		: La date de la représentation associée.
+	 * @return
+	 * 		La lsite des places disponibles pour la représentation.
+	 * @throws BDException
+	 */
 	public static Vector<Place> getPlacesDisponibles (String numS, String date) throws BDException {
 		Vector<Place> res = new Vector<Place>();
 		String requete = "select norang, noplace, numz from lesplaces MINUS select lestickets.norang, lestickets.noplace, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
@@ -186,6 +239,18 @@ public class BDRequetes {
 		return res;
 	}
 	
+	/** 
+	 * Requête pour obtenir la liste des places disponibles d'une zone pour une représentation.
+	 * @param numS
+	 * 		: Le numéro du spectacle, comme un string.
+	 * @param date
+	 * 		: La date de la représentation associée.
+	 * @param zone
+	 * 		: Le numéro de la zone cherchée.
+	 * @return
+	 * 		La lsite des places disponibles pour la représentation.
+	 * @throws BDException
+	 */
 	public static Vector<Place> getPlacesDisponiblesFromZone (String numS, String date, int zone) throws BDException {
 		Vector<Place> res = new Vector<Place>();
 		String requete = "select norang, noplace, numZ from lesplaces where numz=" + zone + " MINUS select lestickets.norang, lestickets.noplace, numz from LesTickets, lesplaces where lestickets.noplace = lesplaces.noplace and lestickets.norang=lesplaces.norang and numS = "+numS+" and dateRep = to_date('"+date+"','dd/mm/yyyy hh24:mi') ORDER BY norang, noplace";
@@ -212,6 +277,19 @@ public class BDRequetes {
 		return res;
 	}
 
+	/**
+	 * Requête d'ajout d'une représentation au caddie en mode persistant.
+	 * @param numS
+	 * 		: Le numéro du spectacle à ajouter, sous forme string.
+	 * @param dateRep
+	 * 		: La date de la représentation à ajouter, sous forme string.
+	 * @param zone
+	 * 		: Le numéro de la zone souhaitée pour la représentation à ajouter, sous forme string.
+	 * @param nofp
+	 * 		: Le nombre de place souhaitées pour la représentation à ajouter, sous forme string.
+	 * @throws BDException
+	 */
+	@SuppressWarnings("resource")
 	public static void addRepresentationCaddie (String numS, String dateRep, String zone, String nofp) throws BDException {
 		String requete = null;
 		PreparedStatement pstmt = null;
@@ -264,6 +342,19 @@ public class BDRequetes {
 		}
 	}
 
+	/**
+	 * Requête d'ajout d'une représentation pour un spectacle.
+	 * @param numS
+	 * 		: Le numéro du spectacle à ajouter, sous forme string.
+	 * @param dateRep
+	 * 		: La date de la représentation à ajouter, sous forme string.
+	 * @param heureRep
+	 * 		: L'heure de la représentation à ajouter, sous forme string.
+	 * @return
+	 * 		Le nom du spectacle dont la représentation a été inserée.
+	 * @throws BDException
+	 * @throws BDExceptionParamError
+	 */
 	public static String insertRepresentation(String numS, String dateRep, String heureRep) throws BDException, BDExceptionParamError {
 		String requete = null;
 		PreparedStatement stmt = null;
@@ -313,6 +404,12 @@ public class BDRequetes {
 		return nomSpectacle;
 	}
 
+	/**
+	 * Requête pour tester la valider de la session du caddie pour un caddie persistant.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @throws BDException
+	 */
 	public static void checkCaddieLifetime (Connection conn) throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
@@ -343,6 +440,12 @@ public class BDRequetes {
 		}
 	}
 
+	/**
+	 * Requête pour obtenir le temp de la session du caddie pour un caddie persistant.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @throws BDException
+	 */
 	public static int getCaddieLifetime (Connection conn) throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
@@ -365,6 +468,14 @@ public class BDRequetes {
 		return toReturn;
 	}
 
+	/**
+	 * Requête pour obtenir le type du caddie utilisé dans l'application.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @return
+	 * 		P si le caddie est persistant, V si le caddie est volatile.
+	 * @throws BDException
+	 */
 	public static char getTypeCaddie (Connection conn) throws BDException {
 		String requete = "select type_cad from config";
 		Statement stmt = null;
@@ -387,6 +498,10 @@ public class BDRequetes {
 		return toReturn;
 	}
 	
+	/**
+	 * Requête pour obtenir le temp de la session du caddie pour un caddie persistant.
+	 * @throws BDException
+	 */
 	public static int getCaddieLifetime () throws BDException {
 		String requete = "select duree_vie_cad from config";
 		Statement stmt = null;
@@ -413,6 +528,12 @@ public class BDRequetes {
 		return toReturn;
 	}
 
+	/**
+	 * Requête pour obtenir le type du caddie utilisé dans l'application.
+	 * @return
+	 * 		P si le caddie est persistant, V si le caddie est volatile.
+	 * @throws BDException
+	 */
 	public static char getTypeCaddie () throws BDException {
 		String requete = "select type_cad from config";
 		Statement stmt = null;
@@ -439,6 +560,12 @@ public class BDRequetes {
 		return toReturn;
 	}
 
+	/**
+	 * Requête pour modifier le temps de session d'un caddie.
+	 * @param val
+	 * 		: La nouvelle valeur limite, sous forme de string.
+	 * @throws BDException
+	 */
 	public static void majCaddieLifetime (String val) throws BDException {
 		String requete = "update config set duree_vie_cad =";
 		if (val.compareTo("SESSION") == 0)
@@ -466,6 +593,15 @@ public class BDRequetes {
 		}
 	}
 
+	/**
+	 * Requête de mise à jour du caddie en mode persistant.
+	 * @param val
+	 * 		: La valeur (l'indice) à modifier.
+	 * @param toInsert
+	 * 		: La modification à effectuer.
+	 * @throws BDException
+	 */
+	@SuppressWarnings("resource")
 	public static void majTypeCaddie (String val, Vector<Caddie> toInsert) throws BDException {
 		String requete = "update config set type_cad =";
 		if (val.compareTo("PERSISTANT") == 0)
@@ -513,6 +649,16 @@ public class BDRequetes {
 		}
 	}
 	
+	/**
+	 * Requête permettant la réservation d'un caddie.
+	 * @param caddies
+	 * 		: Le caddie à réserver.
+	 * @return
+	 * 		: La liste des tickets associés à la commande.
+	 * @throws BDException
+	 * @throws ParseException
+	 */
+	@SuppressWarnings("resource")
 	public static Vector<Ticket> valideCaddie (Vector<Caddie> caddies) throws BDException, ParseException {
 		ArrayList<Vector<Place>> placesToChoice = new ArrayList<Vector<Place>>();
 		ArrayList<Integer> placesPrice = new ArrayList<Integer>();
@@ -606,6 +752,15 @@ public class BDRequetes {
 		return toReturn ;
 	}
 	
+	/**
+	 * Permet de choisir des places à réserver.
+	 * @param places
+	 * 		: Les places disponibles.
+	 * @param qt
+	 * 		: La quantité de places souhaitées.
+	 * @return
+	 * 		La liste des places à réserver.
+	 */
 	public static Vector<Place> choicePlaces(Vector<Place> places, int qt){
 		Vector<Place> toReturn = new Vector<Place>();
 		
@@ -620,6 +775,14 @@ public class BDRequetes {
 		return toReturn;
 	}
 	
+	/**
+	 * Requête pour obtenir le prix des places d'une zone.
+	 * @param zone
+	 * 		: La zone dont on veut le prix des places.
+	 * @return
+	 * 		: Le prix d'une place dans la zone.
+	 * @throws BDException
+	 */
 	public static int getPriceOfAPlace(int zone) throws BDException{
 		String requete = "select prix from lescategories c, leszones z where c.nomc = z.nomc and numz=" + zone;
 		Statement stmt = null;
@@ -646,6 +809,10 @@ public class BDRequetes {
 		return res;
 	}
 	
+	/**
+	 * Supprime complétement le caddie en mode persistant.
+	 * @throws BDException
+	 */
 	public static void deleteCaddie () throws BDException {
 		String requete = "delete from lecaddie";
 

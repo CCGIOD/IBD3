@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,8 +15,22 @@ import bdd.exceptions.BDException;
 import bdd.exceptions.BDExceptionIllegal;
 import bdd.modeles.Caddie;
 
+/**
+ * Classe permettant de traiter des requêtes avec la base de données.
+ * Ces requêtes ont pour but de tester des paramêtrses.
+ */
 public class BDRequetesTest {
 
+	/**
+	 * Teste si un numéro de spectacle existe.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @param numS
+	 * 		: Le numéro à tester.
+	 * @return
+	 * 		Le nom du spectacle sinon une erreur.
+	 * @throws BDException
+	 */
 	public static String testNumSpectable (Connection conn, String numS) throws BDException {
 		String requete;
 		Statement stmt;
@@ -43,6 +56,13 @@ public class BDRequetesTest {
 		return res ;
 	}
 
+	/**
+	 * Teste si une date est valide.
+	 * Génère une erreur en cas d'erreur.
+	 * @param date
+	 * 		: La date à tester.
+	 * @throws BDException
+	 */
 	public static void testDateValide(String date) throws BDException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
 		try {
@@ -52,6 +72,13 @@ public class BDRequetesTest {
 		}
 	}
 
+	/**
+	 * Teste si une heure est valide.
+	 * Génère une erreur en cas d'erreur.
+	 * @param heure
+	 * 		: L'heure à tester.
+	 * @throws BDException
+	 */
 	public static void testHeureValide(String heure) throws BDException {
 		SimpleDateFormat heureFormat = new SimpleDateFormat("HH:MM");
 		try {
@@ -61,6 +88,16 @@ public class BDRequetesTest {
 		}
 	}
 
+	/**
+	 * Teste si une représentation existe.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @param numS
+	 * 		: Le numéro du spectacle.
+	 * @param myDate
+	 * 		: La date de la représentation.
+	 * @throws BDException
+	 */
 	public static void testRepresentation (Connection conn, String numS, String myDate) throws BDException {
 		String requete;
 		Statement stmt;
@@ -101,6 +138,16 @@ public class BDRequetesTest {
 		}
 	}
 	
+	/**
+	 * Teste la validité des paramêtres d'une réservation.
+	 * @param nomS
+	 * 		: Le nom du spectacle.
+	 * @param dateS
+	 * 		: La date de la représentation.
+	 * @param numS
+	 * 		: Le numéro du spectacle.
+	 * @throws BDException
+	 */
 	public static void testParametreReservation (String nomS, String dateS, String numS) throws BDException {
 		String requete = "select * from lesspectacles, lesrepresentations where lesspectacles.numS=lesrepresentations.numS and lesspectacles.numS="+numS+" and dateRep = to_date('"+dateS+"','dd/mm/yyyy hh24:mi') and nomS='"+nomS+"'";
 		Statement stmt = null;
@@ -123,6 +170,19 @@ public class BDRequetesTest {
 		}
 	}
 	
+	/**
+	 * Test les paramêtres d'ajout dans le caddie.
+	 * @param numS
+	 * 		: Le numéro du spectacle.
+	 * @param dateRep
+	 * 		: La date de la représentation.
+	 * @param zone
+	 * 		: La zone souhaité pour la réservation.
+	 * @return
+	 * 		Le nom du spectacle et le nom de la zone.
+	 * @throws BDException
+	 */
+	@SuppressWarnings("resource")
 	public static String[] testAjoutCaddie (String numS, String dateRep, String zone) throws BDException {
 		String requete = "select nomS from lesspectacles, lesrepresentations where lesspectacles.numS=lesrepresentations.numS and lesspectacles.numS="+numS+" and dateRep = to_date('"+dateRep+"','dd/mm/yyyy hh24:mi')";
 		Statement stmt = null;
@@ -159,6 +219,16 @@ public class BDRequetesTest {
 		return toReturn;
 	}
 	
+	/**
+	 * Test et insert un nouveau dossier.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @param finalPrice
+	 * 		: Le prix de la commande.
+	 * @return
+	 * 		Le numéro du dossier créé.
+	 * @throws BDException
+	 */
 	public static int testNouveauDossier (Connection conn,int finalPrice) throws BDException {
 		String requete = "select max(nodossier) from lesdossiers";
 		Statement stmt = null;
@@ -193,6 +263,14 @@ public class BDRequetesTest {
 		return toReturn+1;
 	}
 	
+	/**
+	 * Retourne le futur numéro de ticket à utiliser.
+	 * @param conn
+	 * 		: Une connection valide à la BD.
+	 * @return
+	 * 		Le futur numéro de ticket.
+	 * @throws BDException
+	 */
 	public static int testNouveauTicket (Connection conn) throws BDException {
 		String requete = "select max(noserie) from lestickets";
 		Statement stmt = null;
@@ -218,6 +296,16 @@ public class BDRequetesTest {
 		return toReturn+1;
 	}
 	
+	/**
+	 * Test si la demande de validation d'un caddie est valide.
+	 * @param caddies
+	 * 		: Le caddie à tester.
+	 * @param formCaddie
+	 * 		: 0 si caddie static, 1 si caddie persistant, 2 si caddie volatile.
+	 * @return
+	 * 		La liste des caddies invalide et donc supprimé du caddie.
+	 * @throws BDException
+	 */
 	public static Vector<Caddie> testCheckValideCaddie(Vector<Caddie> caddies, int formCaddie) throws ParseException, BDException{
 		Vector<Caddie> toDelete = new Vector<Caddie>();
 		

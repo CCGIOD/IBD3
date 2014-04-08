@@ -13,8 +13,16 @@ import java.util.Properties;
 
 import bdd.exceptions.BDException;
 
+/**
+ * Classe permettant de gérer les connections à la base de données.
+ */
 public class BDConnexion {
 
+	/**
+	 * Get une nouvelle connection à la BD.
+	 * @return La nouvelle connection.
+	 * @throws BDException
+	 */
 	public static Connection getConnexion () throws BDException {
 		Connection conn = null;
 		try {
@@ -39,7 +47,17 @@ public class BDConnexion {
 		}
 		return conn;
 	}
-		
+	
+	/**
+	 * Permet de fermer proprement des objets utilisés pour dialoguer avec 
+	 * le serveur de BD.
+	 * @param conn
+	 * 		: La connection à la BD, peut être null.
+	 * @param stmt
+	 * 		: Le statement de la requête, peut être null.
+	 * @param rs
+	 * 		: Le resultSet de la requête, peut être null.
+	 */
 	public static void FermerTout (Connection conn, Statement stmt, ResultSet rs){
 		if (rs != null) {
 			try {
@@ -62,6 +80,16 @@ public class BDConnexion {
 		}
 	}
 	
+	/**
+	 * Permet de fermer proprement des objets utilisés pour dialoguer avec 
+	 * le serveur de BD.
+	 * @param conn
+	 * 		: La connection à la BD, peut être null.
+	 * @param stmt
+	 * 		: Le statement de la requête, peut être null.
+	 * @param rs
+	 * 		: Le resultSet de la requête, peut être null.
+	 */
 	public static void FermerTout (Connection conn, PreparedStatement stmt, ResultSet rs){
 		if (rs != null) {
 			try {
