@@ -137,7 +137,7 @@ public class BDRequetesTest {
 			throw new BDException("Problème dans l'interrogation des représentations (Code Oracle : "+e.getErrorCode()+")");
 		}
 	}
-	
+
 	/**
 	 * Teste la validité des paramêtres d'une réservation.
 	 * @param nomS
@@ -169,7 +169,7 @@ public class BDRequetesTest {
 			BDConnexion.FermerTout(conn, stmt, rs);
 		}
 	}
-	
+
 	/**
 	 * Test les paramêtres d'ajout dans le caddie.
 	 * @param numS
@@ -187,7 +187,7 @@ public class BDRequetesTest {
 		Statement stmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
-		
+
 		String[] toReturn = new String[2];
 
 		try {
@@ -200,7 +200,7 @@ public class BDRequetesTest {
 			}
 			else
 				toReturn[0]=rs.getString(1);
-			
+
 			requete = "select nomC  from leszones where numZ="+zone;
 			rs = stmt.executeQuery(requete);
 			if (!rs.next()) {
@@ -217,7 +217,7 @@ public class BDRequetesTest {
 		}
 		return toReturn;
 	}
-	
+
 	/**
 	 * Test et insert un nouveau dossier.
 	 * @param conn
@@ -233,7 +233,7 @@ public class BDRequetesTest {
 		Statement stmt = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		int toReturn = 0;
 
 		try {
@@ -244,12 +244,12 @@ public class BDRequetesTest {
 			}
 			else
 				toReturn=rs.getInt(1);
-			
+
 			requete = "insert INTO lesdossiers values (?,?)";
 			pstmt = conn.prepareStatement(requete);
 			pstmt.setInt(1, toReturn+1 );
 			pstmt.setInt(2, finalPrice);
-			
+
 			int nb_insert = pstmt.executeUpdate();
 
 			if (nb_insert != 1)
@@ -261,7 +261,7 @@ public class BDRequetesTest {
 		}
 		return toReturn+1;
 	}
-	
+
 	/**
 	 * Retourne le futur numéro de ticket à utiliser.
 	 * @param conn
@@ -274,7 +274,7 @@ public class BDRequetesTest {
 		String requete = "select max(noserie) from lestickets";
 		Statement stmt = null;
 		ResultSet rs = null;
-		
+
 		int toReturn = 0;
 
 		try {
@@ -285,7 +285,7 @@ public class BDRequetesTest {
 			}
 			else
 				toReturn=rs.getInt(1);
-			
+
 			requete = "insert INTO lesdossiers values (?,?)";
 
 
@@ -294,7 +294,7 @@ public class BDRequetesTest {
 		}
 		return toReturn+1;
 	}
-	
+
 	/**
 	 * Test si la demande de validation d'un caddie est valide.
 	 * @param caddies
@@ -307,20 +307,20 @@ public class BDRequetesTest {
 	 */
 	public static Vector<Caddie> testCheckValideCaddie(Vector<Caddie> caddies, int formCaddie) throws ParseException, BDException{
 		Vector<Caddie> toDelete = new Vector<Caddie>();
-		
+
 		// Vérification
 		for(int i = 0 ; i< caddies.size() ; i++){
 			Caddie caddie = caddies.get(i);
 			Date dNow = new Date( );
-		    SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
-		    long t1 = (new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(caddie.getDate()).getTime() ;
+			SimpleDateFormat ft = new SimpleDateFormat ("dd/MM/yyyy HH:mm");
+			long t1 = (new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(caddie.getDate()).getTime() ;
 			long t2 = (new SimpleDateFormat("dd/MM/yyyy HH:mm")).parse(ft.format(dNow)).getTime();
 			if(t1 < t2){
 				Caddie delete = new Caddie(caddie.getId(), caddie.getNom(), caddie.getDate(), caddie.getNumS(), caddie.getZone(), caddie.getNomZ(), caddie.getQt());
 				toDelete.add(delete);
 			}
 		}
-		
+
 		// Suppression 
 		if(formCaddie > 0)
 		{
@@ -332,7 +332,7 @@ public class BDRequetesTest {
 					CaddieVirtuel.setQt(Integer.toString(caddie.getId()), 'd');
 			}
 		}
-		
+
 		return toDelete;
 	}
 }
