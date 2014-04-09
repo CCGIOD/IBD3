@@ -101,4 +101,5 @@
 		}
 %>
 
+<% _out.println("<hr><p class=\"backlink\"><a href=\"admin.jsp\">Page d'administration</a></p>"); %>
 <% Utils.footer(_out); %>

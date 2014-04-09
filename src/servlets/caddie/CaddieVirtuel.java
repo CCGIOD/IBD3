@@ -20,7 +20,7 @@ public class CaddieVirtuel {
 	/**
 	 * La date du dernier ajout.
 	 */
-	public static Date dateDernierAjout;
+	public static Date dateDernierAjout = new java.util.Date();
 
 	/**
 	 * La liste d'élément de type caddie (<=> liste de réservations).
@@ -52,7 +52,7 @@ public class CaddieVirtuel {
 		calendar.setTime(dateDernierAjout); 
 		calendar.add (Calendar.DATE, exp);
 
-		if (calendar.getTime().after(dateOjd))
+		if (dateOjd.after(calendar.getTime()))
 			vider();	
 	}
 
@@ -90,6 +90,8 @@ public class CaddieVirtuel {
 		if (!incr){
 			list.add(new Caddie(ID, infos[0], dateRep, Integer.parseInt(numS), Integer.parseInt(zone), infos[1], Integer.valueOf(qt))); 
 		}
+		
+		dateDernierAjout = new java.util.Date();
 
 		Collections.sort(list,new Comparator<Caddie>() {
 			public int compare(Caddie o1, Caddie o2) {

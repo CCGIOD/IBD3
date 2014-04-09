@@ -215,7 +215,7 @@ public class ConvertHTML {
 				+ "obj.innerHTML=parseInt(obj.innerHTML)+1;"
 				+ "else if(obj.innerHTML > 1)"
 				+ "obj.innerHTML=parseInt(obj.innerHTML)-1;"
-				+ "document.getElementById('resZone'+id).href=link + '&nofp=' + obj.innerHTML ;"
+				+ "document.getElementById('resZone'+id).href=link + '&work=R' + '&nofp=' + obj.innerHTML ;"
 				+ "document.getElementById('caddie'+id).href=link + '&nofp=' + obj.innerHTML ;"
 				+ "}"
 				+ "</script>";
